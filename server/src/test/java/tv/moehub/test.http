@@ -1,0 +1,18 @@
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "username": "fake_data",
+  "nickname": "fake_data",
+  "password": "fake_data",
+  "avatar": "fake_data",
+  "sex": "fake_data",
+  "email": "fake_data",
+  "phone": "fake_data"
+}
+
+###
+GET http://localhost:8080/user/8a6cf18d818027b50181802840010000
+Accept: application/json
+
+###
