@@ -20,12 +20,7 @@ public class Favorite {
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String id;
 
-    private String uid;
-    private String vid;
-
-    public Favorite(String uid, String vid) {
-        this.uid = uid;
-        this.vid = vid;
-    }
+    private String userId;
+    private String vedioId;
 }
 

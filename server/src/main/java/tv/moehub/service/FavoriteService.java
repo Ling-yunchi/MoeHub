@@ -13,10 +13,13 @@ public class FavoriteService {
     private final FavoriteDao favoriteDao;
 
     public void isFavorite(String userId, String videoId, BaseResult<Favorite> result) {
-        Favorite favorite = favoriteDao.queryByUidAndVid(userId, videoId);
+        Favorite favorite = favoriteDao.queryByUserIdAndVedioId(userId, videoId);
         if (favorite == null) {
             result.construct(false, "未收藏");
-            Favorite f = new Favorite(userId, videoId);
+            Favorite f = Favorite.builder()
+                    .userId(userId)
+                    .vedioId(videoId)
+                    .build();
             favoriteDao.save(f);
         } else {
             result.construct(true, "已收藏", favorite);
