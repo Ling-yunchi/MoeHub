@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vime/core": "^5.3.1",
+    "@vime/vue-next": "^5.3.1",
     "axios": "^0.27.2",
     "core-js": "^3.8.3",
     "unplugin-vue-components": "^0.19.6",
