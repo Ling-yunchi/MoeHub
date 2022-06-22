@@ -8,4 +8,5 @@ import tv.moehub.entity.Video;
  * @date 2022/6/20 16:43
  */
 public interface VideoDao extends JpaRepository<Video, String> {
+    Video queryVideoById(String id);
 }
