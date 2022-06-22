@@ -19,15 +19,24 @@
       </div>
       <div class="user-container">
         <template v-if="user !== null">
-          <a-avatar :src="user.avatar" size="small" />
-          <span class="user-name">{{ user.name }}</span>
+          <a :href="`/user/${user.id}`" target="_blank">
+            <a-avatar :size="50">
+              <img v-if="user.avatar !== ''" :src="user.avatar" alt="avatar" />
+              <span v-else>{{ user.nickname[0] }}</span>
+            </a-avatar>
+          </a>
+          <a :href="`user/${user.id}`" class="user-name">{{ user.nickname }}</a>
         </template>
         <template v-else>
-          <a-button class="login-btn" type="primary">
+          <a-button
+            class="login-btn"
+            type="primary"
+            @click="router.push('/user/login')"
+          >
             <icon-user />
             登录
           </a-button>
-          <a-button class="register-btn">
+          <a-button class="register-btn" @click="router.push('/user/register')">
             <icon-user-add />
             注册
           </a-button>
@@ -58,6 +67,7 @@ const user = inject<Ref<User>>("user") as Ref<User>;
 <style lang="scss">
 .header-container {
   height: 80px;
+
   .header {
     height: 100%;
     display: flex;
@@ -66,11 +76,13 @@ const user = inject<Ref<User>>("user") as Ref<User>;
     padding: 0 50px;
     margin: 0 auto;
     position: relative;
+
     .logo-img {
       width: 150px;
       cursor: pointer;
       display: block;
     }
+
     .search {
       .search-input {
         width: 600px;
@@ -78,6 +90,7 @@ const user = inject<Ref<User>>("user") as Ref<User>;
         border-radius: 4px;
         padding: 0 10px;
         font-size: 14px;
+        margin-right: 5px;
         @media (max-width: 1400px) {
           width: 400px;
         }
@@ -93,13 +106,28 @@ const user = inject<Ref<User>>("user") as Ref<User>;
         }
       }
     }
+
     .user-container {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100px;
       height: 100px;
-      border-radius: 50%;
+
+      .user-name {
+        font-size: 16px;
+        font-weight: bold;
+        color: var(--color-neutral-8);
+        margin-left: 10px;
+        text-decoration: none;
+        // 字符不换行
+        white-space: nowrap;
+      }
+      .login-btn {
+        margin-right: 10px;
+      }
+      .register-btn {
+      }
     }
   }
 }

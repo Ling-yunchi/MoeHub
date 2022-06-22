@@ -1,8 +1,8 @@
-<template></template>
+<template>detail</template>
 
 <script>
 export default {
-  name: "RegisterView",
+  name: "DetailView",
 };
 </script>
 
