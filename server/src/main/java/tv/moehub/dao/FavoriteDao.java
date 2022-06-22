@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import tv.moehub.entity.Favorite;
 
 public interface FavoriteDao extends JpaRepository<Favorite, String> {
-    Favorite queryByUserIdAndVedioId(String userId, String vedioId);
+    Favorite queryByUserIdAndVideoId(String userId, String videoId);
 
     void deleteById(String favoriteId);
 }

@@ -25,7 +25,7 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class LogAspect {
-    @Around("execution(* tv.moehub.controller.*(..))")
+    @Around("execution(* tv.moehub.controller.*.*(..))")
     public Object webProcess(ProceedingJoinPoint point) throws Throwable {
         //正在被通知的方法相关信息
         MethodSignature signature = (MethodSignature) point.getSignature();

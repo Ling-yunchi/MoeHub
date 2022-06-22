@@ -13,7 +13,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "favorite")
-
 public class Favorite {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -21,6 +20,6 @@ public class Favorite {
     private String id;
 
     private String userId;
-    private String vedioId;
+    private String videoId;
 }
 
