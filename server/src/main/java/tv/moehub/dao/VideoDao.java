@@ -13,4 +13,6 @@ public interface VideoDao extends JpaRepository<Video, String> {
     Video queryVideoById(String videoId);
 
     List<Video> findByTitleLike(String title);
+
+    List<Video> findByAuthorId(String authorId);
 }

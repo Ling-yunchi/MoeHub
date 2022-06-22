@@ -15,15 +15,15 @@ public class FavoriteService {
     public void isFavorite(String userId, String videoId, BaseResult<Favorite> result) {
         Favorite favorite = favoriteDao.queryByUserIdAndVideoId(userId, videoId);
         if (favorite == null) {
-            result.construct(false, "未收藏");
             Favorite f = Favorite.builder()
                     .userId(userId)
                     .videoId(videoId)
                     .build();
             favoriteDao.save(f);
+            result.construct(false, "收藏成功");
         } else {
-            result.construct(true, "已收藏", favorite);
             favoriteDao.deleteById(favorite.getId());
+            result.construct(true, "取消收藏", favorite);
         }
     }
 }

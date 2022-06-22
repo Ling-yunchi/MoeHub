@@ -7,11 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
- * @author wangrong
- * @date 2022/6/20 16:22
+ * @author wangkunling
+ * @date 2022/6/22 11:04
  */
 @Getter
 @Setter
@@ -19,18 +18,13 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "video")
-public class Video {
+@Table(name = "search")
+public class Search {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String id;
 
-    private String title;//名称
-    private String description;//简介
-    private String authorId;//作者id
-    private Date time;//时长
-    private Date releaseTime;//发布时间
-    private String coverUrl;//封面
-    private String videoUrl;//视频内容
+    private String statement;
+    private Integer count;
 }
