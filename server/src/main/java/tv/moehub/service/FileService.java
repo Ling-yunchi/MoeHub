@@ -48,31 +48,33 @@ public class FileService {
         }
     }
 
-
     @SneakyThrows
     public String uploadFile(MultipartFile file, String filename, String path) {
         String prefix = (path == null ? "" : path) + "/" + (filename == null ? file.getOriginalFilename() : filename);
         client.putObject(
                 PutObjectArgs.builder()
                         .bucket(bucket)
-                        .object(file.getOriginalFilename())
+                        .object(prefix)
                         .stream(file.getInputStream(), file.getSize(), -1)
                         .build());
+        // 此处url为永久访问，但需要设置Minio的访问policy为ReadOnly
+        // 即读取不需要签名，写入需要签名
         String url = client.getPresignedObjectUrl(
                 GetPresignedObjectUrlArgs.builder()
                         .bucket(bucket)
-                        .object(file.getOriginalFilename())
+                        .object(prefix)
                         .method(Method.GET)
                         .build());
         return url.substring(0, url.indexOf("?"));
     }
 
     @SneakyThrows
-    public void deleteFile(String fileName) {
+    public void deleteFile(String fileName, String path) {
+        var filepath = (path == null ? "" : path) + "/" + fileName;
         client.removeObject(
                 RemoveObjectArgs.builder()
                         .bucket(bucket)
-                        .object(fileName)
+                        .object(filepath)
                         .build());
     }
 }
