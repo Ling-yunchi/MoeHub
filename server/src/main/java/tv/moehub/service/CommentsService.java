@@ -11,8 +11,10 @@ import tv.moehub.entity.Comments;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.CommentsResult;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -20,24 +22,42 @@ import java.util.List;
 public class CommentsService {
     private final CommentsDao commentsDao;
     private final VideoDao videoDao;
-    public void getVideoComments(String videoId, BaseResult<List<Comments>> result){
-        //找出视频的所有评论
+    public void getVideoCommentsByTime(String videoId, BaseResult<List<Comments>> result){
+        //找出视频的所有评论(先看最新评论)
 
-        List<Comments> comments = commentsDao.findAllByVideoId(videoId);
+        List<Comments> comments = commentsDao.queryAllByVideoId(videoId);
         if (comments.size()==0){
             result.construct(false,"找不到");
             return;
         }
+        //排序(先看最新评论)
+        comments = comments.stream().sorted(Comparator.comparing(Comments::getTime).reversed())
+                .collect(Collectors.toList());
+        result.construct(true, "查询成功", comments);
+
+    }
+
+    public void getVideoCommentsByLike(String videoId, BaseResult<List<Comments>> result){
+        //找出视频的所有评论(先看最热评论)
+
+        List<Comments> comments = commentsDao.queryAllByVideoId(videoId);
+        if (comments.size()==0){
+            result.construct(false,"找不到");
+            return;
+        }
+        //排序(先看最热评论)
+        comments = comments.stream().sorted(Comparator.comparing(Comments::getLikeNum).reversed())
+                .collect(Collectors.toList());
         result.construct(true, "查询成功", comments);
 
     }
 
     public void makeComments(CommentsBean commentsBean, BaseResult<CommentsResult> result){
         //给视频加一个评论
-        if(videoDao.queryVideoById(commentsBean.getVideoId())==null){
-            result.construct(false,"未找到视频,评论失败");
-            return;
-        }
+//        if(videoDao.queryVideoById(commentsBean.getVideoId())==null){
+//            result.construct(false,"未找到视频,评论失败");
+//            return;
+//        }
         Comments comments = new Comments();
         Date date = new Date();
         commentsBean.setTime(date);

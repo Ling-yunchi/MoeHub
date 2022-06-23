@@ -18,11 +18,18 @@ import java.util.List;
 public class CommentsController {
     private final CommentsService commentsService;
 
-    @GetMapping("/getVideoComments")//找视频的评论
-    public BaseResult<List<Comments>> getVideoComments(@RequestParam String videoId){
+    @GetMapping("/getVideoCommentsByTime")//(先看最新评论)
+    public BaseResult<List<Comments>> getVideoCommentsByTime(@RequestParam String videoId){
         BaseResult<List<Comments>> result = new BaseResult<>();
-        commentsService.getVideoComments(videoId,result);
-        return result;//是否return comments?
+        commentsService.getVideoCommentsByTime(videoId,result);
+        return result;
+    }
+
+    @GetMapping("/getVideoCommentsByLike")//(先看最热评论)
+    public BaseResult<List<Comments>> getVideoCommentsByLike(@RequestParam String videoId){
+        BaseResult<List<Comments>> result = new BaseResult<>();
+        commentsService.getVideoCommentsByLike(videoId,result);
+        return result;
     }
 
     @PostMapping("/makeComments")//写评论
@@ -32,7 +39,7 @@ public class CommentsController {
         return result;
     }
 
-    @DeleteMapping("/deleteComments")
+    @DeleteMapping("/deleteComments")//删评论
     public BaseResult<CommentsResult> deleteComments(@RequestParam String id){
         BaseResult<CommentsResult> result = new BaseResult<>();
         commentsService.deleteComments(id,result);

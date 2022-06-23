@@ -11,8 +11,10 @@ import tv.moehub.entity.Reply;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.ReplyResult;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -38,11 +40,14 @@ public class ReplyService {
     public void getCommentsReply(String commentsId, BaseResult<List<Reply>> result){
         //找出评论的回复
 
-        List<Reply> reply = replyDao.findAllByCommentsId(commentsId);
+        List<Reply> reply = replyDao.queryAllByCommentsId(commentsId);
         if (reply.size()==0){
             result.construct(false,"找不到");
             return;
         }
+
+        reply = reply.stream().sorted(Comparator.comparing(Reply::getTime).reversed())
+                .collect(Collectors.toList());
         result.construct(true, "查询成功", reply);
 
     }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CommentsDao extends JpaRepository<Comments,String> {
 
-    List<Comments> findAllByVideoId(String videoId); //根据视频id找出视频的所有评论
+    List<Comments> queryAllByVideoId(String videoId); //根据视频id找出视频的所有评论
                                                     //应返回List
     Comments queryCommentsById(String id);
     void deleteById (String id);//删评论
