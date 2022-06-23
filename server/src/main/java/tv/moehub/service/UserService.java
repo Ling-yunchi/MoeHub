@@ -1,14 +1,24 @@
 package tv.moehub.service;
 
 import lombok.AllArgsConstructor;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import tv.moehub.bean.UserBean;
+import tv.moehub.bean.UserLoginBean;
 import tv.moehub.dao.UserDao;
 import tv.moehub.entity.User;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.UserResult;
+import tv.moehub.utils.Uuid;
+
+import java.util.Objects;
 
 /**
  * @author wangrong
@@ -18,6 +28,7 @@ import tv.moehub.model.UserResult;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserService {
     private final UserDao userDao;
+    private final FileService fileService;
 
     public void getUserInfo(String userId, BaseResult<User> result) {
         User user = userDao.queryUserById(userId);
@@ -41,5 +52,56 @@ public class UserService {
         userDao.save(user);
 
         result.construct(true, "注册成功", new UserResult(user));
+    }
+
+    public void uploadAvatar(MultipartFile avatar, BaseResult<String> result) {
+        var userId = (String) SecurityUtils.getSubject().getPrincipal();
+        var user = userDao.queryUserById(userId);
+        if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
+            var filename = user.getAvatar().substring(user.getAvatar().lastIndexOf("/") + 1);
+            fileService.deleteFile(filename, "avatar");
+        }
+        var filename = Uuid.getUuid() + Objects.requireNonNull(avatar.getOriginalFilename()).substring(avatar.getOriginalFilename().lastIndexOf("."));
+        System.out.println(filename);
+        try {
+            var url = fileService.uploadFile(avatar, filename, "avatar");
+            user.setAvatar(url);
+            userDao.save(user);
+            result.construct(true, "上传成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.construct(false, "上传失败");
+        }
+    }
+
+    public void login(UserLoginBean userLoginBean, BaseResult<Void> result) {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated()) {
+            result.construct(false, "用户已登录");
+            return;
+        }
+        var token = new UsernamePasswordToken(userLoginBean.getUsername(), userLoginBean.getPassword());
+        try {
+            subject.login(token);
+        } catch (UnknownAccountException e) {
+            result.construct(false, "用户不存在");
+            return;
+        } catch (IncorrectCredentialsException e) {
+            result.construct(false, "密码错误");
+            return;
+        }
+        result.construct(true, "登录成功");
+    }
+
+    public void logout(BaseResult<Void> result) {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        result.construct(true, "登出成功");
+    }
+
+    public void self(BaseResult<UserResult> result) {
+        var userId = (String) SecurityUtils.getSubject().getPrincipal();
+        var user = userDao.queryUserById(userId);
+        result.construct(true, "查询成功", new UserResult(user));
     }
 }

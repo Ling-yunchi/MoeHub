@@ -19,12 +19,14 @@ import java.util.List;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    // 捕获参数校验异常
     @ExceptionHandler(value = {BindException.class, MethodArgumentNotValidException.class})
     public BaseResult<Void> exceptionHandle(Exception exception) {
         BindingResult result;
         if (exception instanceof BindException) {
             result = ((BindException) exception).getBindingResult();
-        }else{
+        } else {
             result = ((MethodArgumentNotValidException) exception).getBindingResult();
         }
         StringBuilder errorMsg = new StringBuilder();
