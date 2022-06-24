@@ -10,31 +10,32 @@ import RegisterView from "@/views/user/register/RegisterView.vue";
 import DetailView from "@/views/user/detail/DetailView.vue";
 import VideoView from "@/views/video/VideoView.vue";
 import fzfView from "@/views/404View.vue";
+import UserHomeView from "@/views/user/detail/UserHomeView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "main",
     component: MainView,
-    redirect: "/home",
+    redirect: "home",
     children: [
       {
-        path: "/home",
+        path: "home",
         name: "home",
         component: HomeView,
       },
       {
-        path: "/videos",
+        path: "videos",
         name: "videos",
         component: VideosView,
       },
       {
-        path: "/index",
+        path: "index",
         name: "index",
         component: IndexView,
       },
       {
-        path: "/about",
+        path: "about",
         name: "about",
         component: AboutView,
       },
@@ -46,17 +47,25 @@ const routes: Array<RouteRecordRaw> = [
     component: UserView,
     children: [
       {
-        path: "/user/:id",
+        path: ":id",
         name: "detail",
         component: DetailView,
+        redirect: (to) => "/user/" + to.params.id + "/home",
+        children: [
+          {
+            path: "home",
+            name: "userHome",
+            component: UserHomeView,
+          },
+        ],
       },
       {
-        path: "/user/login",
+        path: "login",
         name: "login",
         component: LoginView,
       },
       {
-        path: "/user/register",
+        path: "register",
         name: "register",
         component: RegisterView,
       },
