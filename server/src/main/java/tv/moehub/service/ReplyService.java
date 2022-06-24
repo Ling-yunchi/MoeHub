@@ -23,37 +23,24 @@ public class ReplyService {
     private final ReplyDao replyDao;
     private final CommentsDao commentsDao;
 
-    public void makeReply(ReplyBean replyBean, BaseResult<ReplyResult> result){
-        //回复评论
+    public void addReply(ReplyBean replyBean, BaseResult<ReplyResult> result){
+        //增加回复
         if(commentsDao.queryCommentsById(replyBean.getCommentsId())==null){
             result.construct(false,"未找到评论,回复失败");
             return;
         }
         Reply reply = new Reply();
-        Date date = new Date();
+
+        Date date = new Date();//设置时间
         replyBean.setTime(date);
+
         BeanUtils.copyProperties(replyBean, reply);
         replyDao.save(reply);
         result.construct(true,"回复成功",new ReplyResult(reply));
     }
 
-    public void getCommentsReply(String commentsId, BaseResult<List<Reply>> result){
-        //找出评论的回复
-
-        List<Reply> reply = replyDao.queryAllByCommentsId(commentsId);
-        if (reply.size()==0){
-            result.construct(false,"找不到");
-            return;
-        }
-
-        reply = reply.stream().sorted(Comparator.comparing(Reply::getTime).reversed())
-                .collect(Collectors.toList());
-        result.construct(true, "查询成功", reply);
-
-    }
-
     public void deleteReply(String Id,BaseResult<ReplyResult> result){
-    //删回复
+        //删回复
         if (replyDao.queryReplyById(Id)== null){
             result.construct(false,"删除失败");//后边没加东西
             return;
@@ -62,5 +49,22 @@ public class ReplyService {
         result.construct(true,"删除成功");
 
     }
+
+    public void searchReplyByTime(String commentsId, BaseResult<List<Reply>> result){
+        //找出评论的回复(先看最新回复)
+
+        List<Reply> reply = replyDao.queryAllByCommentsId(commentsId);
+        if (reply.size()==0){
+            result.construct(false,"找不到",reply);
+            return;
+        }
+        //排序(先看最新回复)
+        reply = reply.stream().sorted(Comparator.comparing(Reply::getTime).reversed())
+                .collect(Collectors.toList());
+        result.construct(true, "查询成功", reply);
+
+    }
+
+
     
 }

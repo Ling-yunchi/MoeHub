@@ -5,11 +5,12 @@ import tv.moehub.entity.Comments;
 
 import java.util.List;
 
-public interface CommentsDao extends JpaRepository<Comments,String> {
+public interface CommentsDao extends JpaRepository<Comments, String> {
 
-    List<Comments> queryAllByVideoId(String videoId); //根据视频id找出视频的所有评论
-                                                    //应返回List
+    List<Comments> queryAllByVideoId(String videoId);
+
     Comments queryCommentsById(String id);
-    void deleteById (String id);//删评论
+
+    void deleteById(String id);
 
 }

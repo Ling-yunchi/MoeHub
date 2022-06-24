@@ -11,6 +11,6 @@ public class CommentsBean {
     private String userId;
     private String videoId;
     private Date time;
-    private int likeNum;//点赞
+//    private int likeNum;//点赞
 
 }

@@ -23,8 +23,8 @@ public class Reply {
     private String id;
 
     private String userId;
-    private String content;//内容
     private String commentsId;
+    private String content;//内容
     private Date time;
 
 }

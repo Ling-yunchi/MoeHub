@@ -26,10 +26,9 @@ public class Comments {
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String id;
 
-    private String content;
     private String userId;
     private String videoId;
+    private String content;
     private Date time;
-    private int likeNum;//点赞
 
 }

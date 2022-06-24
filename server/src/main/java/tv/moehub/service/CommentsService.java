@@ -20,50 +20,26 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 
 public class CommentsService {
+
     private final CommentsDao commentsDao;
     private final VideoDao videoDao;
-    public void getVideoCommentsByTime(String videoId, BaseResult<List<Comments>> result){
-        //找出视频的所有评论(先看最新评论)
 
-        List<Comments> comments = commentsDao.queryAllByVideoId(videoId);
-        if (comments.size()==0){
-            result.construct(false,"找不到");
-            return;
-        }
-        //排序(先看最新评论)
-        comments = comments.stream().sorted(Comparator.comparing(Comments::getTime).reversed())
-                .collect(Collectors.toList());
-        result.construct(true, "查询成功", comments);
 
-    }
-
-    public void getVideoCommentsByLike(String videoId, BaseResult<List<Comments>> result){
-        //找出视频的所有评论(先看最热评论)
-
-        List<Comments> comments = commentsDao.queryAllByVideoId(videoId);
-        if (comments.size()==0){
-            result.construct(false,"找不到");
-            return;
-        }
-        //排序(先看最热评论)
-        comments = comments.stream().sorted(Comparator.comparing(Comments::getLikeNum).reversed())
-                .collect(Collectors.toList());
-        result.construct(true, "查询成功", comments);
-
-    }
-
-    public void makeComments(CommentsBean commentsBean, BaseResult<CommentsResult> result){
+    public void addComments(CommentsBean commentsBean, BaseResult<CommentsResult> result){
         //给视频加一个评论
-//        if(videoDao.queryVideoById(commentsBean.getVideoId())==null){
-//            result.construct(false,"未找到视频,评论失败");
-//            return;
-//        }
+
+        if(videoDao.queryVideoById(commentsBean.getVideoId())==null){
+            result.construct(false,"未找到视频,评论失败");
+            return;
+        }
         Comments comments = new Comments();
-        Date date = new Date();
+
+        Date date = new Date();//设置时间
         commentsBean.setTime(date);
+
         BeanUtils.copyProperties(commentsBean, comments);
         commentsDao.save(comments);
-        result.construct(true,"评论成功",new CommentsResult(comments));
+        result.construct(true,"评论成功"    ,new CommentsResult(comments));
     }
 
     public void deleteComments(String id,BaseResult<CommentsResult> result){
@@ -76,5 +52,39 @@ public class CommentsService {
         result.construct(true,"删除成功");
 
     }
+
+    public void searchCommentsByTime(String videoId, BaseResult<List<Comments>> result){
+        //找出视频的所有评论(先看最新评论)
+
+        List<Comments> comments = commentsDao.queryAllByVideoId(videoId);
+        if (comments.size()==0){
+            result.construct(false,"找不到",comments);
+            return;
+        }
+        //排序(先看最新评论)
+        comments = comments.stream().sorted(Comparator.comparing(Comments::getTime).reversed())
+                .collect(Collectors.toList());
+        result.construct(true, "查询成功", comments);
+
+    }
+
+//    public void getVideoCommentsByLike(String videoId, BaseResult<List<Comments>> result){
+//        //找出视频的所有评论(先看最热评论)
+//
+//        List<Comments> comments = commentsDao.queryAllByVideoId(videoId);
+//        if (comments.size()==0){
+//            result.construct(false,"找不到");
+//            return;
+//        }
+//        //排序(先看最热评论)
+//        comments = comments.stream().sorted(Comparator.comparing(Comments::getLikeNum).reversed())
+//                .collect(Collectors.toList());
+//        result.construct(true, "查询成功", comments);
+//
+//    }
+
+
+
+
 
 }
