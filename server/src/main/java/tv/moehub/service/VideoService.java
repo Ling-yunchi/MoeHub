@@ -20,7 +20,7 @@ public class VideoService {
     private final VideoDao videoDao;
     private final UserDao userDao;
 
-    public void getVideoInfo(String videoId, BaseResult<Video> result) {
+    public void queryVideoById(String videoId, BaseResult<Video> result) {
         Video video = videoDao.queryVideoById(videoId);
         if (video == null) {
             result.construct(false, "视频不存在");

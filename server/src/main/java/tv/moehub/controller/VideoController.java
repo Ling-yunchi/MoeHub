@@ -16,10 +16,10 @@ import java.util.List;
 public class VideoController {
     private final VideoService videoService;
 
-    @GetMapping("/getVideoInfo")
-    public BaseResult<Video> getVideoInfo(@RequestParam String videoId) {
+    @GetMapping("/queryVideoById")
+    public BaseResult<Video> queryVideoById(@RequestParam String videoId) {
         BaseResult<Video> result = new BaseResult<>();
-        videoService.getVideoInfo(videoId, result);
+        videoService.queryVideoById(videoId, result);
         return result;
     }
 
