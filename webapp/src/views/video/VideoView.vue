@@ -26,6 +26,9 @@
             <div class="video-info-title">
               <h1>【湊あくあ】夜に駆ける / 奔向夜晚【翻唱】</h1>
             </div>
+            <div class="video-info__description">
+              <div style="padding: 10px">{{ description }}</div>
+            </div>
             <div class="video-info-author">
               <a href="/user/1">
                 <a-avatar :size="50">
@@ -51,11 +54,11 @@
               <h2>评论</h2>
             </div>
             <div class="comment-input">
-              <a-input
-                placeholder="说点什么吧..."
-                size="large"
-                prefix="icon-comment"
-              ></a-input>
+              <a-input placeholder="说点什么吧..." size="large">
+                <template #prepend>
+                  <icon-message />
+                </template>
+              </a-input>
               <a-button style="height: 36px">
                 <icon-send />
               </a-button>
@@ -113,13 +116,40 @@ import {
   IconHeart,
   IconHeartFill,
   IconClockCircle,
+  IconMessage,
   IconEye,
   IconStar,
   IconStarFill,
   IconSend,
 } from "@arco-design/web-vue/es/icon";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import router from "@/router";
+const description = ref(
+  "世界でいちばんおニオンさま!\n" +
+    "お誕生日おめでとう！~\n" +
+    "【初めて会った日から】\n" +
+    "【僕の心の全てを奪った】\n" +
+    "これからももっともっと応援するよ——d(*・ω・*)b♪\n" +
+    "------------------------------------------------------------------------------\n" +
+    "本家様：YOASOBI様\n" +
+    "https://www.youtube.com/watch?v=x8VYWazR5mE\n" +
+    "分镜参考: BV1h5411a7LC\n" +
+    "------------------------------------------------------------------------------\n" +
+    "Cover：\n" +
+    "vocal：湊あくあ\n" +
+    "illust：瑠\n" +
+    "mix：星月夜舞\n" +
+    "movie：星奕工作室\n" +
+    "organizer: ZestXteam\n" +
+    "※中文歌词参考自互联网\n" +
+    "------------------------------------------------------------------------------\n" +
+    "推特关注不迷路↓\n" +
+    "Twitter：https://twitter.com/minatoaqua\n" +
+    "Twitter话题　#湊あくあ\n" +
+    "绘画　#あくあーと\n" +
+    "粉丝　#あくあクルー"
+);
+
 onMounted(() => {
   console.log(router.currentRoute.value.params.id);
 });
@@ -167,6 +197,14 @@ onMounted(() => {
         width: 100%;
         margin-bottom: 10px;
         color: var(--color-neutral-9);
+      }
+      .video-info__description {
+        width: 100%;
+        margin-bottom: 10px;
+        color: var(--color-neutral-8);
+        white-space: pre-wrap;
+        line-height: 20px;
+        font-size: 14px;
       }
       .video-info-author {
         display: flex;

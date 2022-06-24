@@ -25,7 +25,41 @@
       </div>
     </div>
     <div class="navigator">
-      <a-menu mode="horizontal" :default-selected-keys="['0']">
+      <!--      <a-tabs :active-key="selectMenuKey">-->
+      <!--        <a-tab-pane key="0" @click="router.push('home')">-->
+      <!--          <template #title>-->
+      <!--            <icon-home />-->
+      <!--            <span>首页</span>-->
+      <!--          </template>-->
+      <!--        </a-tab-pane>-->
+      <!--        <template v-if="self">-->
+      <!--          <a-tab-pane key="1" @click="() => router.push('favorite')">-->
+      <!--            <template #title>-->
+      <!--              <icon-star />-->
+      <!--              <span>我的收藏</span>-->
+      <!--            </template>-->
+      <!--          </a-tab-pane>-->
+      <!--          <a-tab-pane key="2" @click="router.push('video')">-->
+      <!--            <template #title>-->
+      <!--              <icon-archive />-->
+      <!--              <span>我的视频</span>-->
+      <!--            </template>-->
+      <!--          </a-tab-pane>-->
+      <!--          <a-tab-pane key="3" @click="router.push('upload')">-->
+      <!--            <template #title>-->
+      <!--              <icon-upload />-->
+      <!--              <span>上传视频</span>-->
+      <!--            </template>-->
+      <!--          </a-tab-pane>-->
+      <!--          <a-tab-pane key="4" @click="router.push('setting')">-->
+      <!--            <template #title>-->
+      <!--              <icon-settings />-->
+      <!--              <span>设置</span>-->
+      <!--            </template>-->
+      <!--          </a-tab-pane>-->
+      <!--        </template>-->
+      <!--      </a-tabs>-->
+      <a-menu mode="horizontal" :default-selected-keys="[selectMenuKey]">
         <a-menu-item key="0" @click="router.push('home')">
           <icon-home />
           <span>首页</span>
@@ -34,17 +68,18 @@
           <a-menu-item key="1" @click="router.push('favorite')">
             <icon-star />
             <span>我的收藏</span>
-            <router-link to="favorite"></router-link>
           </a-menu-item>
-          <a-menu-item key="2">
+          <a-menu-item key="2" @click="router.push('video')">
             <icon-archive />
             <span>我的视频</span>
-            <router-link to="video"></router-link>
           </a-menu-item>
-          <a-menu-item key="3">
+          <a-menu-item key="3" @click="router.push('upload')">
+            <icon-upload />
+            <span>上传视频</span>
+          </a-menu-item>
+          <a-menu-item key="4" @click="router.push('setting')">
             <icon-settings />
             <span>设置</span>
-            <router-link to="setting"></router-link>
           </a-menu-item>
         </template>
       </a-menu>
@@ -61,15 +96,36 @@ import {
   IconStar,
   IconArchive,
   IconSettings,
+  IconUpload,
 } from "@arco-design/web-vue/es/icon";
 import { inject, Ref, ref } from "vue";
 import router from "@/router";
 import { User } from "@/types";
-import { Icon } from "@vime/vue-next";
 
 const userId = router.currentRoute.value.params.id;
 const user = inject<Ref<User>>("user") as Ref<User>;
 const self = ref(user.value !== null && user.value.id === userId);
+const path = router.currentRoute.value.path.split("/").pop();
+const selectMenuKey = ref("0");
+switch (path) {
+  case "home":
+    selectMenuKey.value = "0";
+    break;
+  case "favorite":
+    selectMenuKey.value = "1";
+    break;
+  case "video":
+    selectMenuKey.value = "2";
+    break;
+  case "upload":
+    selectMenuKey.value = "3";
+    break;
+  case "setting":
+    selectMenuKey.value = "4";
+    break;
+  default:
+    break;
+}
 </script>
 
 <style lang="scss">

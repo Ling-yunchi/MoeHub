@@ -7,13 +7,13 @@
       <div class="search">
         <a-input-group>
           <a-select
-            style="height: 40px; width: 80px"
+            style="height: 40px; width: 80px; border-radius: 4px 0 0 4px"
             :options="['视频', '用户']"
             v-model="searchType"
           />
           <a-input
             class="search-input"
-            placeholder="搜索视频"
+            :placeholder="searchPlaceholder"
             prefix-icon="icon-search"
             suffix-icon="icon-close"
             v-model="searchInput"
@@ -60,12 +60,20 @@ import {
   IconUser,
   IconUserAdd,
 } from "@arco-design/web-vue/es/icon";
-import { ref, inject, Ref } from "vue";
+import { ref, watch, inject, Ref } from "vue";
 import router from "@/router";
 import { User } from "@/types";
 
 const searchType = ref("视频");
+const searchPlaceholder = ref("输入视频标题");
 const searchInput = ref("");
+watch(searchType, (type) => {
+  if (type === "视频") {
+    searchPlaceholder.value = "输入视频标题";
+  } else {
+    searchPlaceholder.value = "输入用户昵称";
+  }
+});
 const search = () => {
   router.push(`/search/${searchInput.value}`);
 };
@@ -96,7 +104,7 @@ const user = inject<Ref<User>>("user") as Ref<User>;
       .search-input {
         width: 600px;
         height: 40px;
-        border-radius: 4px;
+        border-radius: 0 4px 4px 0;
         padding: 0 10px;
         font-size: 14px;
         margin-right: 5px;

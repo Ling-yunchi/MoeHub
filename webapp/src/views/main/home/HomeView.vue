@@ -32,9 +32,9 @@
 <script lang="ts" setup>
 import { IconRight } from "@arco-design/web-vue/es/icon";
 import VideoCard from "@/components/VideoCard.vue";
-import { Video } from "@/types";
+import { VideoList } from "@/types";
 
-const popularList: Video[] = [
+const popularList: VideoList[] = [
   {
     id: "1",
     cover: "/cover.webp",

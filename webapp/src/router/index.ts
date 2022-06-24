@@ -59,7 +59,22 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: "favorite",
             name: "myFavorite",
-            component: () => require("@/views/user/detail/MyFavoriteView.vue"),
+            component: () => import("@/views/user/detail/MyFavoriteView.vue"),
+          },
+          {
+            path: "video",
+            name: "myVideo",
+            component: () => import("@/views/user/detail/MyVideoView.vue"),
+          },
+          {
+            path: "upload",
+            name: "upload",
+            component: () => import("@/views/user/detail/UploadView.vue"),
+          },
+          {
+            path: "setting",
+            name: "setting",
+            component: () => import("@/views/user/detail/SettingView.vue"),
           },
         ],
       },

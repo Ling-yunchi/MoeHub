@@ -23,14 +23,14 @@
 
 <script lang="ts" setup>
 import { inject, Ref } from "vue";
-import { User, Video } from "@/types";
+import { User, VideoList } from "@/types";
 import SmallVideoCard from "@/components/SmallVideoCard.vue";
 import router from "@/router";
 
 const userId = router.currentRoute.value.params.id;
 const user = inject<Ref<User>>("user") as Ref<User>;
 
-const videoList: Video[] = [
+const videoList: VideoList[] = [
   {
     id: "1",
     cover: "/cover.webp",
