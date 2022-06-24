@@ -26,23 +26,25 @@
     </div>
     <div class="navigator">
       <a-menu mode="horizontal" :default-selected-keys="['0']">
-        <a-menu-item key="0">
+        <a-menu-item key="0" @click="router.push('home')">
           <icon-home />
           <span>首页</span>
-          <router-link to="home"></router-link>
         </a-menu-item>
         <template v-if="self">
-          <a-menu-item key="1">
+          <a-menu-item key="1" @click="router.push('favorite')">
             <icon-star />
             <span>我的收藏</span>
+            <router-link to="favorite"></router-link>
           </a-menu-item>
           <a-menu-item key="2">
             <icon-archive />
             <span>我的视频</span>
+            <router-link to="video"></router-link>
           </a-menu-item>
           <a-menu-item key="3">
             <icon-settings />
             <span>设置</span>
+            <router-link to="setting"></router-link>
           </a-menu-item>
         </template>
       </a-menu>
@@ -63,11 +65,42 @@ import {
 import { inject, Ref, ref } from "vue";
 import router from "@/router";
 import { User } from "@/types";
+import { Icon } from "@vime/vue-next";
 
 const userId = router.currentRoute.value.params.id;
 const user = inject<Ref<User>>("user") as Ref<User>;
 const self = ref(user.value !== null && user.value.id === userId);
 </script>
+
+<style lang="scss">
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  line-height: 20px;
+  border-bottom: 1px solid hsla(0, 0%, 60%, 0.1);
+  width: 100%;
+  .section-title__text {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--color-natural-6);
+    margin: 0 0 0 20px;
+  }
+  .section-title__more {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-right: 4px;
+    .section-title__more-text {
+      margin-right: 4px;
+      font-size: 16px;
+      color: var(--color-natural-6);
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .content-container {

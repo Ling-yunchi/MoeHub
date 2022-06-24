@@ -5,8 +5,8 @@
       <div class="video-main-container">
         <div class="video-player-container">
           <player class="video-player">
-            <video crossorigin="anonymous" poster="/cover.webp" controls>
-              <source src="/example.mp4" type="video/mp4" />
+            <video crossorigin="anonymous" poster="/test-cover.jpg" controls>
+              <source src="/test-video.mp4" type="video/mp4" />
             </video>
             <default-ui></default-ui>
           </player>
@@ -24,21 +24,26 @@
         <div class="video-info-container">
           <div class="video-info">
             <div class="video-info-title">
-              <h1>这眼睛里可不兴有爱心啊！</h1>
+              <h1>【湊あくあ】夜に駆ける / 奔向夜晚【翻唱】</h1>
             </div>
             <div class="video-info-author">
-              <a-avatar :size="50">
-                <img src="/avatar.jpg" alt="avatar" />
-              </a-avatar>
-              <a class="video-info-author-name">Ling-yunchi</a>
-              <span class="video-info-author-time">
-                <icon-clock-circle />
-                2020-01-01
+              <a href="/user/1">
+                <a-avatar :size="50">
+                  <img src="/avatar.jpg" alt="avatar" />
+                </a-avatar>
+              </a>
+              <span class="author-info">
+                <a class="video-info-author-name">Ling-yunchi</a>
+                <div class="video-info-author-time">
+                  <icon-clock-circle />
+                  2020-01-01
+                </div>
               </span>
             </div>
-            <div class="video-info-views">
-              <icon-eye />
-              <span>102301</span>
+            <div class="video-info-other">
+              <span><icon-eye /> 102301</span>
+              <span><icon-heart /> 114514</span>
+              <span><icon-star /> 11451</span>
             </div>
           </div>
           <div class="comment-container">
@@ -51,7 +56,7 @@
                 size="large"
                 prefix="icon-comment"
               ></a-input>
-              <a-button>
+              <a-button style="height: 36px">
                 <icon-send />
               </a-button>
             </div>
@@ -106,9 +111,11 @@ import HeaderView from "@/views/HeaderView.vue";
 import { Player, DefaultUi } from "@vime/vue-next";
 import {
   IconHeart,
+  IconHeartFill,
   IconClockCircle,
   IconEye,
   IconStar,
+  IconStarFill,
   IconSend,
 } from "@arco-design/web-vue/es/icon";
 import { onMounted } from "vue";
@@ -132,10 +139,10 @@ onMounted(() => {
     max-width: 900px;
     .video-player {
       width: 100%;
-      background-color: black;
       video {
         width: 100%;
         aspect-ratio: 16/9;
+        background-color: black;
       }
     }
     .video-footer {
@@ -162,16 +169,34 @@ onMounted(() => {
         color: var(--color-neutral-9);
       }
       .video-info-author {
-        .video-info-author-name {
-          font-size: 15px;
-          font-weight: bold;
-        }
-        .video-info-author-time {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .author-info {
+          display: inline-flex;
+          flex-direction: column;
+          align-items: flex-start;
+          height: 100%;
           margin-left: 10px;
+          .video-info-author-name {
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--color-neutral-8);
+            margin-bottom: 10px;
+          }
+          .video-info-author-time {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--color-neutral-7);
+          }
         }
       }
-      .video-info-views {
+      .video-info-other {
         margin-top: 10px;
+        span {
+          margin-right: 10px;
+          color: var(--color-neutral-7);
+        }
       }
     }
   }
@@ -179,6 +204,7 @@ onMounted(() => {
     .comment-input {
       display: flex;
       flex-direction: row;
+      align-items: center;
       margin-bottom: 20px;
     }
   }

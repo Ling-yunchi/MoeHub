@@ -15,4 +15,5 @@ export interface Video {
   avatar: string;
   authorName: string;
   views: number;
+  time: string;
 }

@@ -15,6 +15,7 @@
 
 <script lang="ts" setup>
 import HeaderView from "@/views/HeaderView.vue";
+import { IconHome } from "@arco-design/web-vue/es/icon";
 import router from "@/router";
 </script>
 

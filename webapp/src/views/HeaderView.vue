@@ -5,14 +5,22 @@
         <img class="logo-img" src="@/assets/logo.svg" alt="moehub" />
       </a>
       <div class="search">
-        <a-input
-          class="search-input"
-          placeholder="搜索视频"
-          prefix-icon="icon-search"
-          suffix-icon="icon-close"
-          v-model="searchInput"
-          @keyup.enter="search"
-        />
+        <a-input-group>
+          <a-select
+            style="height: 40px; width: 80px"
+            :options="['视频', '用户']"
+            v-model="searchType"
+          />
+          <a-input
+            class="search-input"
+            placeholder="搜索视频"
+            prefix-icon="icon-search"
+            suffix-icon="icon-close"
+            v-model="searchInput"
+            @keyup.enter="search"
+          />
+        </a-input-group>
+
         <a-button class="search-btn" @click="search">
           <icon-search />
         </a-button>
@@ -56,6 +64,7 @@ import { ref, inject, Ref } from "vue";
 import router from "@/router";
 import { User } from "@/types";
 
+const searchType = ref("视频");
 const searchInput = ref("");
 const search = () => {
   router.push(`/search/${searchInput.value}`);

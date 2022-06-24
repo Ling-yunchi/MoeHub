@@ -10,7 +10,6 @@ import RegisterView from "@/views/user/register/RegisterView.vue";
 import DetailView from "@/views/user/detail/DetailView.vue";
 import VideoView from "@/views/video/VideoView.vue";
 import fzfView from "@/views/404View.vue";
-import UserHomeView from "@/views/user/detail/UserHomeView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -55,7 +54,12 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: "home",
             name: "userHome",
-            component: UserHomeView,
+            component: () => import("@/views/user/detail/UserHomeView.vue"),
+          },
+          {
+            path: "favorite",
+            name: "myFavorite",
+            component: () => require("@/views/user/detail/MyFavoriteView.vue"),
           },
         ],
       },
