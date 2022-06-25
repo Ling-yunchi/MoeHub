@@ -145,7 +145,7 @@ a {
   margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 20px;
   .popular-list__item {
     box-sizing: content-box;

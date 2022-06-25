@@ -106,6 +106,9 @@ const userId = router.currentRoute.value.params.id;
 const user = inject<Ref<User>>("user") as Ref<User>;
 const self = ref(user.value !== null && user.value.id === userId);
 const path = router.currentRoute.value.path.split("/").pop();
+if (!self.value && path !== "home") {
+  router.push("home");
+}
 const selectMenuKey = ref("0");
 switch (path) {
   case "home":

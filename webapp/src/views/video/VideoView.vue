@@ -6,17 +6,20 @@
         <div class="video-player-container">
           <player class="video-player">
             <video crossorigin="anonymous" poster="/test-cover.jpg" controls>
-              <source src="/test-video.mp4" type="video/mp4" />
+              <source
+                src="http://39.103.135.63:9000/moehub/%E3%80%90%E6%B9%8A%E3%81%82%E3%81%8F%E3%81%82%E3%80%91%E5%A4%9C%E3%81%AB%E9%A7%86%E3%81%91%E3%82%8B%20_%20%E5%A5%94%E5%90%91%E5%A4%9C%E6%99%9A%E3%80%90%E7%BF%BB%E5%94%B1%E3%80%91%20-%201.%E5%A4%9C%E3%81%AB%E9%A7%86%E3%81%91%E3%82%8B%20%E5%AE%9A%E7%A8%BF%28Av330487200%2CP1%29.mp4"
+                type="video/mp4"
+              />
             </video>
             <default-ui></default-ui>
           </player>
           <div class="video-footer">
-            <a-button class="video-like" type="primary" icon="icon-heart">
-              <icon-heart />
+            <a-button class="video-like" status="normal">
+              <icon-heart-fill style="color: #fa8dac; margin-right: 5px" />
               <span>喜欢</span>
             </a-button>
-            <a-button class="video-favorite" type="primary" icon="icon-heart">
-              <icon-star />
+            <a-button class="video-favorite" status="normal">
+              <icon-star-fill style="color: #f8e302; margin-right: 5px" />
               <span>收藏</span>
             </a-button>
           </div>
@@ -27,7 +30,15 @@
               <h1>【湊あくあ】夜に駆ける / 奔向夜晚【翻唱】</h1>
             </div>
             <div class="video-info__description">
-              <div style="padding: 10px">{{ description }}</div>
+              <a-typography-paragraph
+                :ellipsis="{
+                  rows: 3,
+                  expandable: true,
+                }"
+                style="padding: 0 20px 0 20px"
+              >
+                <div v-html="description.replaceAll('\n', '<br/>')"></div>
+              </a-typography-paragraph>
             </div>
             <div class="video-info-author">
               <a href="/user/1">

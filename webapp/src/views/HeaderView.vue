@@ -4,27 +4,29 @@
       <a href="/">
         <img class="logo-img" src="@/assets/logo.svg" alt="moehub" />
       </a>
-      <div class="search">
-        <a-input-group>
-          <a-select
-            style="height: 40px; width: 80px; border-radius: 4px 0 0 4px"
-            :options="['视频', '用户']"
-            v-model="searchType"
-          />
-          <a-input
-            class="search-input"
-            :placeholder="searchPlaceholder"
-            prefix-icon="icon-search"
-            suffix-icon="icon-close"
-            v-model="searchInput"
-            @keyup.enter="search"
-          />
-        </a-input-group>
+      <template v-if="props.search">
+        <div class="search">
+          <a-input-group>
+            <a-select
+              style="height: 40px; width: 80px; border-radius: 4px 0 0 4px"
+              :options="['视频', '用户']"
+              v-model="searchType"
+            />
+            <a-input
+              class="search-input"
+              :placeholder="searchPlaceholder"
+              prefix-icon="icon-search"
+              suffix-icon="icon-close"
+              v-model="searchInput"
+              @keyup.enter="search"
+            />
+          </a-input-group>
 
-        <a-button class="search-btn" @click="search">
-          <icon-search />
-        </a-button>
-      </div>
+          <a-button class="search-btn" @click="search">
+            <icon-search />
+          </a-button>
+        </div>
+      </template>
       <div class="user-container">
         <template v-if="user !== null">
           <a :href="`/user/${user.id}`" target="_blank">
@@ -60,9 +62,18 @@ import {
   IconUser,
   IconUserAdd,
 } from "@arco-design/web-vue/es/icon";
-import { ref, watch, inject, Ref } from "vue";
+import { ref, watch, inject, Ref, defineProps } from "vue";
 import router from "@/router";
 import { User } from "@/types";
+import { Message } from "@arco-design/web-vue";
+
+const props = defineProps({
+  search: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+});
 
 const searchType = ref("视频");
 const searchPlaceholder = ref("输入视频标题");
@@ -75,7 +86,15 @@ watch(searchType, (type) => {
   }
 });
 const search = () => {
-  router.push(`/search/${searchInput.value}`);
+  if (searchInput.value === "") {
+    Message.warning("请输入搜索内容");
+    return;
+  }
+  if (searchType.value === "视频") {
+    router.push(`/search?type=video&q=${searchInput.value}`);
+  } else {
+    router.push(`/search?type=user&q=${searchInput.value}`);
+  }
 };
 
 const user = inject<Ref<User>>("user") as Ref<User>;

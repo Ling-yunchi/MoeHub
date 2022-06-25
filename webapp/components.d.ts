@@ -7,6 +7,8 @@ declare module "@vue/runtime-core" {
   export interface GlobalComponents {
     AAvatar: typeof import("@arco-design/web-vue")["Avatar"];
     AButton: typeof import("@arco-design/web-vue")["Button"];
+    ACard: typeof import("@arco-design/web-vue")["Card"];
+    ACol: typeof import("@arco-design/web-vue")["Col"];
     AComment: typeof import("@arco-design/web-vue")["Comment"];
     AForm: typeof import("@arco-design/web-vue")["Form"];
     AFormItem: typeof import("@arco-design/web-vue")["FormItem"];
@@ -25,11 +27,11 @@ declare module "@vue/runtime-core" {
     AProgress: typeof import("@arco-design/web-vue")["Progress"];
     ARadio: typeof import("@arco-design/web-vue")["Radio"];
     ARadioGroup: typeof import("@arco-design/web-vue")["RadioGroup"];
+    ARow: typeof import("@arco-design/web-vue")["Row"];
     ASelect: typeof import("@arco-design/web-vue")["Select"];
-    ATabPane: typeof import("@arco-design/web-vue")["TabPane"];
-    ATabs: typeof import("@arco-design/web-vue")["Tabs"];
     ATag: typeof import("@arco-design/web-vue")["Tag"];
     ATextarea: typeof import("@arco-design/web-vue")["Textarea"];
+    ATypographyParagraph: typeof import("@arco-design/web-vue")["TypographyParagraph"];
     AUpload: typeof import("@arco-design/web-vue")["Upload"];
     RouterLink: typeof import("vue-router")["RouterLink"];
     RouterView: typeof import("vue-router")["RouterView"];

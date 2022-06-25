@@ -1,4 +1,9 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+  RouteRecordRaw,
+} from "vue-router";
 import MainView from "@/views/main/MainView.vue";
 import HomeView from "@/views/main/home/HomeView.vue";
 import VideosView from "@/views/main/videos/VideosView.vue";
@@ -94,6 +99,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/video/:id",
     name: "video",
     component: VideoView,
+  },
+  {
+    path: "/search",
+    name: "search",
+    component: () => import("@/views/search/SearchView.vue"),
   },
   // 404 route
   {
