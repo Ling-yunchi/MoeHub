@@ -12,7 +12,6 @@ declare module "@vue/runtime-core" {
     AFormItem: typeof import("@arco-design/web-vue")["FormItem"];
     AInput: typeof import("@arco-design/web-vue")["Input"];
     AInputGroup: typeof import("@arco-design/web-vue")["InputGroup"];
-    AInputPassword: typeof import("@arco-design/web-vue")["InputPassword"];
     ALayout: typeof import("@arco-design/web-vue")["Layout"];
     ALayoutContent: typeof import("@arco-design/web-vue")["LayoutContent"];
     ALayoutHeader: typeof import("@arco-design/web-vue")["LayoutHeader"];
@@ -26,7 +25,6 @@ declare module "@vue/runtime-core" {
     ARadio: typeof import("@arco-design/web-vue")["Radio"];
     ARadioGroup: typeof import("@arco-design/web-vue")["RadioGroup"];
     ASelect: typeof import("@arco-design/web-vue")["Select"];
-    ASkeletonLine: typeof import("@arco-design/web-vue")["SkeletonLine"];
     ATag: typeof import("@arco-design/web-vue")["Tag"];
     ATextarea: typeof import("@arco-design/web-vue")["Textarea"];
     ATypographyParagraph: typeof import("@arco-design/web-vue")["TypographyParagraph"];
