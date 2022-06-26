@@ -74,44 +74,54 @@
                 <icon-send />
               </a-button>
             </div>
-            <div class="comment-list">
+            <div>
               <a-comment
-                author="Socrates"
-                content="Comment body content."
+                author="Ling-yunchi"
                 datetime="1 hour"
+                style="
+                  margin-bottom: 20px;
+                  white-space: pre-wrap;
+                  background-color: var(--color-neutral-1);
+                  border-radius: 4px;
+                  padding: 10px;
+                "
+                v-for="comment in commentList"
+                :key="comment.id"
               >
-                <template #actions>
-                  <span class="action" key="heart" @click="onLikeChange">
-                    <span v-if="like">
-                      <IconHeartFill :style="{ color: '#f53f3f' }" />
-                    </span>
-                    <span v-else>
-                      <IconHeart />
-                    </span>
-                    {{ 83 + (like ? 1 : 0) }}
-                  </span>
-                  <span class="action" key="star" @click="onStarChange">
-                    <span v-if="star">
-                      <IconStarFill style="color: red" />
-                    </span>
-                    <span v-else>
-                      <IconStar />
-                    </span>
-                    {{ 3 + (star ? 1 : 0) }}
-                  </span>
-                  <span class="action" key="reply">
-                    <IconMessage /> Reply
-                  </span>
-                </template>
                 <template #avatar>
-                  <a-avatar>
-                    <img
-                      alt="avatar"
-                      src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-                    />
-                  </a-avatar>
+                  <a :href="`/user/${comment.userId}`">
+                    <a-avatar>
+                      <img alt="avatar" :src="comment.avatar" />
+                    </a-avatar>
+                  </a>
+                </template>
+                <template #content>
+                  <a-typography-paragraph
+                    :ellipsis="{
+                      rows: 3,
+                      expandable: true,
+                    }"
+                    style="margin-top: 10px"
+                  >
+                    <div
+                      v-html="comment.content.replaceAll('\n', '<br/>')"
+                    ></div>
+                  </a-typography-paragraph>
                 </template>
               </a-comment>
+              <div
+                style="
+                  width: 100%;
+                  height: 100px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <span style="font-size: 15px; color: var(--color-neutral-6)"
+                  >没有更多评论啦qwqq</span
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -135,6 +145,7 @@ import {
 } from "@arco-design/web-vue/es/icon";
 import { onMounted, ref } from "vue";
 import router from "@/router";
+import { CommentList } from "@/types";
 const description = ref(
   "世界でいちばんおニオンさま!\n" +
     "お誕生日おめでとう！~\n" +
@@ -160,6 +171,24 @@ const description = ref(
     "绘画　#あくあーと\n" +
     "粉丝　#あくあクルー"
 );
+const commentList = ref<CommentList[]>([
+  {
+    id: "1",
+    userId: "1",
+    username: "Ling-yunchi",
+    avatar: "/avatar.jpg",
+    time: "2020-01-01",
+    content: "夸宝可爱捏🥰🥰🥰\n\n\n\n\n🥵🥵🥵夸宝🥵🥵🥵我的夸宝🥵🥵🥵",
+  },
+  {
+    id: "2",
+    userId: "1",
+    username: "Ling-yunchi",
+    avatar: "/avatar.jpg",
+    time: "2020-01-01",
+    content: "夸宝可爱捏🥰🥰🥰\n\n\n\n\n🥵🥵🥵夸宝🥵🥵🥵我的夸宝🥵🥵🥵",
+  },
+]);
 
 onMounted(() => {
   console.log(router.currentRoute.value.params.id);
@@ -254,7 +283,7 @@ onMounted(() => {
       display: flex;
       flex-direction: row;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
     }
   }
 }

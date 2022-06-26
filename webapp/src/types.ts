@@ -17,3 +17,12 @@ export interface VideoList {
   views: number;
   time: string;
 }
+
+export interface CommentList {
+  id: string;
+  userId: string;
+  username: string;
+  avatar: string;
+  time: string;
+  content: string;
+}

@@ -94,7 +94,6 @@ a {
 }
 .video-card-container {
   width: 360px;
-  aspect-ratio: 360/266;
   overflow: hidden;
   margin: 0;
   .video-cover {

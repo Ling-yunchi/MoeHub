@@ -53,18 +53,12 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import {
-  IconEdit,
-  IconPlus,
-  IconMan,
-  IconWoman,
-} from "@arco-design/web-vue/es/icon";
+import { IconMan, IconWoman } from "@arco-design/web-vue/es/icon";
 
 const username = ref("");
 const password = ref("");
 const nickname = ref("");
 const email = ref("");
-const avatar = ref("");
 const sex = ref("");
 
 const register = () => {
@@ -82,11 +76,10 @@ const register = () => {
 .register-container {
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .register-form-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background-color: var(--color-neutral-1);
     display: flex;
     flex-direction: column;
