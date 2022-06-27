@@ -8,6 +8,7 @@
       :label-width="100"
       layout="vertical"
       :style="{ width: '1020px', padding: '40px' }"
+      @submit-success="addVideo"
     >
       <a-form-item field="title" label="标题">
         <a-input v-model="videoForm.title" placeholder="请输入标题" />
@@ -25,7 +26,6 @@
         />
       </a-form-item>
       <a-form-item field="cover" label="封面">
-        <input v-model="videoForm.coverUrl" hidden />
         <a-upload
           @before-upload="checkCoverUpload"
           :custom-request="uploadCover"
@@ -34,6 +34,9 @@
           image-preview
         >
         </a-upload>
+      </a-form-item>
+      <a-form-item>
+        <a-input disabled v-model="videoForm.coverPrefix" />
       </a-form-item>
       <a-form-item field="video" label="视频">
         <a-upload
@@ -48,7 +51,7 @@
         />
       </a-form-item>
       <a-form-item>
-        <a-input disabled v-model="videoForm.videoUrl" />
+        <a-input disabled v-model="videoForm.videoPrefix" />
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit"> 上传 </a-button>
@@ -66,8 +69,8 @@ import { BaseResult } from "@/types";
 const videoForm = ref({
   title: "",
   description: "",
-  videoUrl: "",
-  coverUrl: "",
+  videoPrefix: "",
+  coverPrefix: "",
 });
 const checkVideoUpload = (file: File) => {
   //检查是否为视频文件
@@ -81,7 +84,7 @@ const checkVideoUpload = (file: File) => {
 const handleVideoUploadSuccess = (file: FileItem) => {
   const res = file.response as BaseResult<string>;
   if (res.success) {
-    videoForm.value.videoUrl = res.data;
+    videoForm.value.videoPrefix = res.data;
     Message.success("视频上传成功");
   } else {
     Message.error(res.message);
@@ -99,6 +102,17 @@ const checkCoverUpload = (file: File) => {
 const uploadCover = (option: any) => {
   const { onProgress, onError, onSuccess, fileItem, name } = option;
   console.log(videoForm.value);
+};
+
+const addVideo = () => {
+  axios.post("/api/video/add", videoForm.value).then((res) => {
+    const result = res.data as BaseResult<never>;
+    if (result.success) {
+      Message.success("视频上传成功");
+    } else {
+      Message.error(result.message);
+    }
+  });
 };
 </script>
 

@@ -54,7 +54,7 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-  videoUrl: {
+  videoPrefix: {
     type: String,
     default: "",
   },
