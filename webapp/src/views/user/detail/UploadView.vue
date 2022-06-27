@@ -36,13 +36,22 @@
         </a-upload>
       </a-form-item>
       <a-form-item field="video" label="视频">
-        <input v-model="videoForm.videoUrl" hidden />
         <a-upload
+          :auto-upload="false"
+          accept="video/*"
+          action="/api/video/upload"
+          name="video"
           draggable
           @before-upload="checkVideoUpload"
-          :custom-request="uploadVideo"
           :limit="1"
+          @success="handleVideoUploadSuccess"
         />
+      </a-form-item>
+      <a-form-item>
+        <a-input disabled v-model="videoForm.videoUrl" />
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" html-type="submit"> 上传 </a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -50,7 +59,9 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { Message } from "@arco-design/web-vue";
+import { FileItem, Message } from "@arco-design/web-vue";
+import axios from "@/plugins/axios";
+import { BaseResult } from "@/types";
 
 const videoForm = ref({
   title: "",
@@ -65,10 +76,16 @@ const checkVideoUpload = (file: File) => {
     Message.error("请上传视频文件！！！");
     return false;
   }
+  return true;
 };
-const uploadVideo = (option: any) => {
-  const { onProgress, onError, onSuccess, fileItem, name } = option;
-  console.log(videoForm.value);
+const handleVideoUploadSuccess = (file: FileItem) => {
+  const res = file.response as BaseResult<string>;
+  if (res.success) {
+    videoForm.value.videoUrl = res.data;
+    Message.success("视频上传成功");
+  } else {
+    Message.error(res.message);
+  }
 };
 
 const checkCoverUpload = (file: File) => {

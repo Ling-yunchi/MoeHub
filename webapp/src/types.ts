@@ -1,4 +1,10 @@
 // this is all the types that are used in the views
+export interface BaseResult<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
 export interface User {
   id: string;
   username: string;

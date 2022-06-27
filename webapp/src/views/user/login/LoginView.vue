@@ -79,15 +79,34 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { inject, Ref, ref } from "vue";
 import { IconUser, IconLock } from "@arco-design/web-vue/es/icon";
+import axios from "@/plugins/axios";
+import { BaseResult, User } from "@/types";
+import router from "@/router";
+import { Message } from "@arco-design/web-vue";
+
+const user = inject<Ref<User>>("user") as Ref<User>;
+const updateUser = inject("updateUser") as (u: User | null) => void;
 
 const loginForm = ref({
   username: "",
   password: "",
 });
 const login = () => {
-  console.log(loginForm.value);
+  axios.post("/api/user/login", loginForm.value).then((data) => {
+    const res = data.data as BaseResult<never>;
+    if (res.success) {
+      axios.get("/api/user/self").then((data) => {
+        const res = data.data as BaseResult<User>;
+        updateUser(res.data);
+        Message.success("登录成功");
+        router.push("/home");
+      });
+    } else {
+      Message.error(res.message);
+    }
+  });
 };
 </script>
 
