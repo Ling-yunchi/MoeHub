@@ -32,68 +32,74 @@
 <script lang="ts" setup>
 import { IconRight } from "@arco-design/web-vue/es/icon";
 import VideoCard from "@/components/VideoCard.vue";
-import { Video } from "@/types";
+import { VideoList } from "@/types";
 
-const popularList: Video[] = [
+const popularList: VideoList[] = [
   {
     id: "1",
-    cover: "cover.webp",
+    cover: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "avatar.jpg",
+    avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
+    time: "2020-01-01",
   },
   {
     id: "1",
-    cover: "cover.webp",
+    cover: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "avatar.jpg",
+    avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
+    time: "2020-01-01",
   },
   {
     id: "1",
-    cover: "cover.webp",
+    cover: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "avatar.jpg",
+    avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
+    time: "2020-01-01",
   },
   {
     id: "1",
-    cover: "cover.webp",
+    cover: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "avatar.jpg",
+    avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
+    time: "2020-01-01",
   },
   {
     id: "1",
-    cover: "cover.webp",
+    cover: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "avatar.jpg",
+    avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
+    time: "2020-01-01",
   },
   {
     id: "1",
-    cover: "cover.webp",
+    cover: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "avatar.jpg",
+    avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
+    time: "2020-01-01",
   },
 ];
 </script>
@@ -139,7 +145,7 @@ a {
   margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 20px;
   .popular-list__item {
     box-sizing: content-box;

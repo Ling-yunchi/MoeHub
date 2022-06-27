@@ -1,4 +1,9 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+  RouteRecordRaw,
+} from "vue-router";
 import MainView from "@/views/main/MainView.vue";
 import HomeView from "@/views/main/home/HomeView.vue";
 import VideosView from "@/views/main/videos/VideosView.vue";
@@ -10,7 +15,6 @@ import RegisterView from "@/views/user/register/RegisterView.vue";
 import DetailView from "@/views/user/detail/DetailView.vue";
 import VideoView from "@/views/video/VideoView.vue";
 import fzfView from "@/views/404View.vue";
-import UserHomeView from "@/views/user/detail/UserHomeView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -55,7 +59,27 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: "home",
             name: "userHome",
-            component: UserHomeView,
+            component: () => import("@/views/user/detail/UserHomeView.vue"),
+          },
+          {
+            path: "favorite",
+            name: "myFavorite",
+            component: () => import("@/views/user/detail/MyFavoriteView.vue"),
+          },
+          {
+            path: "video",
+            name: "myVideo",
+            component: () => import("@/views/user/detail/MyVideoView.vue"),
+          },
+          {
+            path: "upload",
+            name: "upload",
+            component: () => import("@/views/user/detail/UploadView.vue"),
+          },
+          {
+            path: "setting",
+            name: "setting",
+            component: () => import("@/views/user/detail/SettingView.vue"),
           },
         ],
       },
@@ -75,6 +99,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/video/:id",
     name: "video",
     component: VideoView,
+  },
+  {
+    path: "/search",
+    name: "search",
+    component: () => import("@/views/search/SearchView.vue"),
   },
   // 404 route
   {
