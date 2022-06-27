@@ -17,5 +17,4 @@ public class UserBean {
     private String password;
     private String sex;
     private String email;
-    private String phone;
 }

@@ -4,10 +4,13 @@ package tv.moehub.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import tv.moehub.bean.VideoBean;
 import tv.moehub.entity.Video;
 import tv.moehub.model.BaseResult;
 import tv.moehub.service.VideoService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,6 +37,20 @@ public class VideoController {
     public BaseResult<List<Video>> searchVideoByAuthor(@RequestParam String nickname) {
         BaseResult<List<Video>> result = new BaseResult<>();
         videoService.searchVideoByAuthor(nickname, result);
+        return result;
+    }
+
+    @PostMapping("/add")
+    public BaseResult<Void> add(@RequestBody @Valid VideoBean videoBean) {
+        BaseResult<Void> result = new BaseResult<>();
+        videoService.add(videoBean, result);
+        return result;
+    }
+
+    @PostMapping("/upload")
+    public BaseResult<String> upload(@RequestPart MultipartFile video) {
+        BaseResult<String> result = new BaseResult<>();
+        videoService.upload(video, result);
         return result;
     }
 }
