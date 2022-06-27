@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import tv.moehub.entity.Favorite;
+import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.VideoResult;
 import tv.moehub.service.FavoriteService;
@@ -25,8 +26,8 @@ public class FavoriteController {
     }
 
     @GetMapping("/showMyFavorite")
-    public BaseResult<Page<VideoResult>> showMyFavorite(@RequestParam String userId, @RequestParam int pageNum, @RequestParam int pageSize) {
-        BaseResult<Page<VideoResult>> result = new BaseResult<>();
+    public BasePageResult<VideoResult> showMyFavorite(@RequestParam String userId, @RequestParam int pageNum, @RequestParam int pageSize) {
+        BasePageResult<VideoResult> result = new BasePageResult<>();
         favoriteService.showMyFavorite(userId, result, pageNum, pageSize);
         return result;
     }

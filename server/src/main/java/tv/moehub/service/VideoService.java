@@ -11,6 +11,7 @@ import tv.moehub.dao.VideoDao;
 import tv.moehub.entity.Search;
 import tv.moehub.entity.User;
 import tv.moehub.entity.Video;
+import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.VideoResult;
 
@@ -31,11 +32,11 @@ public class VideoService {
         result.construct(true, "视频如下", videoResult);
     }
 
-    public void searchVideoByTitle(String videoTitle, BaseResult<Page<VideoResult>> result, int pageNum, int pageSize) {
+    public void searchVideoByTitle(String videoTitle, BasePageResult<VideoResult> result, int pageNum, int pageSize) {
         String videoTitleLike = "%" + videoTitle + "%";
         List<VideoResult> videoResultList = videoDao.findByTitleLike(videoTitleLike);
         if (videoResultList.size() == 0) {
-            result.construct(false, "无相关视频");
+            result.construct(false, "无相关视频", null);
             return;
         }
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.Direction.DESC);
@@ -43,12 +44,12 @@ public class VideoService {
         result.construct(true, "相关视频如下", videoResultPage);
     }
 
-    public void searchVideoByAuthor(String nickname, BaseResult<Page<VideoResult>> result, int pageNum, int pageSize) {
+    public void searchVideoByAuthor(String nickname, BasePageResult<VideoResult> result, int pageNum, int pageSize) {
         User user = userDao.findByNickname(nickname);
         if (user != null) {
             List<VideoResult> videoResultList = videoDao.findByAuthorId(user.getId());
             if (videoResultList.size() == 0) {
-                result.construct(false, "该用户未上传视频");
+                result.construct(false, "该用户未上传视频", null);
                 return;
             }
             Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.Direction.DESC);
@@ -56,6 +57,7 @@ public class VideoService {
             result.construct(true, "相关视频如下", videoResultPage);
             return;
         }
-        result.construct(false, "未查询到该用户");
+        result.construct(false, "未查询到该用户", null);
     }
+
 }

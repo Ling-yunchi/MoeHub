@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import tv.moehub.entity.Video;
+import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.VideoResult;
 import tv.moehub.service.VideoService;
@@ -26,15 +27,15 @@ public class VideoController {
     }
 
     @GetMapping("/searchVideoByTitle")
-    public BaseResult<Page<VideoResult>> searchVideoByTitle(@RequestParam String videoTitle, @RequestParam int pageNum, @RequestParam int pageSize) {
-        BaseResult<Page<VideoResult>> result = new BaseResult<>();
+    public BasePageResult<VideoResult> searchVideoByTitle(@RequestParam String videoTitle, @RequestParam int pageNum, @RequestParam int pageSize) {
+        BasePageResult<VideoResult> result = new BasePageResult<>();
         videoService.searchVideoByTitle(videoTitle, result, pageNum, pageSize);
         return result;
     }
 
     @GetMapping("/searchVideoByAuthor")
-    public BaseResult<Page<VideoResult>> searchVideoByAuthor(@RequestParam String nickname, @RequestParam int pageNum, @RequestParam int pageSize) {
-        BaseResult<Page<VideoResult>> result = new BaseResult<>();
+    public BasePageResult<VideoResult> searchVideoByAuthor(@RequestParam String nickname, @RequestParam int pageNum, @RequestParam int pageSize) {
+        BasePageResult<VideoResult> result = new BasePageResult<>();
         videoService.searchVideoByAuthor(nickname, result, pageNum, pageSize);
         return result;
     }

@@ -22,7 +22,7 @@ public class BasePageResult<T> {
     public BasePageResult() {
     }
 
-    public BasePageResult(Boolean success, String message, Page<T> page) {
+    public void construct(Boolean success, String message, Page<T> page) {
         this.success = success;
         this.message = message;
         this.data = page.getContent();

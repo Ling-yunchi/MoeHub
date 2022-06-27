@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import tv.moehub.dao.FavoriteDao;
 import tv.moehub.dao.VideoDao;
 import tv.moehub.entity.Favorite;
+import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.VideoResult;
 
@@ -36,12 +37,12 @@ public class FavoriteService {
         }
     }
 
-    public void showMyFavorite(String userId, BaseResult<Page<VideoResult>> result, int pageNum, int pageSize) {
+    public void showMyFavorite(String userId, BasePageResult<VideoResult> result, int pageNum, int pageSize) {
         List<Favorite> favoriteList = favoriteDao.queryByUserId(userId);
         List<VideoResult> videoResultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.Direction.DESC);
         if (favoriteList.size() == 0) {
-            result.construct(true, "暂未收藏视频");
+            result.construct(true, "暂未收藏视频", null);
             return;
         }
         for (Favorite f : favoriteList)
