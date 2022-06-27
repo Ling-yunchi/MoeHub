@@ -1,5 +1,6 @@
 package tv.moehub.controller;
 
+import com.github.pagehelper.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +11,6 @@ import tv.moehub.model.BaseResult;
 import tv.moehub.model.CommentsResult;
 import tv.moehub.service.CommentsService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/comments")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -21,34 +20,27 @@ public class CommentsController {
 
     @Login
     @PostMapping("/add")//写评论
-    public BaseResult<CommentsResult> addComments(@RequestBody CommentsBean commentsBean){
+    public BaseResult<CommentsResult> addComments(@RequestBody CommentsBean commentsBean) {
         BaseResult<CommentsResult> result = new BaseResult<>();
-        commentsService.addComments(commentsBean,result);
+        commentsService.addComments(commentsBean, result);
         return result;
     }
 
     @Login
     @GetMapping("/delete")//删评论
-    public BaseResult<CommentsResult> deleteComments(@RequestParam String id){
+    public BaseResult<CommentsResult> deleteComments(@RequestParam String id) {
         BaseResult<CommentsResult> result = new BaseResult<>();
-        commentsService.deleteComments(id,result);
+        commentsService.deleteComments(id, result);
         return result;
 
     }
 
     @GetMapping("/search")//(先看最新评论)
-    public BaseResult<List<Comments>> searchCommentsByTime(@RequestParam String videoId){
-        BaseResult<List<Comments>> result = new BaseResult<>();
-        commentsService.searchCommentsByTime(videoId,result);
+    public BaseResult<Page<Comments>> searchCommentsByTime(@RequestParam String videoId, @RequestParam int pageNum,@RequestParam int pageSize) {
+
+        BaseResult<Page<Comments>> result = new BaseResult<>();
+        commentsService.searchCommentsByTime(videoId, result, pageNum,pageSize);
         return result;
     }
-
-//    @GetMapping//(先看最热评论)
-//    public BaseResult<List<Comments>> getVideoCommentsByLike(@RequestParam String videoId){
-//        BaseResult<List<Comments>> result = new BaseResult<>();
-//        commentsService.getVideoCommentsByLike(videoId,result);
-//        return result;
-//    }
-
 
 }
