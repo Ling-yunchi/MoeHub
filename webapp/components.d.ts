@@ -8,8 +8,6 @@ declare module "@vue/runtime-core" {
     AAvatar: typeof import("@arco-design/web-vue")["Avatar"];
     AButton: typeof import("@arco-design/web-vue")["Button"];
     AComment: typeof import("@arco-design/web-vue")["Comment"];
-    AIcon: typeof import("@arco-design/web-vue")["Icon"];
-    AIconHome: typeof import("@arco-design/web-vue")["IconHome"];
     AInput: typeof import("@arco-design/web-vue")["Input"];
     AInputPassword: typeof import("@arco-design/web-vue")["InputPassword"];
     ALayout: typeof import("@arco-design/web-vue")["Layout"];
