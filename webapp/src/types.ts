@@ -6,7 +6,7 @@ export interface User {
   avatar: string;
 }
 
-export interface Video {
+export interface VideoList {
   id: string;
   cover: string;
   length: number;
@@ -15,4 +15,5 @@ export interface Video {
   avatar: string;
   authorName: string;
   views: number;
+  time: string;
 }

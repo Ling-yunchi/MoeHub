@@ -22,6 +22,31 @@
           </a-button>
         </div>
       </div>
+      <!--      <a-form layout="vertical" v-model="loginForm" style="width: 100%">-->
+      <!--        <a-form-item label="用户名">-->
+      <!--          <a-input-->
+      <!--            v-model="loginForm.username"-->
+      <!--            prefix-icon="user"-->
+      <!--            placeholder="用户名"-->
+      <!--            type="text"-->
+      <!--            autocomplete="off"-->
+      <!--          />-->
+      <!--        </a-form-item>-->
+      <!--        <a-form-item label="密码">-->
+      <!--          <a-input-->
+      <!--            v-model="loginForm.password"-->
+      <!--            prefix-icon="lock"-->
+      <!--            placeholder="密码"-->
+      <!--            type="password"-->
+      <!--            autocomplete="off"-->
+      <!--          />-->
+      <!--        </a-form-item>-->
+      <!--        <a-form-item>-->
+      <!--          <a-button type="primary" class="login-btn" @click="login">-->
+      <!--            登录-->
+      <!--          </a-button>-->
+      <!--        </a-form-item>-->
+      <!--      </a-form>-->
     </div>
   </div>
 </template>
@@ -29,10 +54,14 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-const username = ref("");
-const password = ref("");
+// const username = ref("");
+// const password = ref("");
+const loginForm = ref({
+  username: "",
+  password: "",
+});
 const login = () => {
-  console.log(username.value, password.value);
+  console.log(loginForm.value);
 };
 </script>
 
