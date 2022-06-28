@@ -19,6 +19,8 @@ export interface User {
   username: string;
   nickname: string;
   avatar: string;
+  email: string;
+  sex: string;
 }
 
 export interface VideoList {
@@ -30,6 +32,15 @@ export interface VideoList {
   avatar: string;
   authorName: string;
   views: number;
+  createAt: string;
+}
+
+export interface MyVideoDetail {
+  id: string;
+  description: string;
+  coverUrl: string;
+  length: number;
+  title: string;
   createAt: string;
 }
 
