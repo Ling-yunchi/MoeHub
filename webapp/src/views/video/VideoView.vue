@@ -189,7 +189,7 @@ const videoInfo = ref({
     "http://39.103.135.63:9000/moehub/%E3%80%90%E6%B9%8A%E3%81%82%E3%81%8F%E3%81%82%E3%80%91%E5%A4%9C%E3%81%AB%E9%A7%86%E3%81%91%E3%82%8B%20_%20%E5%A5%94%E5%90%91%E5%A4%9C%E6%99%9A%E3%80%90%E7%BF%BB%E5%94%B1%E3%80%91%20-%201.%E5%A4%9C%E3%81%AB%E9%A7%86%E3%81%91%E3%82%8B%20%E5%AE%9A%E7%A8%BF%28Av330487200%2CP1%29.mp4",
   cover: "/test-cover.jpg",
   description:
-    "世界でいちばんおニオンさま!\nお誕生日おめでとう！~\n【初めて会った日から】\n【僕の心の全てを奪った】\nこれからももっともっと応援するよ——d(*・ω・*)b♪\n------------------------------------------------------------------------------\n本家様：YOASOBI様\nhttps://www.youtube.com/watch?v=x8VYWazR5mE\n分镜参考: BV1h5411a7LC\n------------------------------------------------------------------------------\nCover：\nvocal：湊あくあ\nillust：瑠\nmix：星月夜舞\nmovie：星奕工作室\norganizer: ZestXteam\n※中文歌词参考自互联网\n------------------------------------------------------------------------------\n推特关注不迷路↓\nTwitter：https://twitter.com/minatoaqua\nTwitter话题　#湊あくあ\n绘画　#あくあーと\n粉丝　#あくあクルー",
+    "世界でいちばんおニオンさま!\nお誕生日おめでとう！~\n【初めて会った日から】\n【僕の心の全てを奪った】\nこれからももっともっと応援するよ——d(*・ω・*)b♪\n-------------\n本家様：YOASOBI様\nhttps://www.youtube.com/watch?v=x8VYWazR5mE\n分镜参考: BV1h5411a7LC\n-------------\nCover：\nvocal：湊あくあ\nillust：瑠\nmix：星月夜舞\nmovie：星奕工作室\norganizer: ZestXteam\n※中文歌词参考自互联网\n---------------\n推特关注不迷路↓\nTwitter：https://twitter.com/minatoaqua\nTwitter话题　#湊あくあ\n绘画　#あくあーと\n粉丝　#あくあクルー",
   length: 0,
   authorId: "1",
   author: "龗云螭",
