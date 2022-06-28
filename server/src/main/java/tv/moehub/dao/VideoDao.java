@@ -9,6 +9,7 @@ import tv.moehub.model.VideoDetailResult;
 import tv.moehub.model.VideoResult;
 import tv.moehub.model.VideoListResult;
 
+import java.nio.channels.FileChannel;
 import java.util.List;
 
 /**
@@ -35,4 +36,8 @@ public interface VideoDao extends JpaRepository<Video, String> {
             "from Video v " +
             "where v.authorId = ?1")
     List<VideoDetailResult> findVideoDetailByAuthorId(String userId);
+
+    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
+            "from Video v inner join User u on v.authorId = u.id")
+    Page<VideoListResult> findAllPage(Pageable pageable);
 }

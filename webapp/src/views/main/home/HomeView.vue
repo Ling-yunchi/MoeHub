@@ -16,8 +16,8 @@
         <video-card
           :cover-url="video.coverUrl"
           :length="video.length"
-          :author="video.authorName"
-          :avatar="video.avatar"
+          :author-name="video.authorName"
+          :avatar="video.avatarUrl"
           :title="video.title"
           :views="102301"
           :video-url="`/video/${video.id}`"
@@ -41,7 +41,7 @@ const popularList: VideoList[] = [
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "/avatar.jpg",
+    avatarUrl: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
     createAt: "2020-01-01",
@@ -52,7 +52,7 @@ const popularList: VideoList[] = [
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "/avatar.jpg",
+    avatarUrl: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
     createAt: "2020-01-01",
@@ -63,7 +63,7 @@ const popularList: VideoList[] = [
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "/avatar.jpg",
+    avatarUrl: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
     createAt: "2020-01-01",
@@ -74,7 +74,7 @@ const popularList: VideoList[] = [
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "/avatar.jpg",
+    avatarUrl: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
     createAt: "2020-01-01",
@@ -85,7 +85,7 @@ const popularList: VideoList[] = [
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "/avatar.jpg",
+    avatarUrl: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
     createAt: "2020-01-01",
@@ -96,7 +96,40 @@ const popularList: VideoList[] = [
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
-    avatar: "/avatar.jpg",
+    avatarUrl: "/avatar.jpg",
+    authorName: "Ling-yunchi",
+    views: 102301,
+    createAt: "2020-01-01",
+  },
+  {
+    id: "1",
+    coverUrl: "/cover.webp",
+    length: 100,
+    title: "这眼睛里可不兴有爱心啊！",
+    authorId: "1",
+    avatarUrl: "/avatar.jpg",
+    authorName: "Ling-yunchi",
+    views: 102301,
+    createAt: "2020-01-01",
+  },
+  {
+    id: "1",
+    coverUrl: "/cover.webp",
+    length: 100,
+    title: "这眼睛里可不兴有爱心啊！",
+    authorId: "1",
+    avatarUrl: "/avatar.jpg",
+    authorName: "Ling-yunchi",
+    views: 102301,
+    createAt: "2020-01-01",
+  },
+  {
+    id: "1",
+    coverUrl: "/cover.webp",
+    length: 100,
+    title: "这眼睛里可不兴有爱心啊！",
+    authorId: "1",
+    avatarUrl: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
     createAt: "2020-01-01",

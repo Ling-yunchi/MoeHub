@@ -38,4 +38,9 @@ public class BasePageResult<T> {
         this.currentPage = page.getNumber() + 1;
         this.totalElement = page.getTotalElements();
     }
+
+    public void construct(Boolean success, String message) {
+        this.success = success;
+        this.message = message;
+    }
 }

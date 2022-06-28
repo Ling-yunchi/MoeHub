@@ -9,7 +9,9 @@
     <div class="video-info">
       <div class="author-avatar">
         <a :href="authorUrl" target="_blank">
-          <img :src="avatar" alt="avatar" />
+          <a-avatar>
+            <img style="object-fit: cover" :src="avatar" alt="avatar" />
+          </a-avatar>
         </a>
       </div>
       <div class="video-text">

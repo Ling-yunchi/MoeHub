@@ -47,6 +47,13 @@ public class VideoController {
         return result;
     }
 
+    @GetMapping("/getAllVideo")
+    public BasePageResult<VideoListResult> getAllVideo(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        BasePageResult<VideoListResult> result = new BasePageResult<>();
+        videoService.getAllVideo(pageNum, pageSize, result);
+        return result;
+    }
+
     @Login
     @PostMapping("/add")
     public BaseResult<Void> add(@RequestBody @Valid VideoBean videoBean) {

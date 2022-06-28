@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tv.moehub.bean.VideoBean;
 import tv.moehub.dao.FavoriteDao;
+import tv.moehub.dao.LikeVideoDao;
 import tv.moehub.dao.UserDao;
 import tv.moehub.dao.VideoDao;
 import tv.moehub.entity.Favorite;
+import tv.moehub.entity.LikeVideo;
 import tv.moehub.entity.User;
 import tv.moehub.entity.Video;
 import tv.moehub.model.*;
@@ -35,6 +37,7 @@ public class VideoService {
     private final UserDao userDao;
     private final FileService fileService;
     private final FavoriteDao favoriteDao;
+    private final LikeVideoDao likeVideoDao;
 
 //    public void queryVideoById(String videoId, BaseResult<VideoListResult> result) {
 //        VideoListResult videoResult = videoDao.queryVideoById(videoId);
@@ -48,8 +51,7 @@ public class VideoService {
     public void searchVideoByTitle(String videoTitle, BasePageResult<VideoListResult> result, int pageNum, int pageSize) {
         String videoTitleLike = "%" + videoTitle + "%";
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<VideoListResult> videoList = videoDao.findByTitleLike(videoTitleLike, pageable);
-        videoList.map(videoListResult -> {
+        Page<VideoListResult> videoList = videoDao.findByTitleLike(videoTitleLike, pageable).map(videoListResult -> {
             try {
                 videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
                 return videoListResult;
@@ -66,8 +68,7 @@ public class VideoService {
         User user = userDao.findByNickname(nickname);
         if (user != null) {
             Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-            Page<VideoListResult> videoList = videoDao.findByAuthorIdPage(user.getId(), pageable);
-            videoList.map(videoListResult -> {
+            Page<VideoListResult> videoList = videoDao.findByAuthorIdPage(user.getId(), pageable).map(videoListResult -> {
                 try {
                     videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
                     return videoListResult;
@@ -79,7 +80,7 @@ public class VideoService {
             });
             result.construct(true, "查询成功", videoList);
         } else {
-            result.construct(false, "未查询到该用户", null);
+            result.construct(false, "未查询到该用户");
         }
     }
 
@@ -124,8 +125,7 @@ public class VideoService {
 
     public void getUserVideo(String userId, Integer pageNum, Integer pageSize, BasePageResult<VideoListResult> result) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<VideoListResult> videoList = videoDao.findByAuthorIdPage(userId, pageable);
-        videoList.map(videoListResult -> {
+        Page<VideoListResult> videoList = videoDao.findByAuthorIdPage(userId, pageable).map(videoListResult -> {
             try {
                 videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
                 return videoListResult;
@@ -204,10 +204,10 @@ public class VideoService {
             if (favorite != null) {
                 isFavorite = true;
             }
-//            Likes likes = likesDao.queryByUserIdAndVideoId(userId, videoId);
-//            if (likes != null) {
-//                isLiked = true;
-//            }
+            LikeVideo likeVideo = likeVideoDao.queryLikeVideoByUserIdAndVideoId(userId, videoId);
+            if (likeVideo != null) {
+                isLiked = true;
+            }
         }
         VideoResult res = VideoResult.builder()
                 .id(video.getId())
@@ -223,7 +223,7 @@ public class VideoService {
                 .views(video.getViews())
                 .favorites(favoriteDao.countByVideoId(videoId))
                 .likes(0)
-//                .likes(likesDao.countByVideoId(videoId))
+                .likes(likeVideoDao.countLikeVideoByVideoId(videoId))
                 .isFavorite(isFavorite)
                 .isLiked(isLiked)
                 .build();
@@ -240,5 +240,20 @@ public class VideoService {
         video.setViews(video.getViews() + 1);
         videoDao.save(video);
         result.construct(true, "成功");
+    }
+
+    public void getAllVideo(Integer pageNum, Integer pageSize, BasePageResult<VideoListResult> result) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        Page<VideoListResult> videoList = videoDao.findAllPage(pageable).map(videoListResult -> {
+            try {
+                videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
+                return videoListResult;
+            } catch (Exception e) {
+                log.error("get video cover url error", e);
+                videoListResult.setCoverUrl(null);
+                return videoListResult;
+            }
+        });
+        result.construct(true, "查询成功", videoList);
     }
 }

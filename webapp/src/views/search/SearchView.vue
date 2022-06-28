@@ -70,12 +70,12 @@
             >
               <video-card
                 style="transform: scale(0.9)"
-                :cover="video.coverUrl"
+                :cover-url="video.coverUrl"
                 :length="video.length"
-                :author="video.authorName"
-                :avatar="video.avatar"
+                :author-name="video.authorName"
+                :avatar="video.avatarUrl"
                 :title="video.title"
-                :views="102301"
+                :views="video.views"
                 :video-url="`/video/${video.id}`"
                 :author-url="`/user/${video.authorId}`"
               >
@@ -90,7 +90,7 @@
 
 <script lang="ts" setup>
 import router from "@/router";
-import { inject, ref, Ref } from "vue";
+import { inject, onMounted, ref, Ref } from "vue";
 import { User, VideoList, BasePageResult } from "@/types";
 import { IconSearch } from "@arco-design/web-vue/es/icon";
 import HeaderView from "@/views/HeaderView.vue";
@@ -123,6 +123,10 @@ const searchForm = ref({
 
 const resultList = ref<VideoList[]>([]);
 const search = () => {
+  router.currentRoute.value.query = {
+    type: searchForm.value.type,
+    q: searchForm.value.q,
+  };
   if (searchForm.value.type == "视频") {
     axios
       .get<BasePageResult<VideoList>>("/api/video/searchVideoByTitle", {
@@ -148,24 +152,8 @@ const search = () => {
         }
       });
   }
-
-  console.log(searchForm.value);
-  resultList.value = [
-    ...resultList.value,
-    {
-      id: "1",
-      coverUrl: "/cover.webp",
-      length: 100,
-      title: "这眼睛里可不兴有爱心啊！",
-      authorId: "1",
-      avatar: "/avatar.jpg",
-      authorName: "Ling-yunchi",
-      views: 102301,
-      createAt: "2020-01-01",
-    },
-  ];
 };
-
+onMounted(search);
 // const resultList = ref([
 //   {
 //     id: "1",
