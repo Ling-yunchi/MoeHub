@@ -1,13 +1,13 @@
 <template>
   <div class="small-video-card">
     <a class="cover" :href="videoUrl">
-      <img :src="cover" :alt="title" />
+      <img style="object-fit: cover" :src="coverUrl" :alt="title" />
       <span class="length">{{ lengthString(length) }}</span>
     </a>
     <a class="title" :href="videoUrl">{{ title }}</a>
     <div class="info">
       <span class="views"><icon-play-arrow />{{ viewsString(views) }}</span>
-      <span><icon-clock-circle />{{ time }}</span>
+      <span><icon-clock-circle />{{ createAt }}</span>
     </div>
   </div>
 </template>
@@ -16,8 +16,8 @@
 import { defineProps } from "vue";
 import { IconPlayArrow, IconClockCircle } from "@arco-design/web-vue/es/icon";
 
-defineProps({
-  videoPrefix: {
+const props = defineProps({
+  videoUrl: {
     type: String,
     required: true,
   },
@@ -25,7 +25,7 @@ defineProps({
     type: String,
     required: true,
   },
-  cover: {
+  coverUrl: {
     type: String,
     required: true,
   },
@@ -37,7 +37,7 @@ defineProps({
     type: Number,
     required: true,
   },
-  time: {
+  createAt: {
     type: String,
     required: true,
   },

@@ -5,23 +5,43 @@ export interface BaseResult<T> {
   data: T;
 }
 
+export interface BasePageResult<T> {
+  success: boolean;
+  message: string;
+  data: T[];
+  totalPages: number;
+  currentPage: number;
+  totalElements: number;
+}
+
 export interface User {
   id: string;
   username: string;
   nickname: string;
   avatar: string;
+  email: string;
+  sex: string;
 }
 
 export interface VideoList {
   id: string;
-  cover: string;
+  coverUrl: string;
   length: number;
   title: string;
   authorId: string;
   avatar: string;
   authorName: string;
   views: number;
-  time: string;
+  createAt: string;
+}
+
+export interface MyVideoDetail {
+  id: string;
+  description: string;
+  coverUrl: string;
+  length: number;
+  title: string;
+  createAt: string;
 }
 
 export interface CommentList {
@@ -29,6 +49,6 @@ export interface CommentList {
   userId: string;
   username: string;
   avatar: string;
-  time: string;
+  createAt: string;
   content: string;
 }

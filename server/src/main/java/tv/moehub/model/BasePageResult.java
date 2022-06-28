@@ -29,4 +29,13 @@ public class BasePageResult<T> {
         this.currentPage = page.getNumber() + 1;
         this.totalElement = page.getTotalElements();
     }
+
+    public void construct(Boolean success, String message, Page<T> page) {
+        this.success = success;
+        this.message = message;
+        this.data = page.getContent();
+        this.totalPages = page.getTotalPages();
+        this.currentPage = page.getNumber() + 1;
+        this.totalElement = page.getTotalElements();
+    }
 }

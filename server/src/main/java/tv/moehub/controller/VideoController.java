@@ -5,9 +5,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tv.moehub.annotation.Login;
 import tv.moehub.bean.VideoBean;
 import tv.moehub.entity.Video;
-import tv.moehub.model.BaseResult;
+import tv.moehub.model.*;
 import tv.moehub.service.VideoService;
 
 import javax.validation.Valid;
@@ -40,6 +41,14 @@ public class VideoController {
         return result;
     }
 
+    @GetMapping("/getUserVideo")
+    public BasePageResult<VideoListResult> getUserVideo(@RequestParam String userId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        BasePageResult<VideoListResult> result = new BasePageResult<>();
+        videoService.getUserVideo(userId, pageNum, pageSize, result);
+        return result;
+    }
+
+    @Login
     @PostMapping("/add")
     public BaseResult<Void> add(@RequestBody @Valid VideoBean videoBean) {
         BaseResult<Void> result = new BaseResult<>();
@@ -47,10 +56,41 @@ public class VideoController {
         return result;
     }
 
-    @PostMapping("/upload")
-    public BaseResult<String> upload(@RequestPart MultipartFile video) {
+    @Login
+    @GetMapping("/delete")
+    public BaseResult<Void> delete(@RequestParam String videoId) {
+        BaseResult<Void> result = new BaseResult<>();
+        videoService.delete(videoId, result);
+        return result;
+    }
+
+    @Login
+    @GetMapping("/getMyVideoDetails")
+    public BaseResult<List<VideoDetailResult>> getVideoDetails() {
+        BaseResult<List<VideoDetailResult>> result = new BaseResult<>();
+        videoService.getVideoDetails(result);
+        return result;
+    }
+
+    @Login
+    @PostMapping("/uploadTemp")
+    public BaseResult<String> uploadTemp(@RequestPart MultipartFile file) {
         BaseResult<String> result = new BaseResult<>();
-        videoService.upload(video, result);
+        videoService.uploadTemp(file, result);
+        return result;
+    }
+
+    @GetMapping("/getVideoInfo")
+    public BaseResult<VideoResult> getVideoInfo(@RequestParam String videoId) {
+        BaseResult<VideoResult> result = new BaseResult<>();
+        videoService.getVideoInfo(videoId, result);
+        return result;
+    }
+
+    @GetMapping("/view")
+    public BaseResult<Void> view(@RequestParam String videoId) {
+        BaseResult<Void> result = new BaseResult<>();
+        videoService.view(videoId, result);
         return result;
     }
 }

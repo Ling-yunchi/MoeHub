@@ -70,7 +70,7 @@
             >
               <video-card
                 style="transform: scale(0.9)"
-                :cover="video.cover"
+                :cover="video.coverUrl"
                 :length="video.length"
                 :author="video.authorName"
                 :avatar="video.avatar"
@@ -139,69 +139,69 @@ const search = () => {
 const resultList = ref([
   {
     id: "1",
-    cover: "/cover.webp",
+    coverUrl: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
     avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
-    time: "2020-01-01",
+    createAt: "2020-01-01",
   },
   {
     id: "1",
-    cover: "/cover.webp",
+    coverUrl: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
     avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
-    time: "2020-01-01",
+    createAt: "2020-01-01",
   },
   {
     id: "1",
-    cover: "/cover.webp",
+    coverUrl: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
     avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
-    time: "2020-01-01",
+    createAt: "2020-01-01",
   },
   {
     id: "1",
-    cover: "/cover.webp",
+    coverUrl: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
     avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
-    time: "2020-01-01",
+    createAt: "2020-01-01",
   },
   {
     id: "1",
-    cover: "/cover.webp",
+    coverUrl: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
     avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
-    time: "2020-01-01",
+    createAt: "2020-01-01",
   },
   {
     id: "1",
-    cover: "/cover.webp",
+    coverUrl: "/cover.webp",
     length: 100,
     title: "这眼睛里可不兴有爱心啊！",
     authorId: "1",
     avatar: "/avatar.jpg",
     authorName: "Ling-yunchi",
     views: 102301,
-    time: "2020-01-01",
+    createAt: "2020-01-01",
   },
 ]);
 </script>

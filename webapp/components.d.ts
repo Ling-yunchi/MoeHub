@@ -12,6 +12,8 @@ declare module "@vue/runtime-core" {
     AFormItem: typeof import("@arco-design/web-vue")["FormItem"];
     AInput: typeof import("@arco-design/web-vue")["Input"];
     AInputGroup: typeof import("@arco-design/web-vue")["InputGroup"];
+    AInputNumber: typeof import("@arco-design/web-vue")["InputNumber"];
+    AInputPassword: typeof import("@arco-design/web-vue")["InputPassword"];
     ALayout: typeof import("@arco-design/web-vue")["Layout"];
     ALayoutContent: typeof import("@arco-design/web-vue")["LayoutContent"];
     ALayoutHeader: typeof import("@arco-design/web-vue")["LayoutHeader"];
@@ -21,7 +23,6 @@ declare module "@vue/runtime-core" {
     AMenu: typeof import("@arco-design/web-vue")["Menu"];
     AMenuItem: typeof import("@arco-design/web-vue")["MenuItem"];
     APopconfirm: typeof import("@arco-design/web-vue")["Popconfirm"];
-    AProgress: typeof import("@arco-design/web-vue")["Progress"];
     ARadio: typeof import("@arco-design/web-vue")["Radio"];
     ARadioGroup: typeof import("@arco-design/web-vue")["RadioGroup"];
     ASelect: typeof import("@arco-design/web-vue")["Select"];

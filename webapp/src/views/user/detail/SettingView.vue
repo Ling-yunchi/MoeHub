@@ -16,65 +16,16 @@
         <a-input v-model="userForm.nickname"></a-input>
       </a-form-item>
       <a-form-item label="头像">
+        <a-avatar style="margin-right: 10px">
+          <img style="object-fit: cover" :src="avatarUrl" alt="" />
+        </a-avatar>
         <a-upload
           style="display: block"
           id="avatar"
-          action="/"
-          :fileList="avatarFile ? [avatarFile] : []"
-          :show-file-list="false"
-          @change="
-            (_, currentFile) => {
-              avatarFile = {
-                ...currentFile,
-              };
-            }
-          "
-          @progress="
-            (currentFile) => {
-              avatarFile = currentFile;
-            }
-          "
+          action="/api/user/avatar"
+          name="avatar"
+          @success="uploadAvatar"
         >
-          <template #upload-button>
-            <div
-              :class="`arco-upload-list-item${
-                avatarFile && avatarFile.status === 'error'
-                  ? ' arco-upload-list-item-error'
-                  : ''
-              }`"
-            >
-              <div
-                class="arco-upload-list-picture custom-upload-avatar"
-                v-if="avatarFile && avatarFile.url"
-              >
-                <img :src="avatarFile.url" alt="" />
-                <div class="arco-upload-list-picture-mask">
-                  <IconEdit />
-                </div>
-                <a-progress
-                  v-if="
-                    avatarFile.status === 'uploading' &&
-                    avatarFile.percent < 100
-                  "
-                  :percent="avatarFile.percent"
-                  type="circle"
-                  size="mini"
-                  :style="{
-                    position: 'absolute',
-                    left: '50%',
-                    top: '50%',
-                    transform: 'translateX(-50%) translateY(-50%)',
-                  }"
-                />
-              </div>
-              <div class="arco-upload-picture-card" v-else>
-                <div class="arco-upload-picture-card-text">
-                  <IconPlus />
-                  <div style="margin-top: 10px; font-weight: 600">Upload</div>
-                </div>
-              </div>
-            </div>
-          </template>
         </a-upload>
       </a-form-item>
       <a-form-item label="邮箱">
@@ -92,34 +43,66 @@
           </a-radio>
         </a-radio-group>
       </a-form-item>
+      <a-form-item field="password" label="密码">
+        <a-input-password v-model="userForm.password"></a-input-password>
+      </a-form-item>
       <a-form-item>
-        <a-button type="primary" @click="updateUser"
-          ><icon-edit /> 提交</a-button
-        >
+        <a-button type="primary" @click="updateUserInfo">
+          <icon-edit />
+          提交
+        </a-button>
       </a-form-item>
     </a-form>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import {
-  IconMan,
-  IconWoman,
-  IconPlus,
-  IconEdit,
-} from "@arco-design/web-vue/es/icon";
-import { FileItem } from "@arco-design/web-vue";
+import { inject, Ref, ref } from "vue";
+import { IconMan, IconWoman, IconEdit } from "@arco-design/web-vue/es/icon";
+import { FileItem, Message } from "@arco-design/web-vue";
+import { BaseResult, User } from "@/types";
+import axios from "@/plugins/axios";
+
+const user = inject<Ref<User>>("user") as Ref<User>;
+const updateUser = inject<(user: User | null) => void>("updateUser") as (
+  user: User | null
+) => void;
 
 const userForm = ref({
-  username: "",
-  nickname: "",
-  sex: "",
+  username: user.value.username,
+  nickname: user.value.nickname,
+  password: "",
+  email: user.value.email,
+  sex: user.value.sex,
 });
-const avatarFile = ref<FileItem>();
 
-const updateUser = () => {
-  console.log(userForm);
+const avatarUrl = ref(user.value.avatar);
+const uploadAvatar = (file: FileItem) => {
+  const res = file.response as BaseResult<string>;
+  if (res.success) {
+    avatarUrl.value = res.data;
+    updateUser({
+      ...user.value,
+      avatar: res.data,
+    });
+  } else {
+    Message.error(res.message);
+  }
+};
+
+const updateUserInfo = () => {
+  axios
+    .post<BaseResult<User>>("/api/user/update", userForm.value, {
+      params: { updatePassword: userForm.value.password !== "" },
+    })
+    .then((res) => {
+      if (res.data.success) {
+        updateUser(res.data.data);
+        Message.success("修改成功");
+      } else {
+        Message.error(res.data.message);
+      }
+    });
 };
 </script>
 

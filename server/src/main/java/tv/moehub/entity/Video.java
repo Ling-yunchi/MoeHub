@@ -29,8 +29,9 @@ public class Video {
     private String title;//名称
     private String description;//简介
     private String authorId;//作者id
-    private Date time;//时长
-    private Date releaseTime;//发布时间
-    private String coverUrl;//封面
-    private String videoUrl;//视频内容
+    private Integer length;//时长
+    private Date createAt;//发布时间
+    private String coverPrefix;//封面
+    private String videoPrefix;//视频内容
+    private Integer views;//播放次数
 }

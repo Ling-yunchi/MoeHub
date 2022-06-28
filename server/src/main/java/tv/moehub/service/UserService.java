@@ -59,7 +59,8 @@ public class UserService {
         var userId = (String) SecurityUtils.getSubject().getPrincipal();
         var user = userDao.queryUserById(userId);
         if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
-            var filePrefix = user.getAvatar();
+            var fileUrl = user.getAvatar();
+            var filePrefix = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
             try {
                 fileService.deleteFile(filePrefix);
             } catch (Exception e) {
@@ -68,10 +69,12 @@ public class UserService {
         }
         var filePrefix = "avatar/" + Uuid.getUuid() + "." + FileUtil.getFileExtension(Objects.requireNonNull(avatar.getOriginalFilename()));
         try {
-            var url = fileService.uploadFile(avatar, filePrefix);
+            var prefix = fileService.uploadFile(avatar, filePrefix);
+            var url = fileService.getFileUrl(prefix);
+            url = url.substring(0, url.lastIndexOf("?"));
             user.setAvatar(url);
             userDao.save(user);
-            result.construct(true, "上传成功");
+            result.construct(true, "上传成功", url);
         } catch (Exception e) {
             e.printStackTrace();
             result.construct(false, "上传失败");
@@ -108,5 +111,18 @@ public class UserService {
         var userId = (String) SecurityUtils.getSubject().getPrincipal();
         var user = userDao.queryUserById(userId);
         result.construct(true, "查询成功", new UserResult(user));
+    }
+
+    public void update(UserBean userBean, Boolean updatePassword, BaseResult<UserResult> result) {
+        String userId = (String) SecurityUtils.getSubject().getPrincipal();
+        var user = userDao.queryUserById(userId);
+        user.setNickname(userBean.getNickname());
+        user.setEmail(userBean.getEmail());
+        user.setSex(userBean.getSex());
+        if (updatePassword) {
+            user.setPassword(userBean.getPassword());
+        }
+        userDao.save(user);
+        result.construct(true, "更新成功", new UserResult(user));
     }
 }

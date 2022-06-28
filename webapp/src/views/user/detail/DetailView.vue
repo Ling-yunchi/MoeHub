@@ -10,15 +10,15 @@
             box-sizing: content-box;
           "
         >
-          <img src="/avatar.jpg" alt="avatar" />
+          <img style="object-fit: cover" :src="pageUser.avatar" alt="avatar" />
         </a-avatar>
         <div class="user-info-name">
           <span style="margin-bottom: 10px">
-            <span class="user-nickname">龗云螭</span>
+            <span class="user-nickname">{{ pageUser.nickname }}</span>
           </span>
           <span>
             <a-tag style="background-color: rgba(0, 0, 0, 0.4)">
-              <span class="user-username">@Ling-yunchi</span>
+              <span class="user-username">@{{ pageUser.username }}</span>
             </a-tag>
           </span>
         </div>
@@ -92,17 +92,33 @@
 
 <script lang="ts" setup>
 import {
-  IconHome,
-  IconStar,
   IconArchive,
+  IconHome,
   IconSettings,
+  IconStar,
   IconUpload,
 } from "@arco-design/web-vue/es/icon";
-import { inject, Ref, ref, watch } from "vue";
+import { inject, provide, Ref, ref, watch } from "vue";
 import router from "@/router";
-import { User } from "@/types";
+import { BaseResult, User } from "@/types";
+import axios from "@/plugins/axios";
 
 const userId = router.currentRoute.value.params.id;
+const pageUser = ref({
+  id: "",
+  username: "",
+  nickname: "",
+  avatar: "",
+});
+axios.get("/api/user/info", { params: { userId: userId } }).then((res) => {
+  const result = res.data as BaseResult<User>;
+  if (result.success) {
+    pageUser.value = result.data;
+  } else {
+    router.push("/404");
+  }
+});
+
 const user = inject<Ref<User>>("user") as Ref<User>;
 const self = ref(user.value !== null && user.value.id === userId);
 watch(user, (newUser) => {
