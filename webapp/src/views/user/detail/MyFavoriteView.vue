@@ -6,12 +6,12 @@
     <div class="video-list">
       <div class="video-list__item" v-for="video in videoList" :key="video.id">
         <small-video-card
-          :cover="video.coverUrl"
+          :cover-url="video.coverUrl"
           :length="video.length"
           :title="video.title"
           :views="102301"
           :video-url="`/video/${video.id}`"
-          :time="video.createAt"
+          :create-at="video.createAt"
         >
         </small-video-card>
       </div>

@@ -47,7 +47,7 @@ export interface MyVideoDetail {
 export interface CommentList {
   id: string;
   userId: string;
-  username: string;
+  nickname: string;
   avatar: string;
   createAt: string;
   content: string;

@@ -1,9 +1,9 @@
 package tv.moehub.controller;
 
 
-import com.github.pagehelper.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import tv.moehub.annotation.Login;
 import tv.moehub.bean.CommentsBean;
@@ -21,28 +21,25 @@ public class CommentsController {
 
     @Login
     @PostMapping("/add")//写评论
-    public BaseResult<CommentsResult> addComments(@RequestBody CommentsBean commentsBean) {
-        BaseResult<CommentsResult> result = new BaseResult<>();
+    public BaseResult<Void> addComments(@RequestBody CommentsBean commentsBean) {
+        BaseResult<Void> result = new BaseResult<>();
         commentsService.addComments(commentsBean, result);
         return result;
     }
 
     @Login
     @GetMapping("/delete")//删评论
-    public BaseResult<CommentsResult> deleteComments(@RequestParam String id) {
-        BaseResult<CommentsResult> result = new BaseResult<>();
+    public BaseResult<Void> deleteComments(@RequestParam String id) {
+        BaseResult<Void> result = new BaseResult<>();
         commentsService.deleteComments(id, result);
         return result;
-
     }
 
-//    @GetMapping("/search")//(先看最新评论)
-//    public BasePageResult<CommentsResult> searchCommentsByTime(@RequestParam String videoId, @RequestParam int pageNum, @RequestParam int pageSize) {
-//
-//        BaseResult<Page<CommentsResult>> comments = new BaseResult<>();
-//        commentsService.searchCommentsByTime(videoId, comments, pageNum,pageSize);
-//        BasePageResult<CommentsResult> result= new BasePageResult<CommentsResult>(comments.getSuccess(),comments.getMessage(),comments.getData());
-//        return result;
-//    }
+    @GetMapping("/search")//(先看最新评论)
+    public BasePageResult<CommentsResult> searchCommentsByTime(@RequestParam String videoId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        BasePageResult<CommentsResult> result = new BasePageResult<>();
+        commentsService.searchCommentsByTime(videoId, pageNum,pageSize, result);
+        return result;
+    }
 
 }

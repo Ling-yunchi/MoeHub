@@ -24,6 +24,7 @@ import tv.moehub.utils.Uuid;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,14 +36,14 @@ public class VideoService {
     private final FileService fileService;
     private final FavoriteDao favoriteDao;
 
-    public void queryVideoById(String videoId, BaseResult<VideoResult> result) {
-        VideoResult videoResult = videoDao.queryVideoById(videoId);
-        if (videoResult == null) {
-            result.construct(false, "视频不存在");
-            return;
-        }
-        result.construct(true, "视频如下", videoResult);
-    }
+//    public void queryVideoById(String videoId, BaseResult<VideoListResult> result) {
+//        VideoListResult videoResult = videoDao.queryVideoById(videoId);
+//        if (videoResult == null) {
+//            result.construct(false, "视频不存在");
+//            return;
+//        }
+//        result.construct(true, "视频如下", videoResult);
+//    }
 
     public void searchVideoByTitle(String videoTitle, BasePageResult<VideoListResult> result, int pageNum, int pageSize) {
         String videoTitleLike = "%" + videoTitle + "%";
@@ -152,11 +153,12 @@ public class VideoService {
     }
 
     public void delete(String videoId, BaseResult<Void> result) {
-        Video video = videoDao.findByVideoId(videoId);
-        if (video == null) {
+        Optional<Video> videoOptional = videoDao.findById(videoId);
+        if (!videoOptional.isPresent()) {
             result.construct(false, "视频不存在");
             return;
         }
+        var video = videoOptional.get();
         String userId = (String) SecurityUtils.getSubject().getPrincipal();
         if (!userId.equals(video.getAuthorId())) {
             result.construct(false, "没有权限");
@@ -177,11 +179,12 @@ public class VideoService {
     }
 
     public void getVideoInfo(String videoId, BaseResult<VideoResult> result) {
-        Video video = videoDao.findByVideoId(videoId);
-        if (video == null) {
+        Optional<Video> videoOptional = videoDao.findById(videoId);
+        if (!videoOptional.isPresent()) {
             result.construct(false, "视频不存在");
             return;
         }
+        var video = videoOptional.get();
         String coverUrl = null;
         String videoUrl = null;
         try {
@@ -228,11 +231,12 @@ public class VideoService {
     }
 
     public void view(String videoId, BaseResult<Void> result) {
-        Video video = videoDao.findByVideoId(videoId);
-        if (video == null) {
+        Optional<Video> videoOptional = videoDao.findById(videoId);
+        if (!videoOptional.isPresent()) {
             result.construct(false, "视频不存在");
             return;
         }
+        var video = videoOptional.get();
         video.setViews(video.getViews() + 1);
         videoDao.save(video);
         result.construct(true, "成功");

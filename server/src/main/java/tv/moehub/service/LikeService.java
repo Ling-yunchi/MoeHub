@@ -11,6 +11,8 @@ import tv.moehub.entity.LikeVideo;
 import tv.moehub.entity.Video;
 import tv.moehub.model.BaseResult;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class LikeService {
@@ -18,11 +20,12 @@ public class LikeService {
     private final VideoDao videoDao;
 
     public void setLikeVideo(LikeVideoBean likeVideoBean, BaseResult<LikeVideo> result){
-        Video video = videoDao.findByVideoId(likeVideoBean.getVideoId());
-        if(video == null){
+        Optional<Video> videoOptional = videoDao.findById(likeVideoBean.getVideoId());
+        if(!videoOptional.isPresent()){
             result.construct(true, "视频不存在");
             return;
         }
+        var video = videoOptional.get();
         LikeVideo like = likeVideoDao.queryLikeVideoByUserIdAndVideoId(
                 likeVideoBean.getUserId(), likeVideoBean.getVideoId());
         if(like != null){
@@ -36,8 +39,8 @@ public class LikeService {
     }
 
     public void cancelLikeVideo(LikeVideoBean likeVideoBean, BaseResult<LikeVideo> result){
-        Video video = videoDao.findByVideoId(likeVideoBean.getVideoId());
-        if(video == null) {
+        Optional<Video> videoOptional = videoDao.findById(likeVideoBean.getVideoId());
+        if(!videoOptional.isPresent()) {
             result.construct(true, "视频不存在");
             return;
         }
@@ -52,8 +55,8 @@ public class LikeService {
     }
 
     public void countLikeVideo(String videoId, BaseResult<Integer> result) {
-        Video video = videoDao.findByVideoId(videoId);
-        if(video == null) {
+        Optional<Video> videoOptional = videoDao.findById(videoId);
+        if(!videoOptional.isPresent()) {
             result.construct(true, "视频不存在");
             return;
         }

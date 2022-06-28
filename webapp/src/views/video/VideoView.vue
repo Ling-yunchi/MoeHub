@@ -85,10 +85,10 @@
               </a>
               <span class="author-info">
                 <a class="video-info-author-name">{{ videoInfo.authorName }}</a>
-                <div class="video-info-author-time">
+                <span class="video-info-author-time">
                   <icon-clock-circle />
                   {{ videoInfo.createAt }}
-                </div>
+                </span>
               </span>
             </div>
             <div class="video-info-other">
@@ -102,19 +102,23 @@
               <h2>评论</h2>
             </div>
             <div class="comment-input">
-              <a-input placeholder="说点什么吧..." size="large">
+              <a-input
+                v-model="commentInput"
+                placeholder="说点什么吧..."
+                size="large"
+              >
                 <template #prepend>
                   <icon-message />
                 </template>
               </a-input>
-              <a-button style="height: 36px">
+              <a-button @click="addComment" style="height: 36px">
                 <icon-send />
               </a-button>
             </div>
             <div>
               <a-comment
-                author="Ling-yunchi"
-                datetime="1 hour"
+                :author="comment.nickname"
+                :datetime="comment.createAt"
                 style="
                   margin-bottom: 20px;
                   white-space: pre-wrap;
@@ -128,7 +132,11 @@
                 <template #avatar>
                   <a :href="`/user/${comment.userId}`">
                     <a-avatar>
-                      <img alt="avatar" :src="comment.avatar" />
+                      <img
+                        style="object-fit: cover"
+                        alt="avatar"
+                        :src="comment.avatar"
+                      />
                     </a-avatar>
                   </a>
                 </template>
@@ -239,12 +247,6 @@ const onPlay = () => {
 };
 
 const likes = (like: boolean) => {
-  console.log("likes");
-  // TODO send a like event to server
-  videoInfo.value.isLiked = like;
-  videoInfo.value.likes = like
-    ? videoInfo.value.likes + 1
-    : videoInfo.value.likes - 1;
   if (!like) {
     axios
       .get("/api/like/setLike", {
@@ -257,6 +259,10 @@ const likes = (like: boolean) => {
         const res = data.data as BaseResult<never>;
         if (res.success) {
           Message.success(res.message);
+          videoInfo.value.isLiked = like;
+          videoInfo.value.likes = like
+            ? videoInfo.value.likes + 1
+            : videoInfo.value.likes - 1;
         } else {
           Message.error(res.message);
         }
@@ -273,6 +279,10 @@ const likes = (like: boolean) => {
         const res = data.data as BaseResult<never>;
         if (res.success) {
           Message.success(res.message);
+          videoInfo.value.isLiked = like;
+          videoInfo.value.likes = like
+            ? videoInfo.value.likes + 1
+            : videoInfo.value.likes - 1;
         } else {
           Message.error(res.message);
         }
@@ -280,22 +290,20 @@ const likes = (like: boolean) => {
   }
 };
 const favorite = (favor: boolean) => {
-  console.log("favorite");
-  // TODO send a favorite event to server
-  videoInfo.value.isFavorite = favor;
-  videoInfo.value.favorites = favor
-    ? videoInfo.value.favorites + 1
-    : videoInfo.value.favorites - 1;
   axios
     .get("/api/favorite/isFavorite", {
-      params: { userId: videoInfo.value.authorId, videoId: videoInfo.value.id },
+      params: { videoId: videoInfo.value.id },
     })
     .then((data) => {
       const res = data.data as BaseResult<never>;
       if (res.success) {
         Message.success(res.message);
+        videoInfo.value.isFavorite = favor;
+        videoInfo.value.favorites = favor
+          ? videoInfo.value.favorites + 1
+          : videoInfo.value.favorites - 1;
       } else {
-        Message.error("操作失败");
+        Message.error(res.message);
       }
     });
 };
@@ -304,7 +312,7 @@ const commentList = ref<CommentList[]>([
   {
     id: "1",
     userId: "1",
-    username: "Ling-yunchi",
+    nickname: "Ling-yunchi",
     avatar: "/avatar.jpg",
     createAt: "2020-01-01",
     content: "夸宝可爱捏🥰🥰🥰\n\n\n\n\n🥵🥵🥵夸宝🥵🥵🥵我的夸宝🥵🥵🥵",
@@ -312,27 +320,52 @@ const commentList = ref<CommentList[]>([
   {
     id: "2",
     userId: "1",
-    username: "Ling-yunchi",
+    nickname: "Ling-yunchi",
     avatar: "/avatar.jpg",
     createAt: "2020-01-01",
     content: "夸宝可爱捏🥰🥰🥰\n\n\n\n\n🥵🥵🥵夸宝🥵🥵🥵我的夸宝🥵🥵🥵",
   },
 ]);
 
-onMounted(() => {
-  console.log(router.currentRoute.value.params.id);
+const getComments = () => {
   axios
     .get<BasePageResult<CommentList>>("/api/comments/search", {
-      params: { videoId: videoInfo.value.id, pageNum: 1, pageSize: 100 },
+      params: {
+        videoId: router.currentRoute.value.params.id,
+        pageNum: 1,
+        pageSize: 100,
+      },
     })
     .then((res) => {
       if (res.data.success) {
         commentList.value = res.data.data;
       } else {
-        Message.error("评论刷新失败");
+        Message.error(res.data.message);
       }
     });
-});
+};
+onMounted(getComments);
+const commentInput = ref("");
+const addComment = () => {
+  if (commentInput.value.length === 0) {
+    Message.warning("评论内容不能为空");
+    return;
+  }
+  axios
+    .post("/api/comments/add", {
+      content: commentInput.value,
+      videoId: router.currentRoute.value.params.id,
+    })
+    .then((res) => {
+      const result = res.data as BaseResult<never>;
+      if (result.success) {
+        Message.success(result.message);
+        getComments();
+      } else {
+        Message.error(result.message);
+      }
+    });
+};
 </script>
 
 <style lang="scss" scoped>

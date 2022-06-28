@@ -19,7 +19,7 @@ public interface VideoDao extends JpaRepository<Video, String> {
     @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
             "from Video v join User u on v.authorId = u.id " +
             "where v.id = ?1")
-    VideoResult queryVideoById(String videoId);
+    VideoListResult queryVideoById(String videoId);
 
     @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
             "from Video v join User u on v.authorId = u.id " +
@@ -35,6 +35,4 @@ public interface VideoDao extends JpaRepository<Video, String> {
             "from Video v " +
             "where v.authorId = ?1")
     List<VideoDetailResult> findVideoDetailByAuthorId(String userId);
-
-    Video findByVideoId(String videoId);
 }
