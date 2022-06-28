@@ -10,6 +10,7 @@ import tv.moehub.bean.VideoBean;
 import tv.moehub.entity.Video;
 import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
+import tv.moehub.model.VideoDetailResult;
 import tv.moehub.model.VideoListResult;
 import tv.moehub.service.VideoService;
 
@@ -55,6 +56,22 @@ public class VideoController {
     public BaseResult<Void> add(@RequestBody @Valid VideoBean videoBean) {
         BaseResult<Void> result = new BaseResult<>();
         videoService.add(videoBean, result);
+        return result;
+    }
+
+    @Login
+    @GetMapping("/delete")
+    public BaseResult<Void> delete(@RequestParam String videoId) {
+        BaseResult<Void> result = new BaseResult<>();
+        videoService.delete(videoId, result);
+        return result;
+    }
+
+    @Login
+    @GetMapping("/getMyVideoDetails")
+    public BaseResult<List<VideoDetailResult>> getVideoDetails() {
+        BaseResult<List<VideoDetailResult>> result = new BaseResult<>();
+        videoService.getVideoDetails(result);
         return result;
     }
 

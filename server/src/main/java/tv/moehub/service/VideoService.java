@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tv.moehub.annotation.Login;
 import tv.moehub.bean.VideoBean;
 import tv.moehub.dao.UserDao;
 import tv.moehub.dao.VideoDao;
@@ -17,6 +18,7 @@ import tv.moehub.entity.User;
 import tv.moehub.entity.Video;
 import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
+import tv.moehub.model.VideoDetailResult;
 import tv.moehub.model.VideoListResult;
 import tv.moehub.utils.FileUtil;
 import tv.moehub.utils.Uuid;
@@ -24,6 +26,7 @@ import tv.moehub.utils.Uuid;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -119,5 +122,44 @@ public class VideoService {
             }
         });
         result.construct(true, "查询成功", videoList);
+    }
+
+    public void getVideoDetails(BaseResult<List<VideoDetailResult>> result) {
+        String userId = (String) SecurityUtils.getSubject().getPrincipal();
+        var list = videoDao.findVideoDetailByAuthorId(userId).stream().map(video -> {
+            try {
+                video.setCoverUrl(fileService.getFileUrl(video.getCoverUrl()));
+            } catch (Exception e) {
+                log.error("get video cover url error", e);
+                video.setCoverUrl(null);
+            }
+            return video;
+        }).collect(Collectors.toList());
+        result.construct(true, "查询成功", list);
+    }
+
+    public void delete(String videoId, BaseResult<Void> result) {
+        Video video = videoDao.queryVideoById(videoId);
+        if (video == null) {
+            result.construct(false, "视频不存在");
+            return;
+        }
+        String userId = (String) SecurityUtils.getSubject().getPrincipal();
+        if (!userId.equals(video.getAuthorId())) {
+            result.construct(false, "没有权限");
+            return;
+        }
+
+        try {
+            fileService.deleteFile(video.getCoverPrefix());
+            fileService.deleteFile(video.getVideoPrefix());
+        } catch (Exception e) {
+            log.error("delete video error", e);
+            result.construct(false, "删除失败");
+            return;
+        }
+
+        videoDao.deleteById(videoId);
+        result.construct(true, "删除成功");
     }
 }

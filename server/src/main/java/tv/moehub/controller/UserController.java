@@ -84,4 +84,12 @@ public class UserController {
         userService.uploadAvatar(avatar, result);
         return result;
     }
+
+    @Login
+    @PostMapping("/update")
+    public BaseResult<UserResult> update(@RequestBody UserBean userBean, @RequestParam Boolean updatePassword) {
+        BaseResult<UserResult> result = new BaseResult<>();
+        userService.update(userBean, updatePassword, result);
+        return result;
+    }
 }
