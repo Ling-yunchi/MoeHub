@@ -19,17 +19,17 @@ public class LikeController {
 
     @Login
     @PostMapping("/setLike")
-    public BaseResult<LikeVideo> setLikeVideo(@Valid @RequestBody LikeVideoBean likeVideoBean){
-        BaseResult<LikeVideo> result = new BaseResult<>();
-        likeService.setLikeVideo(likeVideoBean, result);
+    public BaseResult<Void> setLikeVideo(@RequestParam String videoId) {
+        BaseResult<Void> result = new BaseResult<>();
+        likeService.setLikeVideo(videoId, result);
         return result;
     }
 
     @Login
     @PostMapping("/cancelLike")
-    public BaseResult<LikeVideo> cancelLikeVideo(@Valid @RequestBody LikeVideoBean likeVideoBean){
-        BaseResult<LikeVideo> result = new BaseResult<>();
-        likeService.cancelLikeVideo(likeVideoBean, result);
+    public BaseResult<Void> cancelLikeVideo(@RequestParam String videoId) {
+        BaseResult<Void> result = new BaseResult<>();
+        likeService.cancelLikeVideo(videoId, result);
         return result;
     }
 
