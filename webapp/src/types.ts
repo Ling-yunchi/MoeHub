@@ -54,10 +54,10 @@ export interface CommentList {
 }
 
 export interface BasePageResult<T> {
-  success:boolean
-  message:string
-  data:T[]
-  totalPages:number
-  currentPage:number
-  totalElement:number
+  success: boolean;
+  message: string;
+  data: T[];
+  totalPages: number;
+  currentPage: number;
+  totalElement: number;
 }

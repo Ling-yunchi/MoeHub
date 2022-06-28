@@ -5,13 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import tv.moehub.annotation.Login;
 import tv.moehub.bean.VideoBean;
 import tv.moehub.dao.FavoriteDao;
 import tv.moehub.dao.UserDao;
@@ -154,7 +152,7 @@ public class VideoService {
     }
 
     public void delete(String videoId, BaseResult<Void> result) {
-        Video video = videoDao.queryVideoById(videoId);
+        Video video = videoDao.findByVideoId(videoId);
         if (video == null) {
             result.construct(false, "视频不存在");
             return;
@@ -179,7 +177,7 @@ public class VideoService {
     }
 
     public void getVideoInfo(String videoId, BaseResult<VideoResult> result) {
-        Video video = videoDao.queryVideoById(videoId);
+        Video video = videoDao.findByVideoId(videoId);
         if (video == null) {
             result.construct(false, "视频不存在");
             return;
@@ -230,7 +228,7 @@ public class VideoService {
     }
 
     public void view(String videoId, BaseResult<Void> result) {
-        Video video = videoDao.queryVideoById(videoId);
+        Video video = videoDao.findByVideoId(videoId);
         if (video == null) {
             result.construct(false, "视频不存在");
             return;

@@ -3,17 +3,11 @@ package tv.moehub.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tv.moehub.annotation.Login;
 import tv.moehub.bean.VideoBean;
-import tv.moehub.entity.Video;
-import tv.moehub.model.BasePageResult;
-import tv.moehub.model.BaseResult;
-import tv.moehub.model.VideoResult;
-import tv.moehub.model.VideoListResult;
-import tv.moehub.model.VideoDetailResult;
+import tv.moehub.model.*;
 import tv.moehub.service.VideoService;
 
 import javax.validation.Valid;
