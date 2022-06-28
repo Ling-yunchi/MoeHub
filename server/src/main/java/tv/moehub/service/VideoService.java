@@ -17,6 +17,7 @@ import tv.moehub.entity.User;
 import tv.moehub.entity.Video;
 import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
+import tv.moehub.model.VideoListResult;
 import tv.moehub.utils.FileUtil;
 import tv.moehub.utils.Uuid;
 
@@ -78,11 +79,11 @@ public class VideoService {
 
     public void add(VideoBean videoBean, BaseResult<Void> result) {
         String userId = (String) SecurityUtils.getSubject().getPrincipal();
+        var videoPrefix = "video/" + videoBean.getVideoPrefix().substring(videoBean.getVideoPrefix().lastIndexOf("/") + 1);
+        var coverPrefix = "cover/" + videoBean.getCoverPrefix().substring(videoBean.getCoverPrefix().lastIndexOf("/") + 1);
         try {
-            var videoPrefix = "video/" + videoBean.getVideoPrefix().substring(videoBean.getVideoPrefix().lastIndexOf("/") + 1);
             log.info("move video from {} to {}", videoBean.getVideoPrefix(), videoPrefix);
             fileService.moveFile(videoBean.getVideoPrefix(), videoPrefix);
-            var coverPrefix = "cover/" + videoBean.getCoverPrefix().substring(videoBean.getCoverPrefix().lastIndexOf("/") + 1);
             log.info("move cover from {} to {}", videoBean.getCoverPrefix(), coverPrefix);
             fileService.moveFile(videoBean.getCoverPrefix(), coverPrefix);
         } catch (Exception e) {
@@ -95,17 +96,28 @@ public class VideoService {
                 .authorId(userId)
                 .length(videoBean.getLength())
                 .createAt(new Date())
-                .coverPrefix(videoBean.getCoverPrefix())
-                .videoPrefix(videoBean.getVideoPrefix())
+                .coverPrefix(coverPrefix)
+                .videoPrefix(videoPrefix)
+                .views(0)
                 .build();
         videoDao.save(video);
 
         result.construct(true, "上传成功");
     }
 
-    public void getUserVideo(String userId, Integer pageNum, Integer pageSize, BasePageResult<Video> result) {
+    public void getUserVideo(String userId, Integer pageNum, Integer pageSize, BasePageResult<VideoListResult> result) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        Page<Video> videoList = videoDao.findByAuthorIdPageable(userId, pageable);
+        Page<VideoListResult> videoList = videoDao.findByAuthorIdPage(userId, pageable);
+        videoList.map(videoListResult -> {
+            try {
+                videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
+                return videoListResult;
+            } catch (Exception e) {
+                log.error("get video cover url error", e);
+                videoListResult.setCoverUrl(null);
+                return videoListResult;
+            }
+        });
         result.construct(true, "查询成功", videoList);
     }
 }

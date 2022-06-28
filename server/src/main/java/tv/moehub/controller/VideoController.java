@@ -10,6 +10,7 @@ import tv.moehub.bean.VideoBean;
 import tv.moehub.entity.Video;
 import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
+import tv.moehub.model.VideoListResult;
 import tv.moehub.service.VideoService;
 
 import javax.validation.Valid;
@@ -43,8 +44,8 @@ public class VideoController {
     }
 
     @GetMapping("/getUserVideo")
-    public BasePageResult<Video> getUserVideo(@RequestParam String userId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        BasePageResult<Video> result = new BasePageResult<>();
+    public BasePageResult<VideoListResult> getUserVideo(@RequestParam String userId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        BasePageResult<VideoListResult> result = new BasePageResult<>();
         videoService.getUserVideo(userId, pageNum, pageSize, result);
         return result;
     }
@@ -58,8 +59,8 @@ public class VideoController {
     }
 
     @Login
-    @PostMapping("/uploadTempFile")
-    public BaseResult<String> uploadVideo(@RequestPart MultipartFile file) {
+    @PostMapping("/uploadTemp")
+    public BaseResult<String> uploadTemp(@RequestPart MultipartFile file) {
         BaseResult<String> result = new BaseResult<>();
         videoService.uploadTemp(file, result);
         return result;

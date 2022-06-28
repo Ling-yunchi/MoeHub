@@ -33,4 +33,5 @@ public class Video {
     private Date createAt;//发布时间
     private String coverPrefix;//封面
     private String videoPrefix;//视频内容
+    private Integer views;//播放次数
 }
