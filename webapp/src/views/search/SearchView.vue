@@ -91,7 +91,7 @@
 <script lang="ts" setup>
 import router from "@/router";
 import { inject, onMounted, ref, Ref } from "vue";
-import { User, VideoList, BasePageResult } from "@/types";
+import { User, VideoList, BasePageResult,BaseResult } from "@/types";
 import { IconSearch } from "@arco-design/web-vue/es/icon";
 import HeaderView from "@/views/HeaderView.vue";
 import VideoCard from "@/components/VideoCard.vue";
@@ -135,6 +135,17 @@ const search = () => {
       .then((res) => {
         if (res.data.success) {
           resultList.value = res.data.data;
+        } else {
+          Message.error(res.data.message);
+        }
+      });
+    axios
+      .get<BaseResult<never>>("/api/search/updateSearchCount", {
+        params: { videoTitle: searchForm.value.q },
+      })
+      .then((res) => {
+        if (res.data.success) {
+          Message.success(res.data.message);
         } else {
           Message.error(res.data.message);
         }
