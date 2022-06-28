@@ -5,6 +5,15 @@ export interface BaseResult<T> {
   data: T;
 }
 
+export interface BasePageResult<T> {
+  success: boolean;
+  message: string;
+  data: T[];
+  totalPages: number;
+  currentPage: number;
+  totalElements: number;
+}
+
 export interface User {
   id: string;
   username: string;
@@ -14,14 +23,14 @@ export interface User {
 
 export interface VideoList {
   id: string;
-  cover: string;
+  coverUrl: string;
   length: number;
   title: string;
   authorId: string;
   avatar: string;
   authorName: string;
   views: number;
-  time: string;
+  createAt: string;
 }
 
 export interface CommentList {

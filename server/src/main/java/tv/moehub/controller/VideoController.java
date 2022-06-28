@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tv.moehub.annotation.Login;
 import tv.moehub.bean.VideoBean;
 import tv.moehub.entity.Video;
 import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.VideoResult;
+import tv.moehub.model.VideoListResult;
 import tv.moehub.service.VideoService;
 
 import javax.validation.Valid;
@@ -43,6 +45,14 @@ public class VideoController {
         return result;
     }
 
+    @GetMapping("/getUserVideo")
+    public BasePageResult<VideoListResult> getUserVideo(@RequestParam String userId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        BasePageResult<VideoListResult> result = new BasePageResult<>();
+        videoService.getUserVideo(userId, pageNum, pageSize, result);
+        return result;
+    }
+
+    @Login
     @PostMapping("/add")
     public BaseResult<Void> add(@RequestBody @Valid VideoBean videoBean) {
         BaseResult<Void> result = new BaseResult<>();
@@ -50,10 +60,11 @@ public class VideoController {
         return result;
     }
 
-    @PostMapping("/upload")
-    public BaseResult<String> upload(@RequestPart MultipartFile video) {
+    @Login
+    @PostMapping("/uploadTemp")
+    public BaseResult<String> uploadTemp(@RequestPart MultipartFile file) {
         BaseResult<String> result = new BaseResult<>();
-        videoService.upload(video, result);
+        videoService.uploadTemp(file, result);
         return result;
     }
 }

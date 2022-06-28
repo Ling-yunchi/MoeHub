@@ -2,7 +2,7 @@
   <div class="video-card-container">
     <div class="video-cover">
       <a :href="videoUrl" target="_blank">
-        <img :src="cover" alt="cover" />
+        <img style="object-fit: cover" :src="cover" alt="cover" />
       </a>
       <div class="video-length">{{ lengthString(length) }}</div>
     </div>
@@ -54,7 +54,7 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-  videoPrefix: {
+  videoUrl: {
     type: String,
     default: "",
   },
