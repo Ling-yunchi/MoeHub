@@ -63,7 +63,7 @@ export interface BasePageResult<T> {
 }
 
 export interface Search {
-  id:String;
-  statement:String;
-  count:number;
+  id: string;
+  statement: string;
+  count: number;
 }

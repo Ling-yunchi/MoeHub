@@ -90,15 +90,13 @@
 
 <script lang="ts" setup>
 import router from "@/router";
-import { inject, onMounted, ref, Ref } from "vue";
-import { User, VideoList, BasePageResult,BaseResult } from "@/types";
+import { onMounted, ref } from "vue";
+import { VideoList, BasePageResult, BaseResult } from "@/types";
 import { IconSearch } from "@arco-design/web-vue/es/icon";
 import HeaderView from "@/views/HeaderView.vue";
 import VideoCard from "@/components/VideoCard.vue";
 import axios from "axios";
 import { Message } from "@arco-design/web-vue";
-
-const user = inject<Ref<User>>("user") as Ref<User>;
 
 interface SearchQuery {
   type: string;

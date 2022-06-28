@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onActivated, onMounted, provide, readonly, ref } from "vue";
+import { onMounted, provide, readonly, ref } from "vue";
 import axios from "@/plugins/axios";
 import { User } from "@/types";
 

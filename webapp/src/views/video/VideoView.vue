@@ -176,7 +176,7 @@
 
 <script lang="ts" setup>
 import HeaderView from "@/views/HeaderView.vue";
-import { Player, DefaultUi, Provider } from "@vime/vue-next";
+import { Player, DefaultUi } from "@vime/vue-next";
 import {
   IconHeart,
   IconHeartFill,

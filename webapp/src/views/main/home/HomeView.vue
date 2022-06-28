@@ -19,7 +19,7 @@
           :author-name="video.authorName"
           :avatar="video.avatarUrl"
           :title="video.title"
-          :views="102301"
+          :views="video.views"
           :video-url="`/video/${video.id}`"
           :author-url="`/user/${video.authorId}`"
         >
@@ -32,15 +32,17 @@
 <script lang="ts" setup>
 import { IconRight } from "@arco-design/web-vue/es/icon";
 import VideoCard from "@/components/VideoCard.vue";
-import { BasePageResult, BaseResult, Search, User, VideoList } from "@/types";
-import { inject, onMounted, ref, Ref } from "vue";
+import { BasePageResult, VideoList } from "@/types";
+import { onMounted, ref } from "vue";
 import axios from "@/plugins/axios";
 import { Message } from "@arco-design/web-vue";
 
 const popularList = ref<VideoList[]>([]);
 onMounted(() => {
   axios
-    .get<BasePageResult<VideoList>>("/api/video/showHot")
+    .get<BasePageResult<VideoList>>("/api/video/showHot", {
+      params: { pageNum: 1, pageSize: 100 },
+    })
     .then((res) => {
       if (res.data.success) {
         popularList.value = res.data.data;
@@ -118,7 +120,6 @@ onMounted(() => {
 //     createAt: "2020-01-01",
 //   },
 // ];
-
 </script>
 
 <style lang="scss" scoped>

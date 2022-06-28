@@ -23,11 +23,10 @@
 
 <script lang="ts" setup>
 import { inject, onMounted, ref, Ref } from "vue";
-import { BasePageResult, BaseResult, User, VideoList } from "@/types";
+import { BasePageResult, User, VideoList } from "@/types";
 import SmallVideoCard from "@/components/SmallVideoCard.vue";
 import router from "@/router";
 import axios from "@/plugins/axios";
-import { Video } from "@vime/core/dist/types/components/providers/video/video";
 import { Message } from "@arco-design/web-vue";
 
 const userId = router.currentRoute.value.params.id;

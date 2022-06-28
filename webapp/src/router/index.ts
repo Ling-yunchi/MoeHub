@@ -1,9 +1,4 @@
-import {
-  createRouter,
-  createWebHashHistory,
-  createWebHistory,
-  RouteRecordRaw,
-} from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import MainView from "@/views/main/MainView.vue";
 import HomeView from "@/views/main/home/HomeView.vue";
 import VideosView from "@/views/main/videos/VideosView.vue";

@@ -79,14 +79,13 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, Ref, ref } from "vue";
+import { inject, ref } from "vue";
 import { IconUser, IconLock } from "@arco-design/web-vue/es/icon";
 import axios from "@/plugins/axios";
 import { BaseResult, User } from "@/types";
 import router from "@/router";
 import { Message } from "@arco-design/web-vue";
 
-const user = inject<Ref<User>>("user") as Ref<User>;
 const updateUser = inject("updateUser") as (u: User | null) => void;
 
 const loginForm = ref({

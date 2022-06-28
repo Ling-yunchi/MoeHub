@@ -46,13 +46,12 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted, Ref, ref } from "vue";
-import { BaseResult, MyVideoDetail, User } from "@/types";
+import { onMounted, ref } from "vue";
+import { BaseResult, MyVideoDetail } from "@/types";
 import axios from "@/plugins/axios";
 import { Message } from "@arco-design/web-vue";
 
 const videoList = ref<MyVideoDetail[]>([]);
-const user = inject<Ref<User>>("user") as Ref<User>;
 onMounted(() => {
   axios
     .get<BaseResult<MyVideoDetail[]>>("/api/video/getMyVideoDetails")

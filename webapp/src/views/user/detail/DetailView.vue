@@ -98,7 +98,7 @@ import {
   IconStar,
   IconUpload,
 } from "@arco-design/web-vue/es/icon";
-import { inject, provide, Ref, ref, watch } from "vue";
+import { inject, Ref, ref, watch } from "vue";
 import router from "@/router";
 import { BaseResult, User } from "@/types";
 import axios from "@/plugins/axios";

@@ -175,10 +175,6 @@ const checkCoverUpload = (file: File) => {
     return false;
   }
 };
-const uploadCover = (option: any) => {
-  const { onProgress, onError, onSuccess, fileItem, name } = option;
-  console.log(videoForm.value);
-};
 
 const addVideo = () => {
   axios.post("/api/video/add", videoForm.value).then((res) => {

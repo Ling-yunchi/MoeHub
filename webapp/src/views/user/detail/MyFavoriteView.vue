@@ -20,10 +20,10 @@
 </template>
 
 <script lang="ts" setup>
-import { BasePageResult, BaseResult, User, VideoList } from "@/types";
+import { BasePageResult, VideoList } from "@/types";
 import SmallVideoCard from "@/components/SmallVideoCard.vue";
 import router from "@/router";
-import { inject, onMounted, ref, Ref } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "@/plugins/axios";
 import { Message } from "@arco-design/web-vue";
 

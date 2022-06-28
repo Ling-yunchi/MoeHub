@@ -26,7 +26,7 @@ public class VideoController {
 //        return result;
 //    }
 
-    @GetMapping("/hot")
+    @GetMapping("/showHot")
     public BasePageResult<VideoListResult> showHot(@RequestParam int pageNum, @RequestParam int pageSize) {
         BasePageResult<VideoListResult> result = new BasePageResult<>();
         videoService.showHot(result, pageNum, pageSize);
