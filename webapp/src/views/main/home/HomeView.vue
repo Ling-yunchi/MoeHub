@@ -32,76 +32,105 @@
 <script lang="ts" setup>
 import { IconRight } from "@arco-design/web-vue/es/icon";
 import VideoCard from "@/components/VideoCard.vue";
-import { VideoList } from "@/types";
+import { BasePageResult, BaseResult, Search, User, VideoList } from "@/types";
+import { inject, onMounted, ref, Ref } from "vue";
+import axios from "@/plugins/axios";
+import { Message } from "@arco-design/web-vue";
 
-const popularList: VideoList[] = [
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-];
+
+const popularList = ref<VideoList[]>([]);
+onMounted(() => {
+  axios
+    .get<BaseResult<Search[]>>("/api/search/showHot")
+    .then((res) => {
+      if (res.data.success) {
+        for(var i = 0; i < 5; i++){
+          axios
+          .get<BasePageResult<VideoList>>("/api/video/searchVideoByTitle", {
+            params: { videoTitle: res.data.data[i].statement, pageNum: 1, pageSize: 100 },
+          })
+          .then((result) => {
+            if (result.data.success) {
+              popularList.value.push(...result.data.data);
+            } else {
+              Message.error(result.data.message);
+            }
+          });
+        }
+      } else {
+        Message.error(res.data.message);
+      }
+    });
+});
+
+// const popularList: VideoList[] = [
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+// ];
 </script>
 
 <style lang="scss" scoped>
