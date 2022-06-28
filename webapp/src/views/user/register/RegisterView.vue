@@ -3,33 +3,137 @@
     <div class="register-form-container">
       <div class="register-title">
         <h1 class="register-title__text">
-          注册<img class="favicon" src="/favicon.svg" />
+          注册<img class="favicon" src="/favicon.svg" alt="logo" />
           <span style="color: #fa8dac">MoeHub</span>
         </h1>
       </div>
-      <div class="register-form">
-        <div class="register-form-item">
-          <label for="username">用户名</label>
-          <a-input type="text" id="username" v-model="username" />
-        </div>
-        <div class="register-form-item">
-          <label for="password">密码</label>
-          <a-input-password id="password" v-model="password" />
-        </div>
-        <div class="register-form-item">
-          <label for="nickname">昵称</label>
-          <a-input id="nickname" v-model="nickname" />
-        </div>
-        <div class="register-form-item">
-          <label for="email">邮箱</label>
-          <a-input id="email" v-model="email" />
-        </div>
-        <div class="register-form-item">
-          <label for="sex">性别</label>
+      <a-form
+        layout="vertical"
+        :model="registerForm"
+        style="width: 500px"
+        @submit-success="register"
+      >
+        <a-form-item
+          field="username"
+          label="用户名"
+          :rules="[
+            {
+              type: 'string',
+              required: true,
+              message: '请输入用户名',
+            },
+            {
+              minLength: 3,
+              maxLength: 20,
+              message: '用户名长度必须在 3 到 20 个字符之间',
+            },
+          ]"
+        >
+          <a-input
+            v-model="registerForm.username"
+            prefix-icon="user"
+            placeholder="用户名"
+            type="text"
+            autocomplete="off"
+            class="register-input"
+          >
+            <template #prefix> <icon-user /> </template>
+          </a-input>
+        </a-form-item>
+        <a-form-item
+          field="password"
+          label="密码"
+          :rules="[
+            {
+              type: 'string',
+              required: true,
+              message: '请输入密码',
+            },
+            {
+              minLength: 6,
+              maxLength: 20,
+              message: '密码必须为6-20个字符',
+            },
+          ]"
+        >
+          <a-input
+            v-model="registerForm.password"
+            placeholder="密码"
+            type="password"
+            autocomplete="off"
+            class="register-input"
+          >
+            <template #prefix>
+              <icon-lock />
+            </template>
+          </a-input>
+        </a-form-item>
+        <a-form-item
+          field="nickname"
+          label="昵称"
+          :rules="[
+            {
+              type: 'string',
+              required: true,
+              message: '请输入昵称',
+            },
+            {
+              minLength: 6,
+              maxLength: 20,
+              message: '昵称必须为6-20个字符',
+            },
+          ]"
+        >
+          <a-input
+            v-model="registerForm.nickname"
+            placeholder="昵称"
+            type="text"
+            autocomplete="off"
+            class="register-input"
+          >
+            <template #prefix>
+              <icon-lock />
+            </template>
+          </a-input>
+        </a-form-item>
+        <a-form-item
+          field="email"
+          label="邮箱"
+          :rules="[
+            {
+              type: 'email',
+              required: true,
+              message: '请输入邮箱',
+            },
+          ]"
+        >
+          <a-input
+            v-model="registerForm.email"
+            placeholder="邮箱"
+            type="email"
+            autocomplete="off"
+            class="register-input"
+          >
+            <template #prefix>
+              <icon-email />
+            </template>
+          </a-input>
+        </a-form-item>
+        <a-form-item
+          field="sex"
+          label="性别"
+          :rules="[
+            {
+              type: 'string',
+              required: true,
+              message: '请选择性别',
+            },
+          ]"
+        >
           <a-radio-group
             id="sex"
             style="display: block; margin-top: 10px"
-            v-model="sex"
+            v-model="registerForm.sex"
           >
             <a-radio value="man">
               <icon-man style="color: deepskyblue" />
@@ -40,13 +144,13 @@
               <span style="color: var(--color-neutral-7)"> 女 </span>
             </a-radio>
           </a-radio-group>
-        </div>
-        <div class="register-form-item">
-          <a-button class="register-btn" type="primary" @click="register">
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" class="register-btn" html-type="submit">
             注册
           </a-button>
-        </div>
-      </div>
+        </a-form-item>
+      </a-form>
     </div>
   </div>
 </template>
@@ -54,27 +158,34 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import {
-  IconEdit,
-  IconPlus,
   IconMan,
   IconWoman,
+  IconUser,
+  IconLock,
+  IconEmail,
 } from "@arco-design/web-vue/es/icon";
+import axios from "@/plugins/axios";
+import { BaseResult, User } from "@/types";
+import router from "@/router";
+import { Message } from "@arco-design/web-vue";
 
-const username = ref("");
-const password = ref("");
-const nickname = ref("");
-const email = ref("");
-const avatar = ref("");
-const sex = ref("");
-
+const registerForm = ref({
+  username: "",
+  password: "",
+  nickname: "",
+  email: "",
+  sex: "",
+});
 const register = () => {
-  console.log(
-    username.value,
-    password.value,
-    nickname.value,
-    email.value,
-    sex.value
-  );
+  axios.post("/api/user/register", registerForm.value).then((res) => {
+    const result = res.data as BaseResult<User>;
+    if (result.success) {
+      Message.success("注册成功");
+      router.push("/user/login");
+    } else {
+      Message.error(result.message);
+    }
+  });
 };
 </script>
 
@@ -82,11 +193,10 @@ const register = () => {
 .register-container {
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .register-form-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background-color: var(--color-neutral-1);
     display: flex;
     flex-direction: column;
@@ -110,41 +220,17 @@ const register = () => {
         }
       }
     }
-    .register-form {
+
+    .register-input {
+      height: 40px;
+    }
+    .register-btn {
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      .register-form-item {
-        width: 100%;
-        margin-bottom: 20px;
-        // last child dont need margin-bottom
-        &:last-child {
-          margin-bottom: 0;
-        }
-        label {
-          font-size: 14px;
-          font-weight: bold;
-          color: var(--color-neutral-6);
-        }
-        .a-input .a-input-password {
-          width: 100%;
-          height: 40px;
-          border-radius: var(--border-radius);
-          border: 1px solid var(--color-neutral-6);
-          padding: 0 10px;
-          &:focus {
-            border: 1px solid var(--color-primary-1);
-          }
-        }
-        .register-btn {
-          width: 100%;
-          height: 40px;
-          font-size: 14px;
-          font-weight: bold;
-          &:hover {
-            background-color: #fa8dac;
-          }
-        }
+      height: 40px;
+      font-size: 14px;
+      font-weight: bold;
+      &:hover {
+        background-color: #fa8dac;
       }
     }
   }

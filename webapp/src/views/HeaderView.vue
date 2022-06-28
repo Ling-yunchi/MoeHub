@@ -31,11 +31,20 @@
         <template v-if="user !== null">
           <a :href="`/user/${user.id}`" target="_blank">
             <a-avatar :size="50">
-              <img v-if="user.avatar !== ''" :src="user.avatar" alt="avatar" />
+              <img
+                v-if="user.avatar !== ''"
+                :src="user.avatar"
+                alt="avatar"
+                style="object-fit: cover"
+              />
               <span v-else>{{ user.nickname[0] }}</span>
             </a-avatar>
           </a>
           <a :href="`user/${user.id}`" class="user-name">{{ user.nickname }}</a>
+          <a-button class="login-btn" type="primary" @click="logout">
+            <icon-export />
+            登出
+          </a-button>
         </template>
         <template v-else>
           <a-button
@@ -61,11 +70,13 @@ import {
   IconSearch,
   IconUser,
   IconUserAdd,
+  IconExport,
 } from "@arco-design/web-vue/es/icon";
 import { ref, watch, inject, Ref, defineProps } from "vue";
 import router from "@/router";
 import { User } from "@/types";
 import { Message } from "@arco-design/web-vue";
+import axios from "@/plugins/axios";
 
 const props = defineProps({
   search: {
@@ -85,6 +96,15 @@ watch(searchType, (type) => {
     searchPlaceholder.value = "输入用户昵称";
   }
 });
+
+const logout = () => {
+  axios.get("/api/user/logout").then((data) => {
+    let res = data.data;
+    Message.info(res.message);
+    updateUser(null);
+  });
+};
+
 const search = () => {
   if (searchInput.value === "") {
     Message.warning("请输入搜索内容");
@@ -97,7 +117,8 @@ const search = () => {
   }
 };
 
-const user = inject<Ref<User>>("user") as Ref<User>;
+const user = inject("user") as Ref<User>;
+const updateUser = inject("updateUser") as (u: User | null) => void;
 </script>
 
 <style lang="scss">
@@ -147,7 +168,7 @@ const user = inject<Ref<User>>("user") as Ref<User>;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100px;
+      width: 150px;
       height: 100px;
 
       .user-name {
@@ -158,6 +179,7 @@ const user = inject<Ref<User>>("user") as Ref<User>;
         text-decoration: none;
         // 字符不换行
         white-space: nowrap;
+        margin-right: 20px;
       }
       .login-btn {
         margin-right: 10px;

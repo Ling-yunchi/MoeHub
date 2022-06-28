@@ -1,4 +1,10 @@
 // this is all the types that are used in the views
+export interface BaseResult<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
 export interface User {
   id: string;
   username: string;
@@ -16,4 +22,13 @@ export interface VideoList {
   authorName: string;
   views: number;
   time: string;
+}
+
+export interface CommentList {
+  id: string;
+  userId: string;
+  username: string;
+  avatar: string;
+  time: string;
+  content: string;
 }

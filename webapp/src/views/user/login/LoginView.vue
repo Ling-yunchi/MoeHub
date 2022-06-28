@@ -7,61 +7,106 @@
           <span style="color: #fa8dac">MoeHub</span>
         </h1>
       </div>
-      <div class="login-form">
-        <div class="login-form-item">
-          <label for="username">用户名</label>
-          <a-input type="text" id="username" v-model="username" />
-        </div>
-        <div class="login-form-item">
-          <label for="password">密码</label>
-          <a-input-password id="password" v-model="password" />
-        </div>
-        <div class="login-form-item">
-          <a-button class="login-btn" type="primary" @click="login">
+      <a-form
+        layout="vertical"
+        :model="loginForm"
+        style="width: 400px"
+        @submit-success="login"
+      >
+        <a-form-item
+          field="username"
+          label="用户名"
+          :rules="[
+            {
+              type: 'string',
+              required: true,
+              message: '请输入用户名',
+            },
+            {
+              minLength: 3,
+              maxLength: 20,
+              message: '用户名长度必须在 3 到 20 个字符之间',
+            },
+          ]"
+        >
+          <a-input
+            v-model="loginForm.username"
+            prefix-icon="user"
+            placeholder="用户名"
+            type="text"
+            autocomplete="off"
+            class="login-input"
+          >
+            <template #prefix> <icon-user /> </template>
+          </a-input>
+        </a-form-item>
+        <a-form-item
+          field="password"
+          label="密码"
+          :rules="[
+            {
+              type: 'string',
+              required: true,
+              message: '请输入密码',
+            },
+            {
+              minLength: 6,
+              maxLength: 20,
+              message: '密码必须为6-20个字符',
+            },
+          ]"
+        >
+          <a-input
+            v-model="loginForm.password"
+            placeholder="密码"
+            type="password"
+            autocomplete="off"
+            class="login-input"
+          >
+            <template #prefix>
+              <icon-lock />
+            </template>
+          </a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" class="login-btn" html-type="submit">
             登录
           </a-button>
-        </div>
-      </div>
-      <!--      <a-form layout="vertical" v-model="loginForm" style="width: 100%">-->
-      <!--        <a-form-item label="用户名">-->
-      <!--          <a-input-->
-      <!--            v-model="loginForm.username"-->
-      <!--            prefix-icon="user"-->
-      <!--            placeholder="用户名"-->
-      <!--            type="text"-->
-      <!--            autocomplete="off"-->
-      <!--          />-->
-      <!--        </a-form-item>-->
-      <!--        <a-form-item label="密码">-->
-      <!--          <a-input-->
-      <!--            v-model="loginForm.password"-->
-      <!--            prefix-icon="lock"-->
-      <!--            placeholder="密码"-->
-      <!--            type="password"-->
-      <!--            autocomplete="off"-->
-      <!--          />-->
-      <!--        </a-form-item>-->
-      <!--        <a-form-item>-->
-      <!--          <a-button type="primary" class="login-btn" @click="login">-->
-      <!--            登录-->
-      <!--          </a-button>-->
-      <!--        </a-form-item>-->
-      <!--      </a-form>-->
+        </a-form-item>
+      </a-form>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { inject, Ref, ref } from "vue";
+import { IconUser, IconLock } from "@arco-design/web-vue/es/icon";
+import axios from "@/plugins/axios";
+import { BaseResult, User } from "@/types";
+import router from "@/router";
+import { Message } from "@arco-design/web-vue";
 
-// const username = ref("");
-// const password = ref("");
+const user = inject<Ref<User>>("user") as Ref<User>;
+const updateUser = inject("updateUser") as (u: User | null) => void;
+
 const loginForm = ref({
   username: "",
   password: "",
 });
 const login = () => {
-  console.log(loginForm.value);
+  axios.post("/api/user/login", loginForm.value).then((data) => {
+    const res = data.data as BaseResult<never>;
+    if (res.success) {
+      axios.get("/api/user/self").then((data) => {
+        const res = data.data as BaseResult<User>;
+        updateUser(res.data);
+        Message.success("登录成功");
+        router.push("/home");
+      });
+    } else {
+      Message.error(res.message);
+    }
+  });
 };
 </script>
 
@@ -69,11 +114,10 @@ const login = () => {
 .login-container {
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .login-form-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background-color: var(--color-neutral-1);
     display: flex;
     flex-direction: column;
@@ -96,40 +140,16 @@ const login = () => {
         }
       }
     }
-    .login-form {
+    .login-input {
+      height: 40px;
+    }
+    .login-btn {
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      .login-form-item {
-        margin-bottom: 20px;
-        // last child dont need margin-bottom
-        &:last-child {
-          margin-bottom: 0;
-        }
-        label {
-          font-size: 14px;
-          font-weight: bold;
-          color: var(--color-neutral-6);
-        }
-        .a-input .a-input-password {
-          width: 100%;
-          height: 40px;
-          border-radius: var(--border-radius);
-          border: 1px solid var(--color-neutral-6);
-          padding: 0 10px;
-          &:focus {
-            border: 1px solid var(--color-primary-1);
-          }
-        }
-        .login-btn {
-          width: 100%;
-          height: 40px;
-          font-size: 14px;
-          font-weight: bold;
-          &:hover {
-            background-color: #fa8dac;
-          }
-        }
+      height: 40px;
+      font-size: 14px;
+      font-weight: bold;
+      &:hover {
+        background-color: #fa8dac;
       }
     }
   }
