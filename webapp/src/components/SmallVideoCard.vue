@@ -1,7 +1,7 @@
 <template>
   <div class="small-video-card">
     <a class="cover" :href="videoUrl">
-      <img :src="cover" :alt="title" />
+      <img style="object-fit: cover" :src="cover" :alt="title" />
       <span class="length">{{ lengthString(length) }}</span>
     </a>
     <a class="title" :href="videoUrl">{{ title }}</a>
@@ -16,8 +16,8 @@
 import { defineProps } from "vue";
 import { IconPlayArrow, IconClockCircle } from "@arco-design/web-vue/es/icon";
 
-defineProps({
-  videoPrefix: {
+const props = defineProps({
+  videoUrl: {
     type: String,
     required: true,
   },

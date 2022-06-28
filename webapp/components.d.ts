@@ -12,6 +12,7 @@ declare module "@vue/runtime-core" {
     AFormItem: typeof import("@arco-design/web-vue")["FormItem"];
     AInput: typeof import("@arco-design/web-vue")["Input"];
     AInputGroup: typeof import("@arco-design/web-vue")["InputGroup"];
+    AInputNumber: typeof import("@arco-design/web-vue")["InputNumber"];
     ALayout: typeof import("@arco-design/web-vue")["Layout"];
     ALayoutContent: typeof import("@arco-design/web-vue")["LayoutContent"];
     ALayoutHeader: typeof import("@arco-design/web-vue")["LayoutHeader"];

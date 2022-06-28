@@ -10,10 +10,35 @@
       :style="{ width: '1020px', padding: '40px' }"
       @submit-success="addVideo"
     >
-      <a-form-item field="title" label="标题">
+      <a-form-item
+        field="title"
+        label="标题"
+        :rules="[
+          {
+            required: true,
+            message: '请输入标题',
+            trigger: 'blur',
+          },
+          {
+            type: 'string',
+            maxLength: 50,
+            message: '标题长度不能超过50个字符',
+          },
+        ]"
+      >
         <a-input v-model="videoForm.title" placeholder="请输入标题" />
       </a-form-item>
-      <a-form-item field="description" label="简介">
+      <a-form-item
+        field="description"
+        label="简介"
+        :rules="[
+          {
+            type: 'string',
+            maxLength: 255,
+            message: '简介不能超过255个字符',
+          },
+        ]"
+      >
         <a-textarea
           v-model="videoForm.description"
           placeholder="请输入简介"
@@ -27,31 +52,56 @@
       </a-form-item>
       <a-form-item field="cover" label="封面">
         <a-upload
+          accept="image/*"
+          action="/api/video/uploadTemp"
+          name="file"
           @before-upload="checkCoverUpload"
-          :custom-request="uploadCover"
+          @success="handleCoverUploadSuccess"
+          :on-before-remove="handleCoverRemove"
           :limit="1"
           list-type="picture-card"
           image-preview
         >
         </a-upload>
       </a-form-item>
-      <a-form-item>
+      <a-form-item
+        field="coverPrefix"
+        :rules="[
+          {
+            required: true,
+            message: '请上传封面',
+            trigger: 'change',
+          },
+        ]"
+      >
         <a-input disabled v-model="videoForm.coverPrefix" />
       </a-form-item>
-      <a-form-item field="video" label="视频">
+      <a-form-item label="视频">
         <a-upload
           :auto-upload="false"
           accept="video/*"
-          action="/api/video/upload"
-          name="video"
+          action="/api/video/uploadTemp"
+          name="file"
           draggable
           @before-upload="checkVideoUpload"
           :limit="1"
           @success="handleVideoUploadSuccess"
+          :on-before-remove="handleVideoRemove"
         />
       </a-form-item>
-      <a-form-item>
-        <a-input disabled v-model="videoForm.videoPrefix" />
+      <a-form-item
+        field="videoPrefix"
+        :rules="[
+          {
+            required: true,
+            message: '请上传视频',
+            trigger: 'change',
+          },
+        ]"
+      >
+        <a-input disabled v-model="videoForm.videoUrl" />
+        <span style="margin-left: 10px; margin-right: 5px">length:</span>
+        <a-input-number disabled v-model="videoForm.length" />
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit"> 上传 </a-button>
@@ -69,9 +119,25 @@ import { BaseResult } from "@/types";
 const videoForm = ref({
   title: "",
   description: "",
-  videoPrefix: "",
+  videoUrl: "",
+  length: 0,
   coverPrefix: "",
 });
+
+const handleCoverUploadSuccess = (file: FileItem) => {
+  const res = file.response as BaseResult<string>;
+  if (res.success) {
+    videoForm.value.coverPrefix = res.data;
+    Message.success("视频上传成功");
+  } else {
+    Message.error(res.message);
+  }
+};
+
+const handleCoverRemove = () => {
+  videoForm.value.coverPrefix = "";
+};
+
 const checkVideoUpload = (file: File) => {
   //检查是否为视频文件
   const types = ["video/mp4"];
@@ -79,16 +145,26 @@ const checkVideoUpload = (file: File) => {
     Message.error("请上传视频文件！！！");
     return false;
   }
+  let audio = new Audio(URL.createObjectURL(file));
+  audio.preload = "metadata";
+  audio.onloadedmetadata = () => {
+    videoForm.value.length = Math.floor(audio.duration);
+    audio.remove();
+  };
   return true;
 };
 const handleVideoUploadSuccess = (file: FileItem) => {
   const res = file.response as BaseResult<string>;
   if (res.success) {
-    videoForm.value.videoPrefix = res.data;
+    videoForm.value.videoUrl = res.data;
     Message.success("视频上传成功");
   } else {
     Message.error(res.message);
   }
+};
+const handleVideoRemove = () => {
+  videoForm.value.videoUrl = "";
+  videoForm.value.length = 0;
 };
 
 const checkCoverUpload = (file: File) => {

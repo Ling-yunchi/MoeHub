@@ -12,7 +12,7 @@
               @play="onPlay"
               ref="mainPlayer"
             >
-              <source :src="videoInfo.videoPrefix" type="video/mp4" />
+              <source :src="videoInfo.videoUrl" type="video/mp4" />
             </video>
             <default-ui></default-ui>
           </player>
@@ -185,7 +185,7 @@ import axios from "@/plugins/axios";
 const videoInfo = ref({
   id: "1",
   title: "【湊あくあ】夜に駆ける / 奔向夜晚【翻唱】",
-  videoPrefix:
+  videoUrl:
     "http://39.103.135.63:9000/moehub/%E3%80%90%E6%B9%8A%E3%81%82%E3%81%8F%E3%81%82%E3%80%91%E5%A4%9C%E3%81%AB%E9%A7%86%E3%81%91%E3%82%8B%20_%20%E5%A5%94%E5%90%91%E5%A4%9C%E6%99%9A%E3%80%90%E7%BF%BB%E5%94%B1%E3%80%91%20-%201.%E5%A4%9C%E3%81%AB%E9%A7%86%E3%81%91%E3%82%8B%20%E5%AE%9A%E7%A8%BF%28Av330487200%2CP1%29.mp4",
   cover: "/test-cover.jpg",
   description:

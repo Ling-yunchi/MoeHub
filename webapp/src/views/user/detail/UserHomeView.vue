@@ -23,11 +23,14 @@
 
 <script lang="ts" setup>
 import { inject, Ref } from "vue";
-import { User, VideoList } from "@/types";
+import { BaseResult, User, VideoList } from "@/types";
 import SmallVideoCard from "@/components/SmallVideoCard.vue";
 import router from "@/router";
+import axios from "@/plugins/axios";
+import { Video } from "@vime/core/dist/types/components/providers/video/video";
 
 const userId = router.currentRoute.value.params.id;
+
 const user = inject<Ref<User>>("user") as Ref<User>;
 
 const videoList: VideoList[] = [
