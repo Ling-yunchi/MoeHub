@@ -30,3 +30,6 @@ minio:
   access-key: root
   secret-key: 123456789
   bucket: moehub
+
+
+

@@ -13,6 +13,7 @@ import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.VideoResult;
 import tv.moehub.model.VideoListResult;
+import tv.moehub.model.VideoDetailResult;
 import tv.moehub.service.VideoService;
 
 import javax.validation.Valid;
@@ -61,10 +62,40 @@ public class VideoController {
     }
 
     @Login
+    @GetMapping("/delete")
+    public BaseResult<Void> delete(@RequestParam String videoId) {
+        BaseResult<Void> result = new BaseResult<>();
+        videoService.delete(videoId, result);
+        return result;
+    }
+
+    @Login
+    @GetMapping("/getMyVideoDetails")
+    public BaseResult<List<VideoDetailResult>> getVideoDetails() {
+        BaseResult<List<VideoDetailResult>> result = new BaseResult<>();
+        videoService.getVideoDetails(result);
+        return result;
+    }
+
+    @Login
     @PostMapping("/uploadTemp")
     public BaseResult<String> uploadTemp(@RequestPart MultipartFile file) {
         BaseResult<String> result = new BaseResult<>();
         videoService.uploadTemp(file, result);
+        return result;
+    }
+
+    @GetMapping("/getVideoInfo")
+    public BaseResult<VideoResult> getVideoInfo(@RequestParam String videoId) {
+        BaseResult<VideoResult> result = new BaseResult<>();
+        videoService.getVideoInfo(videoId, result);
+        return result;
+    }
+
+    @GetMapping("/view")
+    public BaseResult<Void> view(@RequestParam String videoId) {
+        BaseResult<Void> result = new BaseResult<>();
+        videoService.view(videoId, result);
         return result;
     }
 }

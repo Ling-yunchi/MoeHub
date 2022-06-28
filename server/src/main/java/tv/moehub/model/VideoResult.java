@@ -2,24 +2,33 @@ package tv.moehub.model;
 
 
 import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 
 /**
- * @author wangkunling
- * @date 2022/6/24 11:36
+ * @author wangrong
+ * @date 2022/6/28 15:39
  */
+@Builder
 @Data
-@AllArgsConstructor
 public class VideoResult {
-    String id;
-    String cover;
-    Integer length;
-    String title;
-    String authorId;
-    String avatar;
-    String authorName;
-    Integer views;
-    Date time;
+    private String id;
+    private String title;
+    private String description;
+    private Integer length;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createAt;
+    private String coverUrl;
+    private String videoUrl;
+    private String authorId;
+    private String authorName;
+    private String authorAvatar;
+    private Integer views;
+    private Integer likes;
+    private Integer favorites;
+    private Boolean isFavorite;
+    private Boolean isLiked;
 }

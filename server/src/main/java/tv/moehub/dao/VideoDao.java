@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import tv.moehub.entity.Video;
+import tv.moehub.model.VideoDetailResult;
 import tv.moehub.model.VideoResult;
 import tv.moehub.model.VideoListResult;
 
@@ -29,4 +30,9 @@ public interface VideoDao extends JpaRepository<Video, String> {
             "from Video v inner join User u on v.authorId = u.id " +
             "where v.authorId = ?1")
     Page<VideoListResult> findByAuthorIdPage(String authorId, Pageable pageable);
+
+    @Query("select new tv.moehub.model.VideoDetailResult(v.id, v.title, v.description, v.length, v.coverPrefix, v.createAt) " +
+            "from Video v " +
+            "where v.authorId = ?1")
+    List<VideoDetailResult> findVideoDetailByAuthorId(String userId);
 }

@@ -14,7 +14,7 @@
         :key="video.id"
       >
         <video-card
-          :cover="video.coverUrl"
+          :cover-url="video.coverUrl"
           :length="video.length"
           :author="video.authorName"
           :avatar="video.avatar"
