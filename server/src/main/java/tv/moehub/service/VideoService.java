@@ -12,14 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tv.moehub.annotation.Login;
 import tv.moehub.bean.VideoBean;
+import tv.moehub.dao.FavoriteDao;
 import tv.moehub.dao.UserDao;
 import tv.moehub.dao.VideoDao;
+import tv.moehub.entity.Favorite;
 import tv.moehub.entity.User;
 import tv.moehub.entity.Video;
-import tv.moehub.model.BasePageResult;
-import tv.moehub.model.BaseResult;
-import tv.moehub.model.VideoDetailResult;
-import tv.moehub.model.VideoListResult;
+import tv.moehub.model.*;
 import tv.moehub.utils.FileUtil;
 import tv.moehub.utils.Uuid;
 
@@ -35,6 +34,7 @@ public class VideoService {
     private final VideoDao videoDao;
     private final UserDao userDao;
     private final FileService fileService;
+    private final FavoriteDao favoriteDao;
 
     public void queryVideoById(String videoId, BaseResult<Video> result) {
         Video video = videoDao.queryVideoById(videoId);
@@ -161,5 +161,67 @@ public class VideoService {
 
         videoDao.deleteById(videoId);
         result.construct(true, "删除成功");
+    }
+
+    public void getVideoInfo(String videoId, BaseResult<VideoResult> result) {
+        Video video = videoDao.queryVideoById(videoId);
+        if (video == null) {
+            result.construct(false, "视频不存在");
+            return;
+        }
+        String coverUrl = null;
+        String videoUrl = null;
+        try {
+            coverUrl = fileService.getFileUrl(video.getCoverPrefix());
+            videoUrl = fileService.getFileUrl(video.getVideoPrefix());
+        } catch (Exception e) {
+            log.error("get video or cover url error", e);
+            result.construct(false, "获取视频或封面失败");
+            return;
+        }
+        User author = userDao.queryUserById(video.getAuthorId());
+        String userId = (String) SecurityUtils.getSubject().getPrincipal();
+        boolean isLiked = false;
+        boolean isFavorite = false;
+        if (userId != null) {
+            Favorite favorite = favoriteDao.queryByUserIdAndVideoId(userId, videoId);
+            if (favorite != null) {
+                isFavorite = true;
+            }
+//            Likes likes = likesDao.queryByUserIdAndVideoId(userId, videoId);
+//            if (likes != null) {
+//                isLiked = true;
+//            }
+        }
+        VideoResult res = VideoResult.builder()
+                .id(video.getId())
+                .title(video.getTitle())
+                .description(video.getDescription())
+                .length(video.getLength())
+                .createAt(video.getCreateAt())
+                .coverUrl(coverUrl)
+                .videoUrl(videoUrl)
+                .authorId(video.getAuthorId())
+                .authorName(author == null ? "用户已注销" : author.getNickname())
+                .authorAvatar(author == null ? "" : author.getAvatar())
+                .views(video.getViews())
+                .favorites(favoriteDao.countByVideoId(videoId))
+                .likes(0)
+//                .likes(likesDao.countByVideoId(videoId))
+                .isFavorite(isFavorite)
+                .isLiked(isLiked)
+                .build();
+        result.construct(true, "查询成功", res);
+    }
+
+    public void view(String videoId, BaseResult<Void> result) {
+        Video video = videoDao.queryVideoById(videoId);
+        if (video == null) {
+            result.construct(false, "视频不存在");
+            return;
+        }
+        video.setViews(video.getViews() + 1);
+        videoDao.save(video);
+        result.construct(true, "成功");
     }
 }

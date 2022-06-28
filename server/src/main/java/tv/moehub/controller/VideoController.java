@@ -8,10 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import tv.moehub.annotation.Login;
 import tv.moehub.bean.VideoBean;
 import tv.moehub.entity.Video;
-import tv.moehub.model.BasePageResult;
-import tv.moehub.model.BaseResult;
-import tv.moehub.model.VideoDetailResult;
-import tv.moehub.model.VideoListResult;
+import tv.moehub.model.*;
 import tv.moehub.service.VideoService;
 
 import javax.validation.Valid;
@@ -80,6 +77,20 @@ public class VideoController {
     public BaseResult<String> uploadTemp(@RequestPart MultipartFile file) {
         BaseResult<String> result = new BaseResult<>();
         videoService.uploadTemp(file, result);
+        return result;
+    }
+
+    @GetMapping("/getVideoInfo")
+    public BaseResult<VideoResult> getVideoInfo(@RequestParam String videoId) {
+        BaseResult<VideoResult> result = new BaseResult<>();
+        videoService.getVideoInfo(videoId, result);
+        return result;
+    }
+
+    @GetMapping("/view")
+    public BaseResult<Void> view(@RequestParam String videoId) {
+        BaseResult<Void> result = new BaseResult<>();
+        videoService.view(videoId, result);
         return result;
     }
 }
