@@ -18,7 +18,7 @@ public class LikeService {
     private final VideoDao videoDao;
 
     public void setLikeVideo(LikeVideoBean likeVideoBean, BaseResult<LikeVideo> result){
-        Video video = videoDao.queryVideoById(likeVideoBean.getVideoId());
+        Video video = videoDao.findByVideoId(likeVideoBean.getVideoId());
         if(video == null){
             result.construct(true, "视频不存在");
             return;
@@ -36,7 +36,7 @@ public class LikeService {
     }
 
     public void cancelLikeVideo(LikeVideoBean likeVideoBean, BaseResult<LikeVideo> result){
-        Video video = videoDao.queryVideoById(likeVideoBean.getVideoId());
+        Video video = videoDao.findByVideoId(likeVideoBean.getVideoId());
         if(video == null) {
             result.construct(true, "视频不存在");
             return;
@@ -52,7 +52,7 @@ public class LikeService {
     }
 
     public void countLikeVideo(String videoId, BaseResult<Integer> result) {
-        Video video = videoDao.queryVideoById(videoId);
+        Video video = videoDao.findByVideoId(videoId);
         if(video == null) {
             result.construct(true, "视频不存在");
             return;

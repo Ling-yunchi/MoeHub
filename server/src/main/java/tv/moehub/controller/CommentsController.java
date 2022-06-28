@@ -36,13 +36,13 @@ public class CommentsController {
 
     }
 
-    @GetMapping("/search")//(先看最新评论)
-    public BasePageResult<CommentsResult> searchCommentsByTime(@RequestParam String videoId, @RequestParam int pageNum, @RequestParam int pageSize) {
-
-        BaseResult<Page<CommentsResult>> comments = new BaseResult<>();
-        commentsService.searchCommentsByTime(videoId, comments, pageNum,pageSize);
-        BasePageResult<CommentsResult> result= new BasePageResult<CommentsResult>(comments.getSuccess(),comments.getMessage(),comments.getData());
-        return result;
-    }
+//    @GetMapping("/search")//(先看最新评论)
+//    public BasePageResult<CommentsResult> searchCommentsByTime(@RequestParam String videoId, @RequestParam int pageNum, @RequestParam int pageSize) {
+//
+//        BaseResult<Page<CommentsResult>> comments = new BaseResult<>();
+//        commentsService.searchCommentsByTime(videoId, comments, pageNum,pageSize);
+//        BasePageResult<CommentsResult> result= new BasePageResult<CommentsResult>(comments.getSuccess(),comments.getMessage(),comments.getData());
+//        return result;
+//    }
 
 }

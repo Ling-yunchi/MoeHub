@@ -18,6 +18,9 @@ public class BasePageResult<T> {
     private Integer currentPage;
     private Long totalElement;
 
+    public BasePageResult() {
+    }
+
     public BasePageResult(Boolean success, String message, Page<T> page) {
         this.success = success;
         this.message = message;
