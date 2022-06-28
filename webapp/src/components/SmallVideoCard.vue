@@ -1,13 +1,13 @@
 <template>
   <div class="small-video-card">
     <a class="cover" :href="videoUrl">
-      <img style="object-fit: cover" :src="cover" :alt="title" />
+      <img style="object-fit: cover" :src="coverUrl" :alt="title" />
       <span class="length">{{ lengthString(length) }}</span>
     </a>
     <a class="title" :href="videoUrl">{{ title }}</a>
     <div class="info">
       <span class="views"><icon-play-arrow />{{ viewsString(views) }}</span>
-      <span><icon-clock-circle />{{ time }}</span>
+      <span><icon-clock-circle />{{ createAt }}</span>
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  cover: {
+  coverUrl: {
     type: String,
     required: true,
   },
@@ -37,7 +37,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  time: {
+  createAt: {
     type: String,
     required: true,
   },

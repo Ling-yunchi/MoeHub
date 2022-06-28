@@ -8,7 +8,7 @@
             <video
               controls
               crossorigin="anonymous"
-              :poster="videoInfo.cover"
+              :poster="videoInfo.coverUrl"
               @play="onPlay"
               ref="mainPlayer"
             >
@@ -76,14 +76,18 @@
             <div class="video-info-author">
               <a :href="`/user/${videoInfo.authorId}`">
                 <a-avatar :size="50">
-                  <img :src="videoInfo.avatar" alt="avatar" />
+                  <img
+                    style="object-fit: cover"
+                    :src="videoInfo.authorAvatar"
+                    alt="avatar"
+                  />
                 </a-avatar>
               </a>
               <span class="author-info">
-                <a class="video-info-author-name">{{ videoInfo.author }}</a>
+                <a class="video-info-author-name">{{ videoInfo.authorName }}</a>
                 <div class="video-info-author-time">
                   <icon-clock-circle />
-                  {{ videoInfo.time }}
+                  {{ videoInfo.createAt }}
                 </div>
               </span>
             </div>
@@ -178,7 +182,7 @@ import {
 } from "@arco-design/web-vue/es/icon";
 import { onMounted, ref } from "vue";
 import router from "@/router";
-import { CommentList } from "@/types";
+import { BaseResult, CommentList } from "@/types";
 import { MediaPlayer } from "@vime/core";
 import axios from "@/plugins/axios";
 
@@ -187,27 +191,49 @@ const videoInfo = ref({
   title: "【湊あくあ】夜に駆ける / 奔向夜晚【翻唱】",
   videoUrl:
     "http://39.103.135.63:9000/moehub/%E3%80%90%E6%B9%8A%E3%81%82%E3%81%8F%E3%81%82%E3%80%91%E5%A4%9C%E3%81%AB%E9%A7%86%E3%81%91%E3%82%8B%20_%20%E5%A5%94%E5%90%91%E5%A4%9C%E6%99%9A%E3%80%90%E7%BF%BB%E5%94%B1%E3%80%91%20-%201.%E5%A4%9C%E3%81%AB%E9%A7%86%E3%81%91%E3%82%8B%20%E5%AE%9A%E7%A8%BF%28Av330487200%2CP1%29.mp4",
-  cover: "/test-cover.jpg",
+  coverUrl: "/test-cover.jpg",
   description:
     "世界でいちばんおニオンさま!\nお誕生日おめでとう！~\n【初めて会った日から】\n【僕の心の全てを奪った】\nこれからももっともっと応援するよ——d(*・ω・*)b♪\n-------------\n本家様：YOASOBI様\nhttps://www.youtube.com/watch?v=x8VYWazR5mE\n分镜参考: BV1h5411a7LC\n-------------\nCover：\nvocal：湊あくあ\nillust：瑠\nmix：星月夜舞\nmovie：星奕工作室\norganizer: ZestXteam\n※中文歌词参考自互联网\n---------------\n推特关注不迷路↓\nTwitter：https://twitter.com/minatoaqua\nTwitter话题　#湊あくあ\n绘画　#あくあーと\n粉丝　#あくあクルー",
   length: 0,
   authorId: "1",
-  author: "龗云螭",
-  avatar: "/avatar.jpg",
-  time: "2020-01-01",
+  authorName: "龗云螭",
+  authorAvatar: "/avatar.jpg",
+  createAt: "2020-01-01",
   views: 114514,
   likes: 11451,
   favorites: 1111,
   isFavorite: false,
   isLiked: false,
 });
+onMounted(() => {
+  axios
+    .get("/api/video/getVideoInfo", {
+      params: { videoId: router.currentRoute.value.params.id },
+    })
+    .then((res) => {
+      const result = res.data as BaseResult<any>;
+      if (result.success) {
+        videoInfo.value = result.data;
+      } else {
+        console.log(result.message);
+        router.push("/404");
+      }
+    });
+});
+
 const mainPlayer = ref<MediaPlayer>();
 
 const played = ref(false);
 const onPlay = () => {
   if (!played.value) {
     played.value = true;
-    // TODO send a view event to server to compute the views count
+    axios
+      .get("/api/video/view", {
+        params: { videoId: videoInfo.value.id },
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 };
 
@@ -234,7 +260,7 @@ const commentList = ref<CommentList[]>([
     userId: "1",
     username: "Ling-yunchi",
     avatar: "/avatar.jpg",
-    time: "2020-01-01",
+    createAt: "2020-01-01",
     content: "夸宝可爱捏🥰🥰🥰\n\n\n\n\n🥵🥵🥵夸宝🥵🥵🥵我的夸宝🥵🥵🥵",
   },
   {
@@ -242,14 +268,10 @@ const commentList = ref<CommentList[]>([
     userId: "1",
     username: "Ling-yunchi",
     avatar: "/avatar.jpg",
-    time: "2020-01-01",
+    createAt: "2020-01-01",
     content: "夸宝可爱捏🥰🥰🥰\n\n\n\n\n🥵🥵🥵夸宝🥵🥵🥵我的夸宝🥵🥵🥵",
   },
 ]);
-
-onMounted(() => {
-  console.log(router.currentRoute.value.params.id);
-});
 </script>
 
 <style lang="scss" scoped>

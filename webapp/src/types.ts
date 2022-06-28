@@ -49,6 +49,6 @@ export interface CommentList {
   userId: string;
   username: string;
   avatar: string;
-  time: string;
+  createAt: string;
   content: string;
 }
