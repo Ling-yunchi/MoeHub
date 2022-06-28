@@ -30,7 +30,7 @@ public class Video {
     private String description;//简介
     private String authorId;//作者id
     private Integer length;//时长
-    private Date releaseTime;//发布时间
-    private String cover;//封面
-    private String videoUrl;//视频内容
+    private Date createAt;//发布时间
+    private String coverPrefix;//封面
+    private String videoPrefix;//视频内容
 }

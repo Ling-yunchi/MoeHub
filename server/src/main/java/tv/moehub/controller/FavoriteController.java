@@ -19,8 +19,8 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @GetMapping("/isFavorite")
-    public BaseResult<Favorite> isFavorite(@RequestParam String userId, @RequestParam String videoId) {
-        BaseResult<Favorite> result = new BaseResult<>();
+    public BaseResult<Void> isFavorite(@RequestParam String userId, @RequestParam String videoId) {
+        BaseResult<Void> result = new BaseResult<>();
         favoriteService.isFavorite(userId, videoId, result);
         return result;
     }

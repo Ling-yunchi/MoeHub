@@ -22,7 +22,7 @@ public class FavoriteService {
     private final FavoriteDao favoriteDao;
     private final VideoDao videoDao;
 
-    public void isFavorite(String userId, String videoId, BaseResult<Favorite> result) {
+    public void isFavorite(String userId, String videoId, BaseResult<Void> result) {
         Favorite favorite = favoriteDao.queryByUserIdAndVideoId(userId, videoId);
         if (favorite == null) {
             Favorite f = Favorite.builder()
@@ -30,10 +30,10 @@ public class FavoriteService {
                     .videoId(videoId)
                     .build();
             favoriteDao.save(f);
-            result.construct(false, "收藏成功");
+            result.construct(true, "收藏成功");
         } else {
             favoriteDao.deleteById(favorite.getId());
-            result.construct(true, "取消收藏", favorite);
+            result.construct(true, "取消收藏成功");
         }
     }
 

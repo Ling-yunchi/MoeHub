@@ -4,6 +4,8 @@ package tv.moehub.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author wangkunling
  * @date 2022/6/24 11:36
@@ -19,4 +21,5 @@ public class VideoResult {
     String avatar;
     String authorName;
     Integer views;
+    Date time;
 }

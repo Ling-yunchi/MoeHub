@@ -23,6 +23,8 @@
 import { VideoList } from "@/types";
 import SmallVideoCard from "@/components/SmallVideoCard.vue";
 
+
+
 const videoList: VideoList[] = [
   {
     id: "1",
