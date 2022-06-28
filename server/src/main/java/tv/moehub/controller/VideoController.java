@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tv.moehub.annotation.Login;
 import tv.moehub.bean.VideoBean;
 import tv.moehub.entity.Video;
+import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
 import tv.moehub.service.VideoService;
 
@@ -40,6 +42,15 @@ public class VideoController {
         return result;
     }
 
+    @Login
+    @GetMapping("/getUserVideo")
+    public BasePageResult<Video> getUserVideo(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        BasePageResult<Video> result = new BasePageResult<>();
+        videoService.getUserVideo(pageNum, pageSize, result);
+        return result;
+    }
+
+    @Login
     @PostMapping("/add")
     public BaseResult<Void> add(@RequestBody @Valid VideoBean videoBean) {
         BaseResult<Void> result = new BaseResult<>();
@@ -47,10 +58,11 @@ public class VideoController {
         return result;
     }
 
-    @PostMapping("/upload")
-    public BaseResult<String> upload(@RequestPart MultipartFile video) {
+    @Login
+    @PostMapping("/uploadTempFile")
+    public BaseResult<String> uploadVideo(@RequestPart MultipartFile file) {
         BaseResult<String> result = new BaseResult<>();
-        videoService.upload(video, result);
+        videoService.uploadTemp(file, result);
         return result;
     }
 }
