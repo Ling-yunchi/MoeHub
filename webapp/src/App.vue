@@ -25,12 +25,12 @@ onMounted(() => {
       // do nothing
     });
 });
-// user.value = {
-//   avatar: "/avatar.jpg",
-//   id: "1",
-//   nickname: "龗云螭",
-//   username: "Ling_yunchi",
-// };
+user.value = {
+  avatar: "/avatar.jpg",
+  id: "1",
+  nickname: "龗云螭",
+  username: "Ling_yunchi",
+};
 provide("user", readonly(user));
 provide("updateUser", updateUser);
 </script>

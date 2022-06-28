@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,37 +37,51 @@ public class VideoService {
     private final FileService fileService;
     private final FavoriteDao favoriteDao;
 
-    public void queryVideoById(String videoId, BaseResult<Video> result) {
-        Video video = videoDao.queryVideoById(videoId);
-        if (video == null) {
+    public void queryVideoById(String videoId, BaseResult<VideoResult> result) {
+        VideoResult videoResult = videoDao.queryVideoById(videoId);
+        if (videoResult == null) {
             result.construct(false, "视频不存在");
             return;
         }
-        result.construct(true, "视频如下", video);
+        result.construct(true, "视频如下", videoResult);
     }
 
-    public void searchVideoByTitle(String videoTitle, BaseResult<List<Video>> result) {
+    public void searchVideoByTitle(String videoTitle, BasePageResult<VideoListResult> result, int pageNum, int pageSize) {
         String videoTitleLike = "%" + videoTitle + "%";
-        List<Video> videoList = videoDao.findByTitleLike(videoTitleLike);
-        if (videoList.size() == 0) {
-            result.construct(false, "无相关视频");
-            return;
-        }
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        Page<VideoListResult> videoList = videoDao.findByTitleLike(videoTitleLike, pageable);
+        videoList.map(videoListResult -> {
+            try {
+                videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
+                return videoListResult;
+            } catch (Exception e) {
+                log.error("get video cover url error", e);
+                videoListResult.setCoverUrl(null);
+                return videoListResult;
+            }
+        });
         result.construct(true, "相关视频如下", videoList);
     }
 
-    public void searchVideoByAuthor(String nickname, BaseResult<List<Video>> result) {
+    public void searchVideoByAuthor(String nickname, BasePageResult<VideoListResult> result, int pageNum, int pageSize) {
         User user = userDao.findByNickname(nickname);
         if (user != null) {
-            List<Video> videoList = videoDao.findByAuthorId(user.getId());
-            if (videoList.size() == 0) {
-                result.construct(false, "该用户未上传视频");
-                return;
-            }
-            result.construct(true, "相关视频如下", videoList);
-            return;
+            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+            Page<VideoListResult> videoList = videoDao.findByAuthorIdPage(user.getId(), pageable);
+            videoList.map(videoListResult -> {
+                try {
+                    videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
+                    return videoListResult;
+                } catch (Exception e) {
+                    log.error("get video cover url error", e);
+                    videoListResult.setCoverUrl(null);
+                    return videoListResult;
+                }
+            });
+            result.construct(true, "查询成功", videoList);
+        } else {
+            result.construct(false, "未查询到该用户", null);
         }
-        result.construct(false, "未查询到该用户");
     }
 
     public void uploadTemp(MultipartFile file, BaseResult<String> result) {

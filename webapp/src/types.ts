@@ -52,3 +52,12 @@ export interface CommentList {
   createAt: string;
   content: string;
 }
+
+export interface BasePageResult<T> {
+  success:boolean
+  message:string
+  data:T[]
+  totalPages:number
+  currentPage:number
+  totalElement:number
+}

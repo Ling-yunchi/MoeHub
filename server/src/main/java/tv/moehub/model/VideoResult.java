@@ -1,5 +1,7 @@
 package tv.moehub.model;
 
+
+import lombok.AllArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;

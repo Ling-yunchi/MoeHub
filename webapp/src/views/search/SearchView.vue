@@ -29,9 +29,9 @@
                       padding: 0 10px;
                       font-size: 14px;
                     "
-                    v-model="searchForm.keyword"
+                    v-model="searchForm.q"
                     placeholder="请输入关键字"
-                    :prefix-icon="searchForm.keyword ? 'close' : 'search'"
+                    :prefix-icon="searchForm.q ? 'close' : 'search'"
                   >
                   </a-input>
                 </a-input-group>
@@ -53,7 +53,7 @@
                     style="height: 40px; width: 120px"
                     type="primary"
                     @click="search"
-                    :disabled="!searchForm.keyword"
+                    :disabled="!searchForm.q"
                   >
                     <icon-search style="margin-right: 5px" />
                     搜索
@@ -91,10 +91,12 @@
 <script lang="ts" setup>
 import router from "@/router";
 import { inject, ref, Ref } from "vue";
-import { User, VideoList } from "@/types";
+import { User, VideoList, BasePageResult } from "@/types";
 import { IconSearch } from "@arco-design/web-vue/es/icon";
 import HeaderView from "@/views/HeaderView.vue";
 import VideoCard from "@/components/VideoCard.vue";
+import axios from "axios";
+import { Message } from "@arco-design/web-vue";
 
 const user = inject<Ref<User>>("user") as Ref<User>;
 
@@ -118,92 +120,120 @@ const searchForm = ref({
   q: query.q || "",
   sort: "默认排序",
 });
+
+const resultList = ref<VideoList[]>([]);
 const search = () => {
+  if (searchForm.value.type == "视频") {
+    axios
+      .get<BasePageResult<VideoList>>("/api/video/searchVideoByTitle", {
+        params: { videoTitle: searchForm.value.q, pageNum: 1, pageSize: 100 },
+      })
+      .then((res) => {
+        if (res.data.success) {
+          resultList.value = res.data.data;
+        } else {
+          Message.error(res.data.message);
+        }
+      });
+  } else {
+    axios
+      .get<BasePageResult<VideoList>>("/api/video/searchVideoByAuthor", {
+        params: { nickname: searchForm.value.q, pageNum: 1, pageSize: 100 },
+      })
+      .then((res) => {
+        if (res.data.success) {
+          resultList.value = res.data.data;
+        } else {
+          Message.error(res.data.message);
+        }
+      });
+  }
+
   console.log(searchForm.value);
   resultList.value = [
     ...resultList.value,
     {
       id: "1",
-      cover: "/cover.webp",
+      coverUrl: "/cover.webp",
       length: 100,
       title: "这眼睛里可不兴有爱心啊！",
       authorId: "1",
       avatar: "/avatar.jpg",
       authorName: "Ling-yunchi",
       views: 102301,
-      time: "2020-01-01",
+      createAt: "2020-01-01",
     },
   ];
 };
 
-const resultList = ref([
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-]);
+// const resultList = ref([
+//   {
+//     id: "1",
+//     cover: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     time: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     cover: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     time: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     cover: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     time: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     cover: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     time: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     cover: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     time: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     cover: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     time: "2020-01-01",
+//   },
+// ]);
 </script>
 
 <style lang="scss" scoped>

@@ -182,9 +182,10 @@ import {
 } from "@arco-design/web-vue/es/icon";
 import { onMounted, ref } from "vue";
 import router from "@/router";
-import { BaseResult, CommentList } from "@/types";
+import { BasePageResult, BaseResult, CommentList } from "@/types";
 import { MediaPlayer } from "@vime/core";
 import axios from "@/plugins/axios";
+import { Message } from "@arco-design/web-vue";
 
 const videoInfo = ref({
   id: "1",
@@ -244,6 +245,39 @@ const likes = (like: boolean) => {
   videoInfo.value.likes = like
     ? videoInfo.value.likes + 1
     : videoInfo.value.likes - 1;
+  if (!like) {
+    axios
+      .get("/api/like/setLike", {
+        params: {
+          userId: videoInfo.value.authorId,
+          videoId: videoInfo.value.id,
+        },
+      })
+      .then((data) => {
+        const res = data.data as BaseResult<never>;
+        if (res.success) {
+          Message.success(res.message);
+        } else {
+          Message.error(res.message);
+        }
+      });
+  } else {
+    axios
+      .get("/api/like/cancelLike", {
+        params: {
+          userId: videoInfo.value.authorId,
+          videoId: videoInfo.value.id,
+        },
+      })
+      .then((data) => {
+        const res = data.data as BaseResult<never>;
+        if (res.success) {
+          Message.success(res.message);
+        } else {
+          Message.error(res.message);
+        }
+      });
+  }
 };
 const favorite = (favor: boolean) => {
   console.log("favorite");
@@ -252,6 +286,18 @@ const favorite = (favor: boolean) => {
   videoInfo.value.favorites = favor
     ? videoInfo.value.favorites + 1
     : videoInfo.value.favorites - 1;
+  axios
+    .get("/api/favorite/isFavorite", {
+      params: { userId: videoInfo.value.authorId, videoId: videoInfo.value.id },
+    })
+    .then((data) => {
+      const res = data.data as BaseResult<never>;
+      if (res.success) {
+        Message.success(res.message);
+      } else {
+        Message.error("操作失败");
+      }
+    });
 };
 
 const commentList = ref<CommentList[]>([
@@ -272,6 +318,21 @@ const commentList = ref<CommentList[]>([
     content: "夸宝可爱捏🥰🥰🥰\n\n\n\n\n🥵🥵🥵夸宝🥵🥵🥵我的夸宝🥵🥵🥵",
   },
 ]);
+
+onMounted(() => {
+  console.log(router.currentRoute.value.params.id);
+  axios
+    .get<BasePageResult<CommentList>>("/api/comments/search", {
+      params: { videoId: videoInfo.value.id, pageNum: 1, pageSize: 100 },
+    })
+    .then((res) => {
+      if (res.data.success) {
+        commentList.value = res.data.data;
+      } else {
+        Message.error("评论刷新失败");
+      }
+    });
+});
 </script>
 
 <style lang="scss" scoped>

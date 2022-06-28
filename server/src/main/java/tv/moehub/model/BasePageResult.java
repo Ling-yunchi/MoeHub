@@ -18,9 +18,6 @@ public class BasePageResult<T> {
     private Integer currentPage;
     private Long totalElement;
 
-    public BasePageResult(Boolean success, String message, com.github.pagehelper.Page<CommentsResult> data) {
-    }
-
     public BasePageResult(Boolean success, String message, Page<T> page) {
         this.success = success;
         this.message = message;
