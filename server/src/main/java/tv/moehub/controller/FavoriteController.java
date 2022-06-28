@@ -1,9 +1,11 @@
 package tv.moehub.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import tv.moehub.annotation.Login;
 import tv.moehub.entity.Favorite;
 import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
@@ -19,10 +21,11 @@ import java.util.List;
 public class FavoriteController {
     private final FavoriteService favoriteService;
 
+    @Login
     @GetMapping("/isFavorite")
-    public BaseResult<Void> isFavorite(@RequestParam String userId, @RequestParam String videoId) {
+    public BaseResult<Void> isFavorite(@RequestParam String videoId) {
         BaseResult<Void> result = new BaseResult<>();
-        favoriteService.isFavorite(userId, videoId, result);
+        favoriteService.isFavorite(videoId, result);
         return result;
     }
 

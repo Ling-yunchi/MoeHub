@@ -1,10 +1,11 @@
 package tv.moehub.service;
 
 
-import com.github.pagehelper.Page;
 import lombok.AllArgsConstructor;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,10 +15,13 @@ import tv.moehub.dao.CommentsDao;
 import tv.moehub.dao.UserDao;
 import tv.moehub.dao.VideoDao;
 import tv.moehub.entity.Comments;
+import tv.moehub.entity.Video;
+import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.CommentsResult;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -28,27 +32,35 @@ public class CommentsService {
     private final UserDao userDao;
 
 
-    public void addComments(CommentsBean commentsBean, BaseResult<CommentsResult> result) {
+    public void addComments(CommentsBean commentsBean, BaseResult<Void> result) {
         //给视频加一个评论
-
-        if (videoDao.queryVideoById(commentsBean.getVideoId()) == null) {
+        Optional<Video> videoOptional = videoDao.findById(commentsBean.getVideoId());
+        if (!videoOptional.isPresent()) {
             result.construct(false, "未找到视频,评论失败");
             return;
         }
-        Comments comments = new Comments();
+        var video = videoOptional.get();
+        String userId = (String) SecurityUtils.getSubject().getPrincipal();
+        Comments comments = Comments.builder()
+                .content(commentsBean.getContent())
+                .videoId(commentsBean.getVideoId())
+                .userId(userId)
+                .createAt(new Date())
+                .build();
 
-        Date date = new Date();//设置时间
-        commentsBean.setTime(date);
-
-        BeanUtils.copyProperties(commentsBean, comments);
         commentsDao.save(comments);
-        result.construct(true, "评论成功", new CommentsResult( comments));
+        result.construct(true, "评论成功");
     }
 
-    public void deleteComments(String id, BaseResult<CommentsResult> result) {
-        //删评论
-        if (commentsDao.queryCommentsById(id) == null) {
+    public void deleteComments(String id, BaseResult<Void> result) {
+        Comments comments = commentsDao.queryCommentsById(id);
+        if (comments == null) {
             result.construct(false, "没有该评论,删除失败");//后边没加东西
+            return;
+        }
+        String userId = (String) SecurityUtils.getSubject().getPrincipal();
+        if (!comments.getUserId().equals(userId)) {
+            result.construct(false, "没有权限删除该评论");
             return;
         }
         commentsDao.deleteById(id);
@@ -56,28 +68,11 @@ public class CommentsService {
 
     }
 
-    public void searchCommentsByTime(String videoId, BaseResult<Page<CommentsResult>> result, int pageNum,int pageSize) {
+    public void searchCommentsByTime(String videoId, Integer pageNum, Integer pageSize, BasePageResult<CommentsResult> result) {
         //找出视频的所有评论(先看最新评论)
-
-        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.Direction.DESC, "time");
-        Page<Comments> comments = commentsDao.queryAllByVideoId(videoId, pageable);
-
-        Page<CommentsResult> results = new Page<>();
-
-        for (Comments example:comments)
-        {
-            CommentsResult a = new CommentsResult(example);
-            a.setUserName(userDao.queryUserById(example.getUserId()).getUsername());
-            a.setAvatar(userDao.queryUserById(example.getUserId()).getAvatar());
-            results.add(a);
-        }
-
-        if (results.isEmpty()) {
-            result.construct(true, "找不到", results);
-            return;
-        }
-
-        result.construct(true, "查询成功", results);
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        Page<CommentsResult> comments = commentsDao.queryAllByVideoId(videoId, pageable);
+        result.construct(true, "查询成功", comments);
     }
 
 }

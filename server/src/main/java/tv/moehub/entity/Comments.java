@@ -29,7 +29,7 @@ public class Comments {
     private String userId;
     private String videoId;
     private String content;
-    private Date time;
+    private Date createAt;
 
 
 }

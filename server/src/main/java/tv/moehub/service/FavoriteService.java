@@ -2,6 +2,7 @@ package tv.moehub.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.querydsl.QPageRequest;
@@ -26,7 +27,8 @@ public class FavoriteService {
     private final VideoDao videoDao;
     private final FileService fileService;
 
-    public void isFavorite(String userId, String videoId, BaseResult<Void> result) {
+    public void isFavorite(String videoId, BaseResult<Void> result) {
+        String userId = (String) SecurityUtils.getSubject().getPrincipal();
         Favorite favorite = favoriteDao.queryByUserIdAndVideoId(userId, videoId);
         if (favorite == null) {
             Favorite f = Favorite.builder()
