@@ -61,3 +61,9 @@ export interface BasePageResult<T> {
   currentPage: number;
   totalElement: number;
 }
+
+export interface Search {
+  id:String;
+  statement:String;
+  count:number;
+}
