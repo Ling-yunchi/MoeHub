@@ -42,11 +42,10 @@ public class VideoController {
         return result;
     }
 
-    @Login
     @GetMapping("/getUserVideo")
-    public BasePageResult<Video> getUserVideo(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    public BasePageResult<Video> getUserVideo(@RequestParam String userId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         BasePageResult<Video> result = new BasePageResult<>();
-        videoService.getUserVideo(pageNum, pageSize, result);
+        videoService.getUserVideo(userId, pageNum, pageSize, result);
         return result;
     }
 

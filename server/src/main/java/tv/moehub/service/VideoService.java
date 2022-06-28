@@ -23,7 +23,6 @@ import tv.moehub.utils.Uuid;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -104,8 +103,7 @@ public class VideoService {
         result.construct(true, "上传成功");
     }
 
-    public void getUserVideo(Integer pageNum, Integer pageSize, BasePageResult<Video> result) {
-        String userId = (String) SecurityUtils.getSubject().getPrincipal();
+    public void getUserVideo(String userId, Integer pageNum, Integer pageSize, BasePageResult<Video> result) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<Video> videoList = videoDao.findByAuthorIdPageable(userId, pageable);
         result.construct(true, "查询成功", videoList);
