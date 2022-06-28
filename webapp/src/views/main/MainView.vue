@@ -31,7 +31,7 @@
           </a-menu-item>
         </a-menu>
       </a-layout-sider>
-      <a-layout-content>
+      <a-layout-content style="height: calc(100vh - 80px); overflow: scroll">
         <router-view></router-view>
       </a-layout-content>
     </a-layout>

@@ -10,10 +10,9 @@
               crossorigin="anonymous"
               :poster="videoInfo.coverUrl"
               @play="onPlay"
+              id="player"
               ref="mainPlayer"
-            >
-              <source :src="videoInfo.videoUrl" type="video/mp4" />
-            </video>
+            ></video>
             <default-ui></default-ui>
           </player>
           <div class="video-footer">
@@ -177,7 +176,7 @@
 
 <script lang="ts" setup>
 import HeaderView from "@/views/HeaderView.vue";
-import { Player, DefaultUi } from "@vime/vue-next";
+import { Player, DefaultUi, Provider } from "@vime/vue-next";
 import {
   IconHeart,
   IconHeartFill,
@@ -214,6 +213,8 @@ const videoInfo = ref({
   isFavorite: false,
   isLiked: false,
 });
+
+const mainPlayer = ref<MediaPlayer>();
 onMounted(() => {
   axios
     .get("/api/video/getVideoInfo", {
@@ -223,14 +224,15 @@ onMounted(() => {
       const result = res.data as BaseResult<any>;
       if (result.success) {
         videoInfo.value = result.data;
+        let source = `<source src="${videoInfo.value.videoUrl}" type="video/mp4">`;
+        let player = document.getElementById("player") as HTMLVideoElement;
+        player.innerHTML = source;
       } else {
         console.log(result.message);
         router.push("/404");
       }
     });
 });
-
-const mainPlayer = ref<MediaPlayer>();
 
 const played = ref(false);
 const onPlay = () => {
@@ -247,7 +249,7 @@ const onPlay = () => {
 };
 
 const likes = (like: boolean) => {
-  if (!like) {
+  if (like) {
     axios
       .get("/api/like/setLike", {
         params: {

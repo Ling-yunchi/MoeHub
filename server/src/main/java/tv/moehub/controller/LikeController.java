@@ -18,7 +18,7 @@ public class LikeController {
     private final LikeService likeService;
 
     @Login
-    @PostMapping("/setLike")
+    @GetMapping("/setLike")
     public BaseResult<Void> setLikeVideo(@RequestParam String videoId) {
         BaseResult<Void> result = new BaseResult<>();
         likeService.setLikeVideo(videoId, result);
@@ -26,14 +26,14 @@ public class LikeController {
     }
 
     @Login
-    @PostMapping("/cancelLike")
+    @GetMapping("/cancelLike")
     public BaseResult<Void> cancelLikeVideo(@RequestParam String videoId) {
         BaseResult<Void> result = new BaseResult<>();
         likeService.cancelLikeVideo(videoId, result);
         return result;
     }
 
-    @PostMapping("/countLike")
+    @GetMapping("/countLike")
     public BaseResult<Integer> countLikeVideo(@RequestParam String videoId){
         BaseResult<Integer> result = new BaseResult<>();
         likeService.countLikeVideo(videoId, result);

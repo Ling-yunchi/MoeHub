@@ -6,12 +6,12 @@
     <div class="video-list">
       <div class="video-list__item" v-for="video in videoList" :key="video.id">
         <video-card
-          :cover="video.coverUrl"
+          :cover-url="video.coverUrl"
           :length="video.length"
-          :author="video.authorName"
-          :avatar="video.avatar"
+          :author-name="video.authorName"
+          :avatar="video.avatarUrl"
           :title="video.title"
-          :views="102301"
+          :views="video.views"
           :video-url="`/video/${video.id}`"
           :author-url="`/user/${video.authorId}`"
         >
@@ -22,76 +22,26 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import VideoCard from "@/components/VideoCard.vue";
+import axios from "@/plugins/axios";
+import { BasePageResult, VideoList } from "@/types";
+import { Message } from "@arco-design/web-vue";
 
-const videoList = ref([
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-]);
+const videoList = ref<VideoList[]>([]);
+const getVideos = () => {
+  axios
+    .get("/api/video/getAllVideo", { params: { pageNum: 1, pageSize: 100 } })
+    .then((res) => {
+      const result = res.data as BasePageResult<VideoList>;
+      if (result.success) {
+        videoList.value = result.data;
+      } else {
+        Message.error(result.message);
+      }
+    });
+};
+onMounted(getVideos);
 </script>
 
 <style lang="scss" scoped>

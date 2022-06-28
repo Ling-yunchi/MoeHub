@@ -29,7 +29,7 @@ export interface VideoList {
   length: number;
   title: string;
   authorId: string;
-  avatar: string;
+  avatarUrl: string;
   authorName: string;
   views: number;
   createAt: string;

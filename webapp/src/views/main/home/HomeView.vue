@@ -16,8 +16,8 @@
         <video-card
           :cover-url="video.coverUrl"
           :length="video.length"
-          :author="video.authorName"
-          :avatar="video.avatar"
+          :author-name="video.authorName"
+          :avatar="video.avatarUrl"
           :title="video.title"
           :views="102301"
           :video-url="`/video/${video.id}`"
@@ -36,7 +36,6 @@ import { BasePageResult, BaseResult, Search, User, VideoList } from "@/types";
 import { inject, onMounted, ref, Ref } from "vue";
 import axios from "@/plugins/axios";
 import { Message } from "@arco-design/web-vue";
-
 
 const popularList = ref<VideoList[]>([]);
 onMounted(() => {
@@ -131,6 +130,7 @@ onMounted(() => {
 //     createAt: "2020-01-01",
 //   },
 // ];
+
 </script>
 
 <style lang="scss" scoped>
