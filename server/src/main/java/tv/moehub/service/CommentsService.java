@@ -42,7 +42,7 @@ public class CommentsService {
 
         BeanUtils.copyProperties(commentsBean, comments);
         commentsDao.save(comments);
-        result.construct(true, "评论成功", new CommentsResult(commentsDao, userDao, comments));
+        result.construct(true, "评论成功", new CommentsResult( comments));
     }
 
     public void deleteComments(String id, BaseResult<CommentsResult> result) {
@@ -66,7 +66,9 @@ public class CommentsService {
 
         for (Comments example:comments)
         {
-            CommentsResult a = new CommentsResult(commentsDao, userDao,example);
+            CommentsResult a = new CommentsResult(example);
+            a.setUserName(userDao.queryUserById(example.getUserId()).getUsername());
+            a.setAvatar(userDao.queryUserById(example.getUserId()).getAvatar());
             results.add(a);
         }
 
