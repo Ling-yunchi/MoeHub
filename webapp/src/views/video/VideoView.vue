@@ -251,7 +251,6 @@ const likes = (like: boolean) => {
     axios
       .get("/api/like/setLike", {
         params: {
-          userId: videoInfo.value.authorId,
           videoId: videoInfo.value.id,
         },
       })
@@ -271,7 +270,6 @@ const likes = (like: boolean) => {
     axios
       .get("/api/like/cancelLike", {
         params: {
-          userId: videoInfo.value.authorId,
           videoId: videoInfo.value.id,
         },
       })
