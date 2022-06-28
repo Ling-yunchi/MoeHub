@@ -20,79 +20,97 @@
 </template>
 
 <script lang="ts" setup>
-import { VideoList } from "@/types";
+import { BasePageResult, BaseResult, User, VideoList } from "@/types";
 import SmallVideoCard from "@/components/SmallVideoCard.vue";
+import router from "@/router";
+import { inject, onMounted, ref, Ref } from "vue";
+import axios from "@/plugins/axios";
+import { Message } from "@arco-design/web-vue";
 
+const userId = router.currentRoute.value.params.id;
+const videoList = ref<VideoList[]>([]);
+onMounted(() => {
+  axios
+    .get<BasePageResult<VideoList>>("/api/favorite/showMyFavorite", {
+      params: { userId, pageNum: 1, pageSize: 100 },
+    })
+    .then((res) => {
+      if (res.data.success) {
+        videoList.value = res.data.data;
+      } else {
+        Message.error(res.data.message);
+      }
+    });
+});
 
-
-const videoList: VideoList[] = [
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-  {
-    id: "1",
-    coverUrl: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-    createAt: "2020-01-01",
-  },
-];
+// const videoList: VideoList[] = [
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+//   {
+//     id: "1",
+//     coverUrl: "/cover.webp",
+//     length: 100,
+//     title: "这眼睛里可不兴有爱心啊！",
+//     authorId: "1",
+//     avatar: "/avatar.jpg",
+//     authorName: "Ling-yunchi",
+//     views: 102301,
+//     createAt: "2020-01-01",
+//   },
+// ];
 </script>
 
 <style lang="scss" scoped>

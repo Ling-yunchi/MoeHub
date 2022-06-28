@@ -15,22 +15,15 @@ import java.util.List;
  * @date 2022/6/20 16:43
  */
 public interface VideoDao extends JpaRepository<Video, String> {
-    @Query(value = "select new tv.moehub.model.VideoResult(v.id, v.cover, v.length, v.title, v.authorId, u.avatar, u.nickname, 0) " +
+    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
             "from Video v join User u on v.authorId = u.id " +
             "where v.id = ?1")
     VideoResult queryVideoById(String videoId);
 
-    @Query(value = "select new tv.moehub.model.VideoResult(v.id, v.cover, v.length, v.title, v.authorId, u.avatar, u.nickname, 0) " +
+    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
             "from Video v join User u on v.authorId = u.id " +
             "where v.title like ?1")
-    List<VideoResult> findByTitleLike(String title);
-
-    @Query(value = "select new tv.moehub.model.VideoResult(v.id, v.cover, v.length, v.title, v.authorId, u.avatar, u.nickname, 0) " +
-            "from Video v join User u on v.authorId = u.id " +
-            "where u.nickname = ?1")
-    List<VideoResult> findByAuthorId(String authorId);
-
-    List<Video> findByAuthorId(String authorId);
+    Page<VideoListResult> findByTitleLike(String title, Pageable pageable);
 
     @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
             "from Video v inner join User u on v.authorId = u.id " +

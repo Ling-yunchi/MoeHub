@@ -26,6 +26,7 @@ import tv.moehub.utils.Uuid;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,32 +47,42 @@ public class VideoService {
         result.construct(true, "视频如下", videoResult);
     }
 
-    public void searchVideoByTitle(String videoTitle, BasePageResult<VideoResult> result, int pageNum, int pageSize) {
+    public void searchVideoByTitle(String videoTitle, BasePageResult<VideoListResult> result, int pageNum, int pageSize) {
         String videoTitleLike = "%" + videoTitle + "%";
-        List<VideoResult> videoResultList = videoDao.findByTitleLike(videoTitleLike);
-        if (videoResultList.size() == 0) {
-            result.construct(false, "无相关视频", null);
-            return;
-        }
-        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.Direction.DESC);
-        Page<VideoResult> videoResultPage = new PageImpl<VideoResult>(videoResultList, pageable, videoResultList.size());
-        result.construct(true, "相关视频如下", videoResultPage);
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        Page<VideoListResult> videoList = videoDao.findByTitleLike(videoTitleLike, pageable);
+        videoList.map(videoListResult -> {
+            try {
+                videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
+                return videoListResult;
+            } catch (Exception e) {
+                log.error("get video cover url error", e);
+                videoListResult.setCoverUrl(null);
+                return videoListResult;
+            }
+        });
+        result.construct(true, "相关视频如下", videoList);
     }
 
-    public void searchVideoByAuthor(String nickname, BasePageResult<VideoResult> result, int pageNum, int pageSize) {
+    public void searchVideoByAuthor(String nickname, BasePageResult<VideoListResult> result, int pageNum, int pageSize) {
         User user = userDao.findByNickname(nickname);
         if (user != null) {
-            List<VideoResult> videoResultList = videoDao.findByAuthorId(user.getId());
-            if (videoResultList.size() == 0) {
-                result.construct(false, "该用户未上传视频", null);
-                return;
-            }
-            Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.Direction.DESC);
-            Page<VideoResult> videoResultPage = new PageImpl<VideoResult>(videoResultList, pageable, videoResultList.size());
-            result.construct(true, "相关视频如下", videoResultPage);
-            return;
+            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+            Page<VideoListResult> videoList = videoDao.findByAuthorIdPage(user.getId(), pageable);
+            videoList.map(videoListResult -> {
+                try {
+                    videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
+                    return videoListResult;
+                } catch (Exception e) {
+                    log.error("get video cover url error", e);
+                    videoListResult.setCoverUrl(null);
+                    return videoListResult;
+                }
+            });
+            result.construct(true, "查询成功", videoList);
+        } else {
+            result.construct(false, "未查询到该用户", null);
         }
-        result.construct(false, "未查询到该用户", null);
     }
 
     public void uploadTemp(MultipartFile file, BaseResult<String> result) {

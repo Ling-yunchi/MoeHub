@@ -24,23 +24,23 @@ import java.util.List;
 public class VideoController {
     private final VideoService videoService;
 
-    @GetMapping("/queryVideoById")
-    public BaseResult<VideoResult> queryVideoById(@RequestParam String videoId) {
-        BaseResult<VideoResult> result = new BaseResult<>();
-        videoService.queryVideoById(videoId, result);
-        return result;
-    }
+//    @GetMapping("/queryVideoById")
+//    public BaseResult<VideoResult> queryVideoById(@RequestParam String videoId) {
+//        BaseResult<VideoResult> result = new BaseResult<>();
+//        videoService.queryVideoById(videoId, result);
+//        return result;
+//    }
 
     @GetMapping("/searchVideoByTitle")
-    public BasePageResult<VideoResult> searchVideoByTitle(@RequestParam String videoTitle, @RequestParam int pageNum, @RequestParam int pageSize) {
-        BasePageResult<VideoResult> result = new BasePageResult<>();
+    public BasePageResult<VideoListResult> searchVideoByTitle(@RequestParam String videoTitle, @RequestParam int pageNum, @RequestParam int pageSize) {
+        BasePageResult<VideoListResult> result = new BasePageResult<>();
         videoService.searchVideoByTitle(videoTitle, result, pageNum, pageSize);
         return result;
     }
 
     @GetMapping("/searchVideoByAuthor")
-    public BasePageResult<VideoResult> searchVideoByAuthor(@RequestParam String nickname, @RequestParam int pageNum, @RequestParam int pageSize) {
-        BasePageResult<VideoResult> result = new BasePageResult<>();
+    public BasePageResult<VideoListResult> searchVideoByAuthor(@RequestParam String nickname, @RequestParam int pageNum, @RequestParam int pageSize) {
+        BasePageResult<VideoListResult> result = new BasePageResult<>();
         videoService.searchVideoByAuthor(nickname, result, pageNum, pageSize);
         return result;
     }
