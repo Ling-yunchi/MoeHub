@@ -23,16 +23,16 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping("/updateSearchCount")
-    public BaseResult<Search> updateSearchCount(@RequestParam String statement) {
-        BaseResult<Search> result = new BaseResult<>();
+    public BaseResult<Void> updateSearchCount(@RequestParam String statement) {
+        BaseResult<Void> result = new BaseResult<>();
         searchService.updateSearchCount(statement, result);
         return result;
     }
 
-    @GetMapping("/showTop5")
-    public BaseResult<List<Search>> showTop5() {
+    @GetMapping("/showHot")
+    public BaseResult<List<Search>> showHot() {
         BaseResult<List<Search>> result = new BaseResult<>();
-        searchService.showTop5(result);
+        searchService.showHot(result);
         return result;
     }
 }

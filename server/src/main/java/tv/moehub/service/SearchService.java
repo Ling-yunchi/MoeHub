@@ -19,7 +19,7 @@ import java.util.List;
 public class SearchService {
     private final SearchDao searchDao;
 
-    public void updateSearchCount(String statement, BaseResult<Search> result) {
+    public void updateSearchCount(String statement, BaseResult<Void> result) {
         Search search = searchDao.findSearchByStatement(statement);
         if (search == null) {
             Search s = Search.builder()
@@ -27,7 +27,7 @@ public class SearchService {
                     .count(1)
                     .build();
             searchDao.save(s);
-            result.construct(true, "已经记录该新搜索", s);
+            result.construct(true, "已经记录该新搜索");
         } else {
             Search s = Search.builder()
                     .id(search.getId())
@@ -35,11 +35,11 @@ public class SearchService {
                     .count(search.getCount() + 1)
                     .build();
             searchDao.save(s);
-            result.construct(true, "已经为该搜索增加搜索数", s);
+            result.construct(true, "已经为该搜索增加搜索数");
         }
     }
 
-    public void showTop5(BaseResult<List<Search>> result) {
+    public void showHot(BaseResult<List<Search>> result) {
         List<Search> searchList = searchDao.findTopOrderByCount(5);
         if (searchList.size() == 0) {
             result.construct(false, "暂无搜索", searchList);
