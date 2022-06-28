@@ -1,12 +1,13 @@
 package tv.moehub.controller;
 
+
 import com.github.pagehelper.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tv.moehub.annotation.Login;
 import tv.moehub.bean.CommentsBean;
-import tv.moehub.entity.Comments;
+import tv.moehub.model.BasePageResult;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.CommentsResult;
 import tv.moehub.service.CommentsService;
@@ -36,10 +37,11 @@ public class CommentsController {
     }
 
     @GetMapping("/search")//(先看最新评论)
-    public BaseResult<Page<Comments>> searchCommentsByTime(@RequestParam String videoId, @RequestParam int pageNum,@RequestParam int pageSize) {
+    public BasePageResult<CommentsResult> searchCommentsByTime(@RequestParam String videoId, @RequestParam int pageNum, @RequestParam int pageSize) {
 
-        BaseResult<Page<Comments>> result = new BaseResult<>();
-        commentsService.searchCommentsByTime(videoId, result, pageNum,pageSize);
+        BaseResult<Page<CommentsResult>> comments = new BaseResult<>();
+        commentsService.searchCommentsByTime(videoId, comments, pageNum,pageSize);
+        BasePageResult<CommentsResult> result= new BasePageResult<CommentsResult>(comments.getSuccess(),comments.getMessage(),comments.getData());
         return result;
     }
 

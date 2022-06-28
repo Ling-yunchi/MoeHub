@@ -1,5 +1,6 @@
 package tv.moehub.service;
 
+
 import com.github.pagehelper.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import tv.moehub.bean.CommentsBean;
 import tv.moehub.dao.CommentsDao;
+import tv.moehub.dao.UserDao;
 import tv.moehub.dao.VideoDao;
 import tv.moehub.entity.Comments;
 import tv.moehub.model.BaseResult;
@@ -23,6 +25,7 @@ public class CommentsService {
 
     private final CommentsDao commentsDao;
     private final VideoDao videoDao;
+    private final UserDao userDao;
 
 
     public void addComments(CommentsBean commentsBean, BaseResult<CommentsResult> result) {
@@ -39,7 +42,7 @@ public class CommentsService {
 
         BeanUtils.copyProperties(commentsBean, comments);
         commentsDao.save(comments);
-        result.construct(true, "评论成功", new CommentsResult(comments));
+        result.construct(true, "评论成功", new CommentsResult(commentsDao, userDao, comments));
     }
 
     public void deleteComments(String id, BaseResult<CommentsResult> result) {
@@ -53,18 +56,26 @@ public class CommentsService {
 
     }
 
-    public void searchCommentsByTime(String videoId, BaseResult<Page<Comments>> result, int pageNum,int pageSize) {
+    public void searchCommentsByTime(String videoId, BaseResult<Page<CommentsResult>> result, int pageNum,int pageSize) {
         //找出视频的所有评论(先看最新评论)
 
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.Direction.DESC, "time");
-
         Page<Comments> comments = commentsDao.queryAllByVideoId(videoId, pageable);
 
-        if (comments.size() == 0) {
-            result.construct(true, "找不到", comments);
+        Page<CommentsResult> results = new Page<>();
+
+        for (Comments example:comments)
+        {
+            CommentsResult a = new CommentsResult(commentsDao, userDao,example);
+            results.add(a);
+        }
+
+        if (results.isEmpty()) {
+            result.construct(true, "找不到", results);
             return;
         }
-        result.construct(true, "查询成功", comments);
+
+        result.construct(true, "查询成功", results);
     }
 
 }

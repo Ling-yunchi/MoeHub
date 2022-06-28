@@ -1,7 +1,6 @@
 package tv.moehub.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class BasePageResult<T> {
     private Integer currentPage;
     private Long totalElement;
 
-    public BasePageResult() {
+    public BasePageResult(Boolean success, String message, com.github.pagehelper.Page<CommentsResult> data) {
     }
 
     public BasePageResult(Boolean success, String message, Page<T> page) {
