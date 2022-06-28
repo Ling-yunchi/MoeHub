@@ -18,7 +18,13 @@ public class BasePageResult<T> {
     private Integer currentPage;
     private Long totalElement;
 
-    public BasePageResult(Boolean success, String message, com.github.pagehelper.Page<CommentsResult> data) {
+    public BasePageResult(Boolean success, String message, Page<T> page) {
+        this.success = success;
+        this.message = message;
+        this.data = page.getContent();
+        this.totalPages = page.getTotalPages();
+        this.currentPage = page.getNumber() + 1;
+        this.totalElement = page.getTotalElements();
     }
 
     public void construct(Boolean success, String message, Page<T> page) {
