@@ -164,6 +164,10 @@ import {
   IconLock,
   IconEmail,
 } from "@arco-design/web-vue/es/icon";
+import axios from "@/plugins/axios";
+import { BaseResult, User } from "@/types";
+import router from "@/router";
+import { Message } from "@arco-design/web-vue";
 
 const registerForm = ref({
   username: "",
@@ -172,9 +176,16 @@ const registerForm = ref({
   email: "",
   sex: "",
 });
-
 const register = () => {
-  console.log(registerForm.value);
+  axios.post("/api/user/register", registerForm.value).then((res) => {
+    const result = res.data as BaseResult<User>;
+    if (result.success) {
+      Message.success("注册成功");
+      router.push("/user/login");
+    } else {
+      Message.error(result.message);
+    }
+  });
 };
 </script>
 

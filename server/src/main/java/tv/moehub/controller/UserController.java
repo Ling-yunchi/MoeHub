@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @Login
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public BaseResult<Void> logout() {
         BaseResult<Void> result = new BaseResult<>();
         userService.logout(result);

@@ -98,13 +98,20 @@ import {
   IconSettings,
   IconUpload,
 } from "@arco-design/web-vue/es/icon";
-import { inject, Ref, ref } from "vue";
+import { inject, Ref, ref, watch } from "vue";
 import router from "@/router";
 import { User } from "@/types";
 
 const userId = router.currentRoute.value.params.id;
 const user = inject<Ref<User>>("user") as Ref<User>;
 const self = ref(user.value !== null && user.value.id === userId);
+watch(user, (newUser) => {
+  self.value = newUser !== null && newUser.id === userId;
+  if (router.currentRoute.value.path.split("/").pop() !== "home") {
+    router.push("home");
+    selectMenuKey.value = "0";
+  }
+});
 const path = router.currentRoute.value.path.split("/").pop();
 if (!self.value && path !== "home") {
   router.push("home");

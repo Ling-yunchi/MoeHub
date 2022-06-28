@@ -13,7 +13,7 @@
         </a>
       </div>
       <div class="video-text">
-        <a :href="authorUrl" target="_blank">
+        <a :href="videoUrl" target="_blank">
           <p class="video-title">{{ title }}</p>
         </a>
         <p class="video-info">{{ author }} · {{ viewsString(views) }}次播放</p>
@@ -54,7 +54,7 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-  videoUrl: {
+  videoPrefix: {
     type: String,
     default: "",
   },

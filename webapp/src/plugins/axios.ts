@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 
 const config: AxiosRequestConfig = {
-  baseURL: "http://localhost:8080/",
   timeout: 5000,
   headers: {
     Accept: "application/json",

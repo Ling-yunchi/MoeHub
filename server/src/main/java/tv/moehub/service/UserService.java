@@ -16,6 +16,7 @@ import tv.moehub.dao.UserDao;
 import tv.moehub.entity.User;
 import tv.moehub.model.BaseResult;
 import tv.moehub.model.UserResult;
+import tv.moehub.utils.FileUtil;
 import tv.moehub.utils.Uuid;
 
 import java.util.Objects;
@@ -58,13 +59,16 @@ public class UserService {
         var userId = (String) SecurityUtils.getSubject().getPrincipal();
         var user = userDao.queryUserById(userId);
         if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
-            var filename = user.getAvatar().substring(user.getAvatar().lastIndexOf("/") + 1);
-            fileService.deleteFile(filename, "avatar");
+            var filePrefix = user.getAvatar();
+            try {
+                fileService.deleteFile(filePrefix);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        var filename = Uuid.getUuid() + Objects.requireNonNull(avatar.getOriginalFilename()).substring(avatar.getOriginalFilename().lastIndexOf("."));
-        System.out.println(filename);
+        var filePrefix = "avatar/" + Uuid.getUuid() + "." + FileUtil.getFileExtension(Objects.requireNonNull(avatar.getOriginalFilename()));
         try {
-            var url = fileService.uploadFile(avatar, filename, "avatar");
+            var url = fileService.uploadFile(avatar, filePrefix);
             user.setAvatar(url);
             userDao.save(user);
             result.construct(true, "上传成功");
@@ -75,6 +79,7 @@ public class UserService {
     }
 
     public void login(UserLoginBean userLoginBean, BaseResult<Void> result) {
+        System.out.println(userLoginBean);
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {
             result.construct(false, "用户已登录");
