@@ -7,6 +7,6 @@ public interface LikeVideoDao extends JpaRepository<LikeVideo, String> {
 
     LikeVideo queryLikeVideoByUserIdAndVideoId(String userId, String videoId);
 
-    int countLikeVideoByVideoId(String videoId);
+    Integer countLikeVideoByVideoId(String videoId);
 
 }

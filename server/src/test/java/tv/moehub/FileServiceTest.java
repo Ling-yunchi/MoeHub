@@ -20,4 +20,10 @@ public class FileServiceTest {
     public void testGetObjectUrl() {
         System.out.println(fileService.getFileUrl("avatar/08e86b8091f8407485482985788482fc.svg"));
     }
+
+    @Test
+    @SneakyThrows
+    public void testMoveFile() {
+        fileService.moveFile("temp/b0a5fedabff14b48bfd880ffd73a4ec6.webp", "cover/b0a5fedabff14b48bfd880ffd73a4ec6.webp");
+    }
 }

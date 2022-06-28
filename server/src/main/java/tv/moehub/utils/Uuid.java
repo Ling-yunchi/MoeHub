@@ -8,4 +8,8 @@ public class Uuid {
     public static String getUuid() {
         return java.util.UUID.randomUUID().toString().replace("-", "");
     }
+
+    public static void main(String[] args) {
+        System.out.println(getUuid());
+    }
 }
