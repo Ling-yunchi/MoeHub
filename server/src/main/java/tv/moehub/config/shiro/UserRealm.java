@@ -28,7 +28,6 @@ public class UserRealm extends AuthorizingRealm {
         log.info("---------- 认证 ----------");
         var token = (UsernamePasswordToken) authenticationToken;
         var username = token.getUsername();
-        var password = String.valueOf(token.getPassword());
         var user = userDao.findByUsername(username);
         if (user == null) {
             throw new UnknownAccountException("用户不存在");
@@ -36,6 +35,6 @@ public class UserRealm extends AuthorizingRealm {
         // 使用SimpleAuthenticationInfo进行认证
         // 参数1：principal，参数2：credentials，参数3：realmName
         // 这里传入的principal可以通过Subject subject = SecurityUtils.getSubject().getPrincipal();获取
-        return new SimpleAuthenticationInfo(user.getId(), password, getName());
+        return new SimpleAuthenticationInfo(user.getId(), user.getPassword(), getName());
     }
 }

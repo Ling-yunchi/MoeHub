@@ -2,7 +2,7 @@
   <div class="video-card-container">
     <div class="video-cover">
       <a :href="videoUrl" target="_blank">
-        <img :src="cover" alt="cover" />
+        <img style="object-fit: cover" :src="coverUrl" alt="cover" />
       </a>
       <div class="video-length">{{ lengthString(length) }}</div>
     </div>
@@ -13,10 +13,12 @@
         </a>
       </div>
       <div class="video-text">
-        <a :href="authorUrl" target="_blank">
+        <a :href="videoUrl" target="_blank">
           <p class="video-title">{{ title }}</p>
         </a>
-        <p class="video-info">{{ author }} · {{ viewsString(views) }}次播放</p>
+        <p class="video-info">
+          {{ authorName }} · {{ viewsString(views) }}次播放
+        </p>
       </div>
     </div>
   </div>
@@ -26,7 +28,7 @@
 import { defineProps } from "vue";
 
 const props = defineProps({
-  cover: {
+  coverUrl: {
     type: String,
     default: "",
   },
@@ -42,7 +44,7 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  author: {
+  authorName: {
     type: String,
     default: "",
   },

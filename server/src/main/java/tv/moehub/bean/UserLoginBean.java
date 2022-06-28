@@ -1,6 +1,7 @@
 package tv.moehub.bean;
 
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
  * @date 2022/6/23 11:06
  */
 @Data
+@ToString
 public class UserLoginBean {
     @NotBlank(message = "用户名不能为空")
     @Length(min = 3, max = 20, message = "用户名长度必须在3-20之间")

@@ -7,144 +7,65 @@
     </div>
     <div class="video-list">
       <div class="video-list__item" v-for="video in videoList" :key="video.id">
-        <video-card
-          :cover="video.cover"
+        <small-video-card
+          :cover-url="video.coverUrl"
           :length="video.length"
-          :author="video.authorName"
-          :avatar="video.avatar"
           :title="video.title"
-          :views="102301"
+          :views="video.views"
           :video-url="`/video/${video.id}`"
-          :author-url="`/user/${video.authorId}`"
+          :create-at="video.createAt"
         >
-        </video-card>
+        </small-video-card>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { inject, Ref } from "vue";
-import { User, Video } from "@/types";
+import { inject, onMounted, ref, Ref } from "vue";
+import { BasePageResult, BaseResult, User, VideoList } from "@/types";
+import SmallVideoCard from "@/components/SmallVideoCard.vue";
 import router from "@/router";
+import axios from "@/plugins/axios";
+import { Video } from "@vime/core/dist/types/components/providers/video/video";
+import { Message } from "@arco-design/web-vue";
 
 const userId = router.currentRoute.value.params.id;
 const user = inject<Ref<User>>("user") as Ref<User>;
 
-const videoList: Video[] = [
-  {
-    id: "1",
-    cover: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-  },
-  {
-    id: "1",
-    cover: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-  },
-  {
-    id: "1",
-    cover: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-  },
-  {
-    id: "1",
-    cover: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-  },
-  {
-    id: "1",
-    cover: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-  },
-  {
-    id: "1",
-    cover: "/cover.webp",
-    length: 100,
-    title: "这眼睛里可不兴有爱心啊！",
-    authorId: "1",
-    avatar: "/avatar.jpg",
-    authorName: "Ling-yunchi",
-    views: 102301,
-  },
-];
+const videoList = ref<VideoList[]>([]);
+onMounted(() => {
+  axios
+    .get<BasePageResult<VideoList>>("/api/video/getUserVideo", {
+      params: { userId, pageNum: 1, pageSize: 100 },
+    })
+    .then((res) => {
+      if (res.data.success) {
+        videoList.value = res.data.data;
+      } else {
+        Message.error(res.data.message);
+      }
+    });
+});
 </script>
 
 <style lang="scss" scoped>
 .user-home-container {
   margin-top: 20px;
 }
-.section-title {
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  line-height: 20px;
-  border-bottom: 1px solid hsla(0, 0%, 60%, 0.1);
-  width: 100%;
-  .section-title__text {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--color-natural-6);
-    margin: 0 0 0 20px;
-  }
-  .section-title__more {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    margin-right: 4px;
-    .section-title__more-text {
-      margin-right: 4px;
-      font-size: 16px;
-      color: var(--color-natural-6);
-    }
-  }
-}
 .video-list {
   margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 20px;
   .video-list__item {
     box-sizing: content-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: calc(100% / 3);
     margin-bottom: 20px;
-    @media (max-width: 1400px) {
-      width: calc(100% / 2);
-    }
-    @media (max-width: 1000px) {
-      width: 100%;
-    }
+    width: calc(100% / 5);
   }
 }
 </style>

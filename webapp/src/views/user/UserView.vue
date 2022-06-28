@@ -1,5 +1,5 @@
 <template>
-  <a-layout>
+  <a-layout style="height: 100%">
     <a-layout-header>
       <header-view></header-view>
     </a-layout-header>

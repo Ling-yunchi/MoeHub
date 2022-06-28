@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @Login
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public BaseResult<Void> logout() {
         BaseResult<Void> result = new BaseResult<>();
         userService.logout(result);
@@ -82,6 +82,14 @@ public class UserController {
     public BaseResult<String> uploadAvatar(@RequestParam MultipartFile avatar) {
         BaseResult<String> result = new BaseResult<>();
         userService.uploadAvatar(avatar, result);
+        return result;
+    }
+
+    @Login
+    @PostMapping("/update")
+    public BaseResult<UserResult> update(@RequestBody UserBean userBean, @RequestParam Boolean updatePassword) {
+        BaseResult<UserResult> result = new BaseResult<>();
+        userService.update(userBean, updatePassword, result);
         return result;
     }
 }
