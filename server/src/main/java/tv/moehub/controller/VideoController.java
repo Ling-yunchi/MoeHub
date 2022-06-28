@@ -26,6 +26,13 @@ public class VideoController {
 //        return result;
 //    }
 
+    @GetMapping("/hot")
+    public BasePageResult<VideoListResult> showHot(@RequestParam int pageNum, @RequestParam int pageSize) {
+        BasePageResult<VideoListResult> result = new BasePageResult<>();
+        videoService.showHot(result, pageNum, pageSize);
+        return result;
+    }
+
     @GetMapping("/searchVideoByTitle")
     public BasePageResult<VideoListResult> searchVideoByTitle(@RequestParam String videoTitle, @RequestParam int pageNum, @RequestParam int pageSize) {
         BasePageResult<VideoListResult> result = new BasePageResult<>();
@@ -99,4 +106,5 @@ public class VideoController {
         videoService.view(videoId, result);
         return result;
     }
+
 }

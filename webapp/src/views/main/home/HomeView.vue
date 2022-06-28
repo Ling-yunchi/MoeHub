@@ -40,22 +40,10 @@ import { Message } from "@arco-design/web-vue";
 const popularList = ref<VideoList[]>([]);
 onMounted(() => {
   axios
-    .get<BaseResult<Search[]>>("/api/search/showHot")
+    .get<BasePageResult<VideoList>>("/api/video/showHot")
     .then((res) => {
       if (res.data.success) {
-        for(var i = 0; i < 5; i++){
-          axios
-          .get<BasePageResult<VideoList>>("/api/video/searchVideoByTitle", {
-            params: { videoTitle: res.data.data[i].statement, pageNum: 1, pageSize: 100 },
-          })
-          .then((result) => {
-            if (result.data.success) {
-              popularList.value.push(...result.data.data);
-            } else {
-              Message.error(result.data.message);
-            }
-          });
-        }
+        popularList.value = res.data.data;
       } else {
         Message.error(res.data.message);
       }

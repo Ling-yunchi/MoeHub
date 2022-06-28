@@ -48,6 +48,21 @@ public class VideoService {
 //        result.construct(true, "视频如下", videoResult);
 //    }
 
+    public void showHot(BasePageResult<VideoListResult> result, int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        Page<VideoListResult> videoList = videoDao.showHot(pageable).map(videoListResult -> {
+            try {
+                videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
+                return videoListResult;
+            } catch (Exception e) {
+                log.error("get video cover url error", e);
+                videoListResult.setCoverUrl(null);
+                return videoListResult;
+            }
+        });
+        result.construct(true, "相关视频如下", videoList);
+    }
+
     public void searchVideoByTitle(String videoTitle, BasePageResult<VideoListResult> result, int pageNum, int pageSize) {
         String videoTitleLike = "%" + videoTitle + "%";
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
