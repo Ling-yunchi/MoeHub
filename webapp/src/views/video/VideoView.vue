@@ -73,7 +73,7 @@
               </a-typography-paragraph>
             </div>
             <div class="video-info-author">
-              <a :href="`/user/${videoInfo.authorId}`">
+              <router-link :to="`/user/${videoInfo.authorId}`">
                 <a-avatar :size="50">
                   <img
                     style="object-fit: cover"
@@ -81,7 +81,7 @@
                     alt="avatar"
                   />
                 </a-avatar>
-              </a>
+              </router-link>
               <span class="author-info">
                 <a class="video-info-author-name">{{ videoInfo.authorName }}</a>
                 <span class="video-info-author-time">
@@ -129,7 +129,7 @@
                 :key="comment.id"
               >
                 <template #avatar>
-                  <a :href="`/user/${comment.userId}`">
+                  <router-link :to="`/user/${comment.userId}`">
                     <a-avatar>
                       <img
                         style="object-fit: cover"
@@ -137,7 +137,7 @@
                         :src="comment.avatar"
                       />
                     </a-avatar>
-                  </a>
+                  </router-link>
                 </template>
                 <template #content>
                   <a-typography-paragraph

@@ -1,7 +1,7 @@
 <template>
   <a-layout-header class="header-container">
     <div class="header">
-      <a href="/">
+      <a @click="router.push('/')">
         <img class="logo-img" src="@/assets/logo.svg" alt="moehub" />
       </a>
       <template v-if="props.search">
@@ -29,7 +29,7 @@
       </template>
       <div class="user-container">
         <template v-if="user !== null">
-          <a :href="`/user/${user.id}`" target="_blank">
+          <router-link :to="`/user/${user.id}`" target="_blank">
             <a-avatar :size="50">
               <img
                 v-if="user.avatar !== ''"
@@ -39,8 +39,10 @@
               />
               <span v-else>{{ user.nickname[0] }}</span>
             </a-avatar>
-          </a>
-          <a :href="`user/${user.id}`" class="user-name">{{ user.nickname }}</a>
+          </router-link>
+          <router-link :to="`user/${user.id}`" class="user-name">
+            {{ user.nickname }}
+          </router-link>
           <a-button class="login-btn" type="primary" @click="logout">
             <icon-export />
             登出

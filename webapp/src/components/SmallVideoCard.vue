@@ -1,10 +1,10 @@
 <template>
   <div class="small-video-card">
-    <a class="cover" :href="videoUrl">
+    <router-link class="cover" :to="videoUrl">
       <img style="object-fit: cover" :src="coverUrl" :alt="title" />
       <span class="length">{{ lengthString(length) }}</span>
-    </a>
-    <a class="title" :href="videoUrl">{{ title }}</a>
+    </router-link>
+    <router-link class="title" :to="videoUrl">{{ title }}</router-link>
     <div class="info">
       <span class="views"><icon-play-arrow />{{ viewsString(views) }}</span>
       <span><icon-clock-circle />{{ createAt }}</span>

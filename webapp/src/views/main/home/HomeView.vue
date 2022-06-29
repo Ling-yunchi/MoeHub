@@ -2,10 +2,10 @@
   <div class="home-main">
     <div class="section-title">
       <h3 class="section-title__text">热门视频</h3>
-      <a class="section-title__more" href="/videos">
+      <router-link class="section-title__more" to="/videos">
         <span class="section-title__more-text">查看更多</span>
         <IconRight />
-      </a>
+      </router-link>
     </div>
     <div class="popular-list">
       <div

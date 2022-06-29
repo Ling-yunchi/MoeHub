@@ -1,23 +1,23 @@
 <template>
   <div class="video-card-container">
     <div class="video-cover">
-      <a :href="videoUrl" target="_blank">
+      <router-link :to="videoUrl" target="_blank">
         <img style="object-fit: cover" :src="coverUrl" alt="cover" />
-      </a>
+      </router-link>
       <div class="video-length">{{ lengthString(length) }}</div>
     </div>
     <div class="video-info">
       <div class="author-avatar">
-        <a :href="authorUrl" target="_blank">
+        <router-link :to="authorUrl" target="_blank">
           <a-avatar>
             <img style="object-fit: cover" :src="avatar" alt="avatar" />
           </a-avatar>
-        </a>
+        </router-link>
       </div>
       <div class="video-text">
-        <a :href="videoUrl" target="_blank">
+        <router-link :to="videoUrl" target="_blank">
           <p class="video-title">{{ title }}</p>
-        </a>
+        </router-link>
         <p class="video-info">
           {{ authorName }} · {{ viewsString(views) }}次播放
         </p>
