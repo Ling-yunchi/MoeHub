@@ -50,7 +50,7 @@
           }"
         />
       </a-form-item>
-      <a-form-item field="cover" label="封面">
+      <a-form-item label="封面">
         <a-upload
           accept="image/*"
           action="/api/video/uploadTemp"
@@ -59,8 +59,8 @@
           @success="handleCoverUploadSuccess"
           :on-before-remove="handleCoverRemove"
           :limit="1"
-          list-type="picture-card"
           image-preview
+          list-type="picture-card"
         >
         </a-upload>
       </a-form-item>
@@ -136,6 +136,7 @@ const handleCoverUploadSuccess = (file: FileItem) => {
 
 const handleCoverRemove = () => {
   videoForm.value.coverPrefix = "";
+  return true;
 };
 
 const checkVideoUpload = (file: File) => {
@@ -165,6 +166,7 @@ const handleVideoUploadSuccess = (file: FileItem) => {
 const handleVideoRemove = () => {
   videoForm.value.videoUrl = "";
   videoForm.value.length = 0;
+  return true;
 };
 
 const checkCoverUpload = (file: File) => {
@@ -174,6 +176,7 @@ const checkCoverUpload = (file: File) => {
     Message.error("请上传图片文件！！！");
     return false;
   }
+  return true;
 };
 
 const addVideo = () => {

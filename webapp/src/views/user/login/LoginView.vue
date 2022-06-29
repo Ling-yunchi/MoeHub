@@ -3,7 +3,7 @@
     <div class="login-form-container">
       <div class="login-title">
         <h1 class="login-title__text">
-          登录<img class="favicon" src="/favicon.svg" />
+          登录<img class="favicon" src="@/assets/favicon.svg" />
           <span style="color: #fa8dac">MoeHub</span>
         </h1>
       </div>

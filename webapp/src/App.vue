@@ -10,7 +10,6 @@ import { User } from "@/types";
 // provide user data to all components
 const user = ref<User | null>(null);
 const updateUser = (u: User | null) => {
-  console.log("updateUser", u);
   user.value = u;
 };
 onMounted(() => {

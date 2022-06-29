@@ -1,6 +1,11 @@
 <template>
   <div class="content-container">
-    <div class="user-header">
+    <div
+      class="user-header"
+      :style="{
+        'background-image': `url(${require('@/assets/header-img.png')})`,
+      }"
+    >
       <div class="user-info">
         <a-avatar
           :size="60"
@@ -192,7 +197,6 @@ switch (path) {
   width: 1100px;
   margin: 0 auto;
   .user-header {
-    background-image: url("/public/header-img.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

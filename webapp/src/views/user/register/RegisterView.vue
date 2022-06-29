@@ -3,7 +3,7 @@
     <div class="register-form-container">
       <div class="register-title">
         <h1 class="register-title__text">
-          注册<img class="favicon" src="/favicon.svg" alt="logo" />
+          注册<img class="favicon" src="@/assets/favicon.svg" alt="logo" />
           <span style="color: #fa8dac">MoeHub</span>
         </h1>
       </div>

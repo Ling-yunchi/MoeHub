@@ -2,6 +2,7 @@ package tv.moehub.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ import tv.moehub.service.FileService;
 public class FileController {
     private final FileService fileService;
 
-    @RequestMapping("/upload")
+    @PostMapping("/upload")
     public BaseResult<String> upload(@RequestPart(value = "file", required = false) MultipartFile files) {
         BaseResult<String> result = new BaseResult<>();
         fileService.upload(files, result);

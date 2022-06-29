@@ -11,6 +11,7 @@ module.exports = defineConfig({
       }),
     ],
   },
+  publicPath: "./",
   devServer: {
     port: 4000,
     proxy: {
