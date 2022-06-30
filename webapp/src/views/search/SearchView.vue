@@ -91,11 +91,11 @@
 <script lang="ts" setup>
 import router from "@/router";
 import { onMounted, ref } from "vue";
-import { VideoList, BasePageResult, BaseResult } from "@/types";
+import { VideoList, BasePageResult } from "@/types";
 import { IconSearch } from "@arco-design/web-vue/es/icon";
 import HeaderView from "@/views/HeaderView.vue";
 import VideoCard from "@/components/VideoCard.vue";
-import axios from "axios";
+import axios from "@/plugins/axios";
 import { Message } from "@arco-design/web-vue";
 
 interface SearchQuery {
@@ -137,17 +137,17 @@ const search = () => {
           Message.error(res.data.message);
         }
       });
-    axios
-      .get<BaseResult<never>>("/api/search/updateSearchCount", {
-        params: { videoTitle: searchForm.value.q },
-      })
-      .then((res) => {
-        if (res.data.success) {
-          Message.success(res.data.message);
-        } else {
-          Message.error(res.data.message);
-        }
-      });
+    // axios
+    //   .get<BaseResult<never>>("/api/search/updateSearchCount", {
+    //     params: { videoTitle: searchForm.value.q },
+    //   })
+    //   .then((res) => {
+    //     if (res.data.success) {
+    //       Message.success(res.data.message);
+    //     } else {
+    //       Message.error(res.data.message);
+    //     }
+    //   });
   } else {
     axios
       .get<BasePageResult<VideoList>>("/api/video/searchVideoByAuthor", {

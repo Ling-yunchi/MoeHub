@@ -15,7 +15,15 @@
             box-sizing: content-box;
           "
         >
-          <img style="object-fit: cover" :src="pageUser.avatar" alt="avatar" />
+          <img
+            style="object-fit: cover"
+            :src="
+              pageUser.avatar
+                ? pageUser.avatar
+                : require('@/assets/default-avatar.jpg')
+            "
+            alt="avatar"
+          />
         </a-avatar>
         <div class="user-info-name">
           <span style="margin-bottom: 10px">

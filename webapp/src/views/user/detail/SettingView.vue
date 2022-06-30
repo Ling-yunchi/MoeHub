@@ -17,12 +17,18 @@
       </a-form-item>
       <a-form-item label="头像">
         <a-avatar style="margin-right: 10px">
-          <img style="object-fit: cover" :src="avatarUrl" alt="" />
+          <img
+            style="object-fit: cover"
+            :src="
+              avatarUrl ? avatarUrl : require('@/assets/default-avatar.jpg')
+            "
+            alt=""
+          />
         </a-avatar>
         <a-upload
           style="display: block"
           id="avatar"
-          action="/api/user/avatar"
+          :action="avatarUploadUrl"
           name="avatar"
           @success="uploadAvatar"
         >
@@ -60,7 +66,7 @@
 import { inject, Ref, ref } from "vue";
 import { IconMan, IconWoman, IconEdit } from "@arco-design/web-vue/es/icon";
 import { FileItem, Message } from "@arco-design/web-vue";
-import { BaseResult, User } from "@/types";
+import { BaseResult, User, avatarUploadUrl } from "@/types";
 import axios from "@/plugins/axios";
 
 const user = inject<Ref<User>>("user") as Ref<User>;

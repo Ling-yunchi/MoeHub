@@ -1,9 +1,9 @@
 <template>
   <a-layout-header class="header-container">
     <div class="header">
-      <a @click="router.push('/')">
+      <router-link to="/home">
         <img class="logo-img" src="@/assets/logo.svg" alt="moehub" />
-      </a>
+      </router-link>
       <template v-if="props.search">
         <div class="search">
           <a-input-group>
@@ -32,12 +32,14 @@
           <router-link :to="`/user/${user.id}`" target="_blank">
             <a-avatar :size="50">
               <img
-                v-if="user.avatar !== ''"
-                :src="user.avatar"
+                :src="
+                  user.avatar
+                    ? user.avatar
+                    : require('@/assets/default-avatar.jpg')
+                "
                 alt="avatar"
                 style="object-fit: cover"
               />
-              <span v-else>{{ user.nickname[0] }}</span>
             </a-avatar>
           </router-link>
           <router-link :to="`user/${user.id}`" class="user-name">
@@ -157,6 +159,7 @@ const updateUser = inject("updateUser") as (u: User | null) => void;
           width: 200px;
         }
       }
+
       .search-btn {
         height: 40px;
         width: 60px;
@@ -183,9 +186,11 @@ const updateUser = inject("updateUser") as (u: User | null) => void;
         white-space: nowrap;
         margin-right: 20px;
       }
+
       .login-btn {
         margin-right: 10px;
       }
+
       .register-btn {
       }
     }

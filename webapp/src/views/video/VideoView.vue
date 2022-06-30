@@ -77,7 +77,11 @@
                 <a-avatar :size="50">
                   <img
                     style="object-fit: cover"
-                    :src="videoInfo.authorAvatar"
+                    :src="
+                      videoInfo.authorAvatar
+                        ? videoInfo.authorAvatar
+                        : require('@/assets/default-avatar.jpg')
+                    "
                     alt="avatar"
                   />
                 </a-avatar>

@@ -53,7 +53,7 @@
       <a-form-item label="封面">
         <a-upload
           accept="image/*"
-          action="/api/video/uploadTemp"
+          :action="actionUrl"
           name="file"
           @before-upload="checkCoverUpload"
           @success="handleCoverUploadSuccess"
@@ -80,7 +80,7 @@
         <a-upload
           :auto-upload="false"
           accept="video/*"
-          action="/api/video/uploadTemp"
+          :action="actionUrl"
           name="file"
           draggable
           @before-upload="checkVideoUpload"
@@ -97,9 +97,13 @@
             message: '请上传视频',
             trigger: 'change',
           },
+          {
+            type: 'string',
+            minLength: 1,
+          },
         ]"
       >
-        <a-input disabled v-model="videoForm.videoUrl" />
+        <a-input disabled v-model="videoForm.videoPrefix" />
         <span style="margin-left: 10px; margin-right: 5px">length:</span>
         <a-input-number disabled v-model="videoForm.length" />
       </a-form-item>
@@ -114,12 +118,12 @@
 import { ref } from "vue";
 import { FileItem, Message } from "@arco-design/web-vue";
 import axios from "@/plugins/axios";
-import { BaseResult } from "@/types";
+import { BaseResult, actionUrl } from "@/types";
 
 const videoForm = ref({
   title: "",
   description: "",
-  videoUrl: "",
+  videoPrefix: "",
   length: 0,
   coverPrefix: "",
 });
@@ -157,14 +161,14 @@ const checkVideoUpload = (file: File) => {
 const handleVideoUploadSuccess = (file: FileItem) => {
   const res = file.response as BaseResult<string>;
   if (res.success) {
-    videoForm.value.videoUrl = res.data;
+    videoForm.value.videoPrefix = res.data;
     Message.success("视频上传成功");
   } else {
     Message.error(res.message);
   }
 };
 const handleVideoRemove = () => {
-  videoForm.value.videoUrl = "";
+  videoForm.value.videoPrefix = "";
   videoForm.value.length = 0;
   return true;
 };

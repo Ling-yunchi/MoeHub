@@ -10,7 +10,11 @@
       <div class="author-avatar">
         <router-link :to="authorUrl" target="_blank">
           <a-avatar>
-            <img style="object-fit: cover" :src="avatar" alt="avatar" />
+            <img
+              style="object-fit: cover"
+              :src="avatar ? avatar : require('@/assets/default-avatar.jpg')"
+              alt="avatar"
+            />
           </a-avatar>
         </router-link>
       </div>
