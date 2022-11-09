@@ -68,7 +68,9 @@ export interface Search {
   count: number;
 }
 
-export const actionUrl = "/api/video/uploadTemp";
-// export const actionUrl = "http://47.111.179.22/wr_web/moehub/api/video/uploadTemp";
-export const avatarUploadUrl = "/api/video/upload";
-// export const avatarUploadUrl = "http://47.111.179.22/wr_web/moehub/api/video/upload";
+// export const actionUrl = "/api/video/uploadTemp";
+// export const avatarUploadUrl = "/api/user/avatar";
+export const actionUrl =
+  "http://47.111.179.22/wr_web/moehub/api/video/uploadTemp";
+export const avatarUploadUrl =
+  "http://47.111.179.22/wr_web/moehub/api/user/avatar";

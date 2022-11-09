@@ -138,7 +138,11 @@
                       <img
                         style="object-fit: cover"
                         alt="avatar"
-                        :src="comment.avatar"
+                        :src="
+                          comment.avatar
+                            ? comment.avatar
+                            : require('@/assets/default-avatar.jpg')
+                        "
                       />
                     </a-avatar>
                   </router-link>

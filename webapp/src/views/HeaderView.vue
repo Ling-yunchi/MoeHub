@@ -8,7 +8,7 @@
         <div class="search">
           <a-input-group>
             <a-select
-              style="height: 40px; width: 80px; border-radius: 4px 0 0 4px"
+              class="select-btn"
               :options="['视频', '用户']"
               v-model="searchType"
             />
@@ -145,6 +145,11 @@ const updateUser = inject("updateUser") as (u: User | null) => void;
     }
 
     .search {
+      .select-btn {
+        height: 40px;
+        width: 80px;
+        border-radius: 4px 0 0 4px;
+      }
       .search-input {
         width: 600px;
         height: 40px;
