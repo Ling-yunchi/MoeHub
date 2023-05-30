@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { baseUrl } from "@/types";
 
 const config: AxiosRequestConfig = {
-  baseURL: "http://47.111.179.22/wr_web/moehub/",
+  baseURL: baseUrl,
   timeout: 5000,
   headers: {
     Accept: "application/json",

@@ -70,7 +70,6 @@ export interface Search {
 
 // export const actionUrl = "/api/video/uploadTemp";
 // export const avatarUploadUrl = "/api/user/avatar";
-export const actionUrl =
-  "http://47.111.179.22/wr_web/moehub/api/video/uploadTemp";
-export const avatarUploadUrl =
-  "http://47.111.179.22/wr_web/moehub/api/user/avatar";
+export const baseUrl = "http://localhost:4000";
+export const actionUrl = baseUrl + "/api/video/uploadTemp";
+export const avatarUploadUrl = baseUrl + "/api/user/avatar";

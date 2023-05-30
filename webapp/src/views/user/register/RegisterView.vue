@@ -78,9 +78,9 @@
               message: '请输入昵称',
             },
             {
-              minLength: 6,
+              minLength: 3,
               maxLength: 20,
-              message: '昵称必须为6-20个字符',
+              message: '昵称必须为3-20个字符',
             },
           ]"
         >

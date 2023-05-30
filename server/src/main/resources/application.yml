@@ -7,9 +7,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     name: moehub
-    url: jdbc:mysql://b.sww.moe:33307/moehub?serverTimezone=UTC&useSSL=false
-    username: 'root'
-    password: '123456'
+    url: jdbc:mysql://10.236.29.11:3306/moehub?serverTimezone=UTC&useSSL=false
+    username: root
+    password: bc1f53c909b4acdc0085
   jpa:
     hibernate:
       ddl-auto: update # 自动更新数据库
@@ -26,9 +26,9 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
 minio:
-  endpoint: http://39.103.135.63:9000
-  access-key: root
-  secret-key: 123456789
+  endpoint: http://10.236.29.11:9000
+  access-key: minioadmin
+  secret-key: 91b22b7ec6266ef1fe3d
   bucket: moehub
 
 
