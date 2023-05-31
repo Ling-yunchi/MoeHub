@@ -3,12 +3,7 @@
     <div class="section-title">
       <span class="section-title__text"> 修改资料 </span>
     </div>
-    <a-form
-      :model="userForm"
-      :label-width="100"
-      layout="vertical"
-      :style="{ width: '1020px', padding: '40px' }"
-    >
+    <a-form :model="userForm" :label-width="100" layout="vertical" class="p-4">
       <a-form-item label="用户名">
         <a-input v-model="userForm.username" :disabled="true"></a-input>
       </a-form-item>
@@ -16,7 +11,7 @@
         <a-input v-model="userForm.nickname"></a-input>
       </a-form-item>
       <a-form-item label="头像">
-        <a-avatar style="margin-right: 10px">
+        <a-avatar class="mr-4 aspect-square h-20 w-20">
           <img
             style="object-fit: cover"
             :src="
@@ -91,10 +86,12 @@ const uploadAvatar = (file: FileItem) => {
   const res = file.response as BaseResult<string>;
   if (res.success) {
     avatarUrl.value = res.data;
-    updateUser({
-      ...user.value!,
-      avatar: res.data,
-    });
+    if (user.value) {
+      updateUser({
+        ...user.value,
+        avatar: res.data,
+      });
+    }
   } else {
     Message.error(res.message);
   }

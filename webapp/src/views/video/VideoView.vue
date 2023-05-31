@@ -58,6 +58,11 @@
           <div class="video-info">
             <div class="video-info-title">
               <h1>{{ videoInfo.title }}</h1>
+              <div
+                class="bg-gray-200 py-1 px-2 rounded-sm text-base text-slate-700 font-bold whitespace-nowrap"
+              >
+                {{ videoInfo.category }}
+              </div>
             </div>
             <div class="video-info__description">
               <a-typography-paragraph
@@ -320,7 +325,7 @@ const commentList = ref<CommentList[]>([
     id: "1",
     userId: "1",
     nickname: "Ling-yunchi",
-    avatar: "/avatar.jpg",
+    avatar: "",
     createAt: "2020-01-01",
     content: "夸宝可爱捏🥰🥰🥰\n\n\n\n\n🥵🥵🥵夸宝🥵🥵🥵我的夸宝🥵🥵🥵",
   },
@@ -328,7 +333,7 @@ const commentList = ref<CommentList[]>([
     id: "2",
     userId: "1",
     nickname: "Ling-yunchi",
-    avatar: "/avatar.jpg",
+    avatar: "",
     createAt: "2020-01-01",
     content: "夸宝可爱捏🥰🥰🥰\n\n\n\n\n🥵🥵🥵夸宝🥵🥵🥵我的夸宝🥵🥵🥵",
   },
@@ -386,8 +391,7 @@ const addComment = () => {
   .video-player-container {
     height: 100%;
     width: 100%;
-    min-width: 480px;
-    max-width: 900px;
+    @apply w-full max-w-4xl;
 
     .video-player {
       width: 100%;
@@ -404,11 +408,11 @@ const addComment = () => {
       margin-top: 10px;
       display: flex;
       align-items: center;
-      justify-content: start;
+      justify-content: flex-start;
 
       .video-like {
         width: 93px;
-        margin-right: 10px;
+        margin: 0 10px;
       }
 
       .video-favorite {
@@ -420,8 +424,7 @@ const addComment = () => {
   .video-info-container {
     height: 100%;
     width: 100%;
-    min-width: 480px;
-    max-width: 900px;
+    @apply w-full max-w-4xl px-2;
 
     .video-info {
       width: 100%;
@@ -431,7 +434,7 @@ const addComment = () => {
         width: 100%;
         margin-bottom: 10px;
         color: var(--color-neutral-9);
-        @apply text-xl font-bold;
+        @apply text-xl font-bold flex justify-between items-center;
       }
 
       .video-info__description {

@@ -44,6 +44,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/user",
     name: "user",
     component: UserView,
+    redirect: "/user/login",
     children: [
       {
         path: ":id",

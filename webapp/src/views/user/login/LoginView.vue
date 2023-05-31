@@ -7,12 +7,7 @@
           <span style="color: #fa8dac">MoeHub</span>
         </h1>
       </div>
-      <a-form
-        layout="vertical"
-        :model="loginForm"
-        style="width: 400px"
-        @submit-success="login"
-      >
+      <a-form layout="vertical" :model="loginForm" @submit-success="login">
         <a-form-item
           field="username"
           label="用户名"
@@ -124,9 +119,11 @@ const login = () => {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     padding: 20px;
+    @apply w-full max-w-lg mx-4;
     .login-title {
       margin-bottom: 20px;
       .login-title__text {
+        @apply flex items-center;
         font-size: 18px;
         font-weight: bold;
         color: var(--color-neutral-6);

@@ -3,8 +3,8 @@
     <div class="video-cover">
       <router-link :to="videoUrl" target="_blank">
         <img style="object-fit: cover" :src="coverUrl" alt="cover" />
+        <div class="video-length">{{ lengthString(length) }}</div>
       </router-link>
-      <div class="video-length">{{ lengthString(length) }}</div>
     </div>
     <div class="video-info">
       <div class="author-avatar">
@@ -113,6 +113,7 @@ a {
     overflow: hidden;
     img {
       width: 100%;
+      height: 100%;
     }
     .video-length {
       position: absolute;
@@ -151,9 +152,8 @@ a {
         font-weight: 400;
         color: var(--color-neutral-8);
         margin: 0 0 4px;
-        overflow: hidden;
         text-overflow: ellipsis;
-        word-break: break-word;
+        white-space: nowrap;
         line-height: 20px;
       }
       .video-info {

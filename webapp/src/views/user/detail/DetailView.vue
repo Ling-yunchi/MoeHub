@@ -26,9 +26,7 @@
           />
         </a-avatar>
         <div class="user-info-name">
-          <span style="margin-bottom: 10px">
-            <span class="user-nickname">{{ pageUser.nickname }}</span>
-          </span>
+          <span class="user-nickname">{{ pageUser.nickname }}</span>
           <span>
             <a-tag style="background-color: rgba(0, 0, 0, 0.4)">
               <span class="user-username">@{{ pageUser.username }}</span>
@@ -115,6 +113,7 @@ import { inject, Ref, ref, watch } from "vue";
 import router from "@/router";
 import { BaseResult, User, userKey } from "@/types";
 import axios from "@/plugins/axios";
+import { onUpdated } from "vue";
 
 const userId = router.currentRoute.value.params.id;
 const pageUser = ref({
@@ -134,37 +133,35 @@ axios.get("/api/user/info", { params: { userId: userId } }).then((res) => {
 
 const user = inject(userKey) as Readonly<Ref<User | null>>;
 const self = ref(user.value !== null && user.value.id === userId);
-watch(user, (newUser) => {
-  self.value = newUser !== null && newUser.id === userId;
-  if (router.currentRoute.value.path.split("/").pop() !== "home") {
+const selectMenuKey = ref("0");
+onUpdated(() => {
+  const path = router.currentRoute.value.path.split("/").pop();
+  if (!self.value && path !== "home") {
     router.push("home");
-    selectMenuKey.value = "0";
+  }
+  switch (path) {
+    case "home":
+      selectMenuKey.value = "0";
+      break;
+    case "favorite":
+      selectMenuKey.value = "1";
+      break;
+    case "video":
+      selectMenuKey.value = "2";
+      break;
+    case "upload":
+      selectMenuKey.value = "3";
+      break;
+    case "setting":
+      selectMenuKey.value = "4";
+      break;
+    default:
+      break;
   }
 });
-const path = router.currentRoute.value.path.split("/").pop();
-if (!self.value && path !== "home") {
-  router.push("home");
-}
-const selectMenuKey = ref("0");
-switch (path) {
-  case "home":
-    selectMenuKey.value = "0";
-    break;
-  case "favorite":
-    selectMenuKey.value = "1";
-    break;
-  case "video":
-    selectMenuKey.value = "2";
-    break;
-  case "upload":
-    selectMenuKey.value = "3";
-    break;
-  case "setting":
-    selectMenuKey.value = "4";
-    break;
-  default:
-    break;
-}
+watch(user, (newUser) => {
+  self.value = newUser !== null && newUser.id === userId;
+});
 </script>
 
 <style lang="scss">
@@ -202,33 +199,32 @@ switch (path) {
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 1100px;
   margin: 0 auto;
+  @apply w-full max-w-5xl;
+
   .user-header {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     width: 100%;
-    height: 200px;
-    position: relative;
+    @apply h-56 flex flex-col justify-end;
+
     .user-info {
-      position: absolute;
-      bottom: 0;
       width: 100%;
       display: flex;
       flex-direction: row;
-      padding: 20px;
+      @apply p-4 gap-4;
+
       .user-info-name {
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        margin-left: 20px;
+        justify-content: space-between;
         .user-nickname {
           font-size: 20px;
           font-weight: bold;
           letter-spacing: 1px;
-          color: var(--color-neutral-2);
+          @apply transition-colors  text-slate-700 py-2;
         }
         .user-username {
           font-size: 10px;

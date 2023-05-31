@@ -7,7 +7,7 @@
       :model="videoForm"
       :label-width="100"
       layout="vertical"
-      :style="{ width: '1020px', padding: '40px' }"
+      class="p-4"
       @submit-success="addVideo"
     >
       <a-form-item

@@ -4,7 +4,7 @@
       <router-link to="/home">
         <img class="logo-img" src="@/assets/logo.svg" alt="moehub" />
       </router-link>
-      <template v-if="search">
+      <template v-if="searchShow">
         <div class="search">
           <a-input-group>
             <a-select
@@ -28,9 +28,16 @@
         </div>
       </template>
       <div class="user-container">
+        <router-link v-if="searchShow" to="/search">
+          <div
+            class="h-8 w-8 inline-flex items-center justify-center rounded-full bg-blue-200 lg:hidden"
+          >
+            <icon-search size="1rem" />
+          </div>
+        </router-link>
         <template v-if="user !== null">
           <router-link :to="`/user/${user.id}`" target="_blank">
-            <a-avatar :size="50">
+            <a-avatar :size="40">
               <img
                 :src="
                   user.avatar
@@ -42,10 +49,10 @@
               />
             </a-avatar>
           </router-link>
-          <router-link :to="`/user/${user.id}`" class="user-name">
+          <router-link :to="`user/${user.id}`" class="user-name">
             {{ user.nickname }}
           </router-link>
-          <a-button class="login-btn" type="primary" @click="logout">
+          <a-button class="login-btn" type="dashed" @click="logout">
             <icon-export />
             登出
           </a-button>
@@ -83,7 +90,7 @@ import { Message } from "@arco-design/web-vue";
 import axios from "@/plugins/axios";
 
 defineProps({
-  search: {
+  searchShow: {
     type: Boolean,
     required: false,
     default: true,
@@ -134,9 +141,8 @@ const updateUser = inject(updateUserKey) as (u: User | null) => void;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 50px;
     margin: 0 auto;
-    @apply flex-col gap-2 lg:flex-row;
+    @apply gap-2 lg:px-16;
 
     .logo-img {
       width: 150px;
@@ -145,7 +151,7 @@ const updateUser = inject(updateUserKey) as (u: User | null) => void;
     }
 
     .search {
-      @apply flex gap-2;
+      @apply hidden gap-2 lg:flex;
       .select-btn {
         height: 40px;
         width: 80px;
@@ -190,6 +196,7 @@ const updateUser = inject(updateUserKey) as (u: User | null) => void;
         // 字符不换行
         white-space: nowrap;
         margin-right: 20px;
+        @apply hidden lg:block;
       }
     }
   }

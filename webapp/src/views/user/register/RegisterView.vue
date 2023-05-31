@@ -10,7 +10,6 @@
       <a-form
         layout="vertical"
         :model="registerForm"
-        style="width: 500px"
         @submit-success="register"
       >
         <a-form-item
@@ -206,12 +205,14 @@ const register = () => {
     box-shadow: var(--box-shadow);
     padding: 20px;
     width: 500px;
+    @apply w-full max-w-xl mx-2;
     .register-title {
       margin-bottom: 20px;
       .register-title__text {
         font-size: 18px;
         font-weight: bold;
         color: var(--color-neutral-6);
+        @apply flex items-center;
         .favicon {
           width: 30px;
           height: 30px;

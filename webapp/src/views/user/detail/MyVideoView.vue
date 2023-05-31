@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top: 20px">
-    <a-list>
+    <a-list class="p-4">
       <template #header>
         <div
           style="
@@ -24,6 +24,9 @@
             </div>
             <div class="video-info__desc">
               <span>{{ video.description }}</span>
+            </div>
+            <div class="video-info__category">
+              <span>{{ video.category }}</span>
             </div>
             <div class="video-info__time">
               <span>{{ video.createAt }}</span>
@@ -78,11 +81,11 @@ const handleDelete = (id: string) => {
 <style lang="scss" scoped>
 .video-container {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: start;
   width: 100%;
   height: 100%;
+  @apply gap-2 lg:flex-row lg:justify-between lg:items-center;
 
   .cover {
     width: 200px;
@@ -97,16 +100,19 @@ const handleDelete = (id: string) => {
     width: 600px;
     display: flex;
     flex-direction: column;
+    @apply gap-1;
 
     .video-info__title {
       font-size: 16px;
       font-weight: bold;
-      margin-bottom: 5px;
     }
 
     .video-info__desc {
       font-size: 14px;
-      margin-bottom: 5px;
+    }
+
+    .video-info__category {
+      @apply text-gray-500;
     }
 
     .video-info__time {

@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <header-view :search="false"></header-view>
+    <header-view :search-show="false"></header-view>
     <a-layout>
       <a-layout-content>
         <div class="search-container">
@@ -8,27 +8,17 @@
             <a-form
               :model="searchForm"
               layout="inline"
-              style="flex-direction: column; align-content: center"
+              style="flex-direction: column"
             >
               <a-form-item>
-                <a-input-group>
+                <a-input-group class="w-full">
                   <a-select
-                    style="
-                      height: 40px;
-                      width: 80px;
-                      border-radius: 4px 0 0 4px;
-                    "
+                    class="h-10 w-fit rounded-l-md"
                     :options="['视频', '用户']"
                     v-model="searchForm.type"
                   />
                   <a-input
-                    style="
-                      width: 600px;
-                      height: 40px;
-                      border-radius: 0 4px 4px 0;
-                      padding: 0 10px;
-                      font-size: 14px;
-                    "
+                    class="h-10 w-full rounded-r-md p-2 text-sm"
                     v-model="searchForm.q"
                     placeholder="请输入关键字"
                     :prefix-icon="searchForm.q ? 'close' : 'search'"
@@ -42,15 +32,17 @@
                     width: 100%;
                     display: flex;
                     justify-content: space-between;
+                    align-items: center;
+                    gap: 10px;
                   "
                 >
                   <a-select
-                    style="height: 40px; width: 120px; border-radius: 4px"
+                    class="h-10 w-32 rounded-md"
                     :options="['默认排序', '播放量', '收藏量']"
                     v-model="searchForm.sort"
                   ></a-select>
                   <a-button
-                    style="height: 40px; width: 120px"
+                    class="h-10 w-32 rounded-md"
                     type="primary"
                     @click="search"
                     :disabled="!searchForm.q"
@@ -114,7 +106,7 @@ const map: { [key: string]: string } = {
   收藏量: "favorite",
 };
 const searchForm = ref({
-  type: map[query.type] || "",
+  type: map[query.type] || "视频",
   q: query.q || "",
   sort: "默认排序",
 });
@@ -162,7 +154,9 @@ const search = () => {
       });
   }
 };
-onMounted(search);
+onMounted(() => {
+  search();
+});
 // const resultList = ref([
 //   {
 //     id: "1",
@@ -238,8 +232,8 @@ onMounted(search);
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 1100px;
   margin: 20px auto 0;
+  @apply w-full max-w-5xl;
 
   .search-form {
     width: 100%;
@@ -250,18 +244,13 @@ onMounted(search);
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    @apply mt-4 justify-center lg:justify-start;
 
     .search-result-item {
-      box-sizing: content-box;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: calc(100% / 3);
-      margin-bottom: 20px;
-      @media (max-width: 1200px) {
-        width: calc(100% / 2);
-      }
+      @apply mb-4 lg:w-[calc(100%/3)];
     }
   }
 }

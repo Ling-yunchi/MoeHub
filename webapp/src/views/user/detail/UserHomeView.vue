@@ -5,7 +5,18 @@
         {{ user !== null && userId === user.id ? "我的视频" : "Ta的视频" }}
       </span>
     </div>
-    <div class="video-list">
+    <div
+      v-if="videoList.length === 0"
+      class="w-full flex flex-col items-center text-slate-600"
+    >
+      <icon-empty size="3rem" class="" />
+      <span class="mt-4">{{
+        user !== null && userId === user.id
+          ? "你还没有上传视频哦~"
+          : "Ta还没有上传视频哦~"
+      }}</span>
+    </div>
+    <div v-else class="video-list">
       <div class="video-list__item" v-for="video in videoList" :key="video.id">
         <small-video-card
           :cover-url="video.coverUrl"
@@ -28,6 +39,7 @@ import SmallVideoCard from "@/components/SmallVideoCard.vue";
 import router from "@/router";
 import axios from "@/plugins/axios";
 import { Message } from "@arco-design/web-vue";
+import { IconEmpty } from "@arco-design/web-vue/es/icon";
 
 const userId = router.currentRoute.value.params.id;
 const user = inject(userKey) as Readonly<Ref<User | null>>;
@@ -52,19 +64,16 @@ onMounted(() => {
 .user-home-container {
   margin-top: 20px;
 }
+
 .video-list {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-bottom: 20px;
+  @apply h-full flex justify-center flex-wrap gap-8 p-4 lg:justify-start lg:gap-0;
+
   .video-list__item {
     box-sizing: content-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
-    width: calc(100% / 5);
+    @apply mb-4 lg:w-[calc(100%/5)];
   }
 }
 </style>
