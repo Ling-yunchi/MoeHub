@@ -16,7 +16,7 @@
 import { defineProps } from "vue";
 import { IconPlayArrow, IconClockCircle } from "@arco-design/web-vue/es/icon";
 
-const props = defineProps({
+defineProps({
   videoUrl: {
     type: String,
     required: true,

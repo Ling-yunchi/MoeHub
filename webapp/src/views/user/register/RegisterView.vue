@@ -110,7 +110,7 @@
           <a-input
             v-model="registerForm.email"
             placeholder="邮箱"
-            type="email"
+            type="text"
             autocomplete="off"
             class="register-input"
           >

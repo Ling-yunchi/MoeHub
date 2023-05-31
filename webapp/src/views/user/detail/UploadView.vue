@@ -17,7 +17,6 @@
           {
             required: true,
             message: '请输入标题',
-            trigger: 'blur',
           },
           {
             type: 'string',
@@ -25,6 +24,7 @@
             message: '标题长度不能超过50个字符',
           },
         ]"
+        validate-trigger="blur"
       >
         <a-input v-model="videoForm.title" placeholder="请输入标题" />
       </a-form-item>
@@ -50,6 +50,25 @@
           }"
         />
       </a-form-item>
+      <a-form-item
+        field="category"
+        label="分类"
+        :rules="[
+          {
+            required: true,
+            message: '请选择分类',
+          },
+        ]"
+        validate-trigger="change"
+      >
+        <a-select v-model="videoForm.category" placeholder="请选择分类">
+          <a-option>动画</a-option>
+          <a-option>音乐</a-option>
+          <a-option>游戏</a-option>
+          <a-option>美食</a-option>
+          <a-option>科技</a-option>
+        </a-select>
+      </a-form-item>
       <a-form-item label="封面">
         <a-upload
           accept="image/*"
@@ -70,9 +89,9 @@
           {
             required: true,
             message: '请上传封面',
-            trigger: 'change',
           },
         ]"
+        validate-trigger="change"
       >
         <a-input disabled v-model="videoForm.coverPrefix" />
       </a-form-item>
@@ -95,13 +114,13 @@
           {
             required: true,
             message: '请上传视频',
-            trigger: 'change',
           },
           {
             type: 'string',
             minLength: 1,
           },
         ]"
+        validate-trigger="change"
       >
         <a-input disabled v-model="videoForm.videoPrefix" />
         <span style="margin-left: 10px; margin-right: 5px">length:</span>
@@ -126,6 +145,7 @@ const videoForm = ref({
   videoPrefix: "",
   length: 0,
   coverPrefix: "",
+  category: "",
 });
 
 const handleCoverUploadSuccess = (file: FileItem) => {
@@ -138,12 +158,12 @@ const handleCoverUploadSuccess = (file: FileItem) => {
   }
 };
 
-const handleCoverRemove = () => {
+const handleCoverRemove = async () => {
   videoForm.value.coverPrefix = "";
   return true;
 };
 
-const checkVideoUpload = (file: File) => {
+const checkVideoUpload = async (file: File) => {
   //检查是否为视频文件
   const types = ["video/mp4"];
   if (!types.includes(file.type)) {
@@ -167,13 +187,13 @@ const handleVideoUploadSuccess = (file: FileItem) => {
     Message.error(res.message);
   }
 };
-const handleVideoRemove = () => {
+const handleVideoRemove = async () => {
   videoForm.value.videoPrefix = "";
   videoForm.value.length = 0;
   return true;
 };
 
-const checkCoverUpload = (file: File) => {
+const checkCoverUpload = async (file: File) => {
   //检查是否为图片文件
   const types = ["image/jpeg", "image/png"];
   if (!types.includes(file.type)) {

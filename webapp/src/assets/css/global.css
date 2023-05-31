@@ -1,3 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "HYWenHei";
+  src: url("@/assets/fonts/HYWenHei-55W.ttf") format("truetype");
+}
+
+body {
+  font-family: "HYWenHei", serif;
+}
+
 html,
 body,
 #app {

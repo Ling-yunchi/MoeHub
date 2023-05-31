@@ -66,29 +66,33 @@
 import { inject, Ref, ref } from "vue";
 import { IconMan, IconWoman, IconEdit } from "@arco-design/web-vue/es/icon";
 import { FileItem, Message } from "@arco-design/web-vue";
-import { BaseResult, User, avatarUploadUrl } from "@/types";
+import {
+  BaseResult,
+  User,
+  avatarUploadUrl,
+  updateUserKey,
+  userKey,
+} from "@/types";
 import axios from "@/plugins/axios";
 
-const user = inject<Ref<User>>("user") as Ref<User>;
-const updateUser = inject<(user: User | null) => void>("updateUser") as (
-  user: User | null
-) => void;
+const user = inject(userKey) as Readonly<Ref<User | null>>;
+const updateUser = inject(updateUserKey) as (user: User | null) => void;
 
 const userForm = ref({
-  username: user.value.username,
-  nickname: user.value.nickname,
+  username: user.value?.username,
+  nickname: user.value?.nickname,
   password: "",
-  email: user.value.email,
-  sex: user.value.sex,
+  email: user.value?.email,
+  sex: user.value?.sex,
 });
 
-const avatarUrl = ref(user.value.avatar);
+const avatarUrl = ref(user.value ? user.value.avatar : "");
 const uploadAvatar = (file: FileItem) => {
   const res = file.response as BaseResult<string>;
   if (res.success) {
     avatarUrl.value = res.data;
     updateUser({
-      ...user.value,
+      ...user.value!,
       avatar: res.data,
     });
   } else {

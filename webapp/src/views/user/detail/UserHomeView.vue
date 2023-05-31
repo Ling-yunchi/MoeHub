@@ -23,14 +23,14 @@
 
 <script lang="ts" setup>
 import { inject, onMounted, ref, Ref } from "vue";
-import { BasePageResult, User, VideoList } from "@/types";
+import { BasePageResult, User, userKey, VideoList } from "@/types";
 import SmallVideoCard from "@/components/SmallVideoCard.vue";
 import router from "@/router";
 import axios from "@/plugins/axios";
 import { Message } from "@arco-design/web-vue";
 
 const userId = router.currentRoute.value.params.id;
-const user = inject<Ref<User>>("user") as Ref<User>;
+const user = inject(userKey) as Readonly<Ref<User | null>>;
 
 const videoList = ref<VideoList[]>([]);
 onMounted(() => {

@@ -4,7 +4,7 @@
       <router-link to="/home">
         <img class="logo-img" src="@/assets/logo.svg" alt="moehub" />
       </router-link>
-      <template v-if="props.search">
+      <template v-if="search">
         <div class="search">
           <a-input-group>
             <a-select
@@ -42,7 +42,7 @@
               />
             </a-avatar>
           </router-link>
-          <router-link :to="`user/${user.id}`" class="user-name">
+          <router-link :to="`/user/${user.id}`" class="user-name">
             {{ user.nickname }}
           </router-link>
           <a-button class="login-btn" type="primary" @click="logout">
@@ -78,11 +78,11 @@ import {
 } from "@arco-design/web-vue/es/icon";
 import { ref, watch, inject, Ref, defineProps } from "vue";
 import router from "@/router";
-import { User } from "@/types";
+import { updateUserKey, User, userKey } from "@/types";
 import { Message } from "@arco-design/web-vue";
 import axios from "@/plugins/axios";
 
-const props = defineProps({
+defineProps({
   search: {
     type: Boolean,
     required: false,
@@ -121,13 +121,13 @@ const search = () => {
   }
 };
 
-const user = inject("user") as Ref<User>;
-const updateUser = inject("updateUser") as (u: User | null) => void;
+const user = inject(userKey) as Readonly<Ref<User | null>>;
+const updateUser = inject(updateUserKey) as (u: User | null) => void;
 </script>
 
 <style lang="scss">
 .header-container {
-  height: 80px;
+  @apply p-4;
 
   .header {
     height: 100%;
@@ -136,7 +136,7 @@ const updateUser = inject("updateUser") as (u: User | null) => void;
     justify-content: space-between;
     padding: 0 50px;
     margin: 0 auto;
-    position: relative;
+    @apply flex-col gap-2 lg:flex-row;
 
     .logo-img {
       width: 150px;
@@ -145,18 +145,19 @@ const updateUser = inject("updateUser") as (u: User | null) => void;
     }
 
     .search {
+      @apply flex gap-2;
       .select-btn {
         height: 40px;
         width: 80px;
         border-radius: 4px 0 0 4px;
       }
+
       .search-input {
         width: 600px;
         height: 40px;
         border-radius: 0 4px 4px 0;
         padding: 0 10px;
         font-size: 14px;
-        margin-right: 5px;
         @media (max-width: 1400px) {
           width: 400px;
         }
@@ -178,8 +179,7 @@ const updateUser = inject("updateUser") as (u: User | null) => void;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 150px;
-      height: 100px;
+      @apply gap-2;
 
       .user-name {
         font-size: 16px;
@@ -190,13 +190,6 @@ const updateUser = inject("updateUser") as (u: User | null) => void;
         // 字符不换行
         white-space: nowrap;
         margin-right: 20px;
-      }
-
-      .login-btn {
-        margin-right: 10px;
-      }
-
-      .register-btn {
       }
     }
   }

@@ -82,12 +82,11 @@
 import { inject, ref } from "vue";
 import { IconUser, IconLock } from "@arco-design/web-vue/es/icon";
 import axios from "@/plugins/axios";
-import { BaseResult, User } from "@/types";
+import { BaseResult, User, updateUserKey } from "@/types";
 import router from "@/router";
 import { Message } from "@arco-design/web-vue";
 
-const updateUser = inject("updateUser") as (u: User | null) => void;
-
+const updateUser = inject(updateUserKey) as (user: User | null) => void;
 const loginForm = ref({
   username: "",
   password: "",

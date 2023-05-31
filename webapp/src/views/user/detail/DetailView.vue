@@ -113,7 +113,7 @@ import {
 } from "@arco-design/web-vue/es/icon";
 import { inject, Ref, ref, watch } from "vue";
 import router from "@/router";
-import { BaseResult, User } from "@/types";
+import { BaseResult, User, userKey } from "@/types";
 import axios from "@/plugins/axios";
 
 const userId = router.currentRoute.value.params.id;
@@ -132,7 +132,7 @@ axios.get("/api/user/info", { params: { userId: userId } }).then((res) => {
   }
 });
 
-const user = inject<Ref<User>>("user") as Ref<User>;
+const user = inject(userKey) as Readonly<Ref<User | null>>;
 const self = ref(user.value !== null && user.value.id === userId);
 watch(user, (newUser) => {
   self.value = newUser !== null && newUser.id === userId;

@@ -5,7 +5,7 @@
 <script lang="ts" setup>
 import { onMounted, provide, readonly, ref } from "vue";
 import axios from "@/plugins/axios";
-import { User } from "@/types";
+import { updateUserKey, User, userKey } from "@/types";
 
 // provide user data to all components
 const user = ref<User | null>(null);
@@ -24,6 +24,7 @@ onMounted(() => {
       // do nothing
     });
 });
-provide("user", readonly(user));
-provide("updateUser", updateUser);
+
+provide(userKey, readonly(user));
+provide(updateUserKey, updateUser);
 </script>

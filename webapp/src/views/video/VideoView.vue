@@ -197,29 +197,28 @@ import {
 } from "@arco-design/web-vue/es/icon";
 import { onMounted, ref } from "vue";
 import router from "@/router";
-import { BasePageResult, BaseResult, CommentList } from "@/types";
+import { BasePageResult, BaseResult, CommentList, VideoInfo } from "@/types";
 import { MediaPlayer } from "@vime/core";
 import axios from "@/plugins/axios";
 import { Message } from "@arco-design/web-vue";
 
-const videoInfo = ref({
+const videoInfo = ref<VideoInfo>({
   id: "1",
   title: "【湊あくあ】夜に駆ける / 奔向夜晚【翻唱】",
-  videoUrl:
-    "http://39.103.135.63:9000/moehub/%E3%80%90%E6%B9%8A%E3%81%82%E3%81%8F%E3%81%82%E3%80%91%E5%A4%9C%E3%81%AB%E9%A7%86%E3%81%91%E3%82%8B%20_%20%E5%A5%94%E5%90%91%E5%A4%9C%E6%99%9A%E3%80%90%E7%BF%BB%E5%94%B1%E3%80%91%20-%201.%E5%A4%9C%E3%81%AB%E9%A7%86%E3%81%91%E3%82%8B%20%E5%AE%9A%E7%A8%BF%28Av330487200%2CP1%29.mp4",
-  coverUrl: "/test-cover.jpg",
-  description:
-    "世界でいちばんおニオンさま!\nお誕生日おめでとう！~\n【初めて会った日から】\n【僕の心の全てを奪った】\nこれからももっともっと応援するよ——d(*・ω・*)b♪\n-------------\n本家様：YOASOBI様\nhttps://www.youtube.com/watch?v=x8VYWazR5mE\n分镜参考: BV1h5411a7LC\n-------------\nCover：\nvocal：湊あくあ\nillust：瑠\nmix：星月夜舞\nmovie：星奕工作室\norganizer: ZestXteam\n※中文歌词参考自互联网\n---------------\n推特关注不迷路↓\nTwitter：https://twitter.com/minatoaqua\nTwitter话题　#湊あくあ\n绘画　#あくあーと\n粉丝　#あくあクルー",
+  videoUrl: "",
+  coverUrl: "",
+  description: "",
   length: 0,
   authorId: "1",
   authorName: "龗云螭",
-  authorAvatar: "/avatar.jpg",
+  authorAvatar: "",
   createAt: "2020-01-01",
   views: 114514,
   likes: 11451,
   favorites: 1111,
   isFavorite: false,
   isLiked: false,
+  category: "动画",
 });
 
 const mainPlayer = ref<MediaPlayer>();
@@ -229,7 +228,7 @@ onMounted(() => {
       params: { videoId: router.currentRoute.value.params.id },
     })
     .then((res) => {
-      const result = res.data as BaseResult<any>;
+      const result = res.data as BaseResult<VideoInfo>;
       if (result.success) {
         videoInfo.value = result.data;
         let source = `<source src="${videoInfo.value.videoUrl}" type="video/mp4">`;
@@ -426,11 +425,13 @@ const addComment = () => {
 
     .video-info {
       width: 100%;
+      @apply mt-4;
 
       .video-info-title {
         width: 100%;
         margin-bottom: 10px;
         color: var(--color-neutral-9);
+        @apply text-xl font-bold;
       }
 
       .video-info__description {
@@ -470,10 +471,9 @@ const addComment = () => {
       }
 
       .video-info-other {
-        margin-top: 10px;
+        @apply my-4 space-x-4;
 
         span {
-          margin-right: 10px;
           color: var(--color-neutral-7);
         }
       }
@@ -481,11 +481,15 @@ const addComment = () => {
   }
 
   .comment-container {
+    .comment-title {
+      @apply text-lg font-bold mb-2;
+    }
+
     .comment-input {
       display: flex;
       flex-direction: row;
       align-items: center;
-      margin-bottom: 40px;
+      @apply mb-4;
     }
   }
 }

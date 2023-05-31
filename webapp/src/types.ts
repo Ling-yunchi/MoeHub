@@ -1,3 +1,5 @@
+import { InjectionKey, Ref } from "vue";
+
 // this is all the types that are used in the views
 export interface BaseResult<T> {
   success: boolean;
@@ -35,6 +37,25 @@ export interface VideoList {
   createAt: string;
 }
 
+export interface VideoInfo {
+  id: string;
+  title: string;
+  videoUrl: string;
+  coverUrl: string;
+  description: string;
+  length: number;
+  authorId: string;
+  authorName: string;
+  authorAvatar: string;
+  createAt: string;
+  views: number;
+  likes: number;
+  favorites: number;
+  isFavorite: boolean;
+  isLiked: boolean;
+  category: string;
+}
+
 export interface MyVideoDetail {
   id: string;
   description: string;
@@ -42,6 +63,7 @@ export interface MyVideoDetail {
   length: number;
   title: string;
   createAt: string;
+  category: string;
 }
 
 export interface CommentList {
@@ -67,6 +89,11 @@ export interface Search {
   statement: string;
   count: number;
 }
+
+export const userKey = Symbol("user") as InjectionKey<
+  Readonly<Ref<User | null>>
+>;
+export const updateUserKey = Symbol("updateUser") as InjectionKey<() => void>;
 
 // export const actionUrl = "/api/video/uploadTemp";
 // export const avatarUploadUrl = "/api/user/avatar";
