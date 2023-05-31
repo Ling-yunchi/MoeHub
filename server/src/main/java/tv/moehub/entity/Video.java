@@ -34,4 +34,5 @@ public class Video {
     private String coverPrefix;//封面
     private String videoPrefix;//视频内容
     private Integer views;//播放次数
+    private String category;//分类
 }

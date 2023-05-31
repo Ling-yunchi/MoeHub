@@ -31,4 +31,5 @@ public class VideoResult {
     private Integer favorites;
     private Boolean isFavorite;
     private Boolean isLiked;
+    private String category;
 }

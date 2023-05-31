@@ -132,6 +132,7 @@ public class VideoService {
                 .coverPrefix(coverPrefix)
                 .videoPrefix(videoPrefix)
                 .views(0)
+                .category(videoBean.getCategory())
                 .build();
         videoDao.save(video);
 
@@ -155,14 +156,13 @@ public class VideoService {
 
     public void getVideoDetails(BaseResult<List<VideoDetailResult>> result) {
         String userId = (String) SecurityUtils.getSubject().getPrincipal();
-        var list = videoDao.findVideoDetailByAuthorId(userId).stream().map(video -> {
+        var list = videoDao.findVideoDetailByAuthorId(userId).stream().peek(video -> {
             try {
                 video.setCoverUrl(fileService.getFileUrl(video.getCoverUrl()));
             } catch (Exception e) {
                 log.error("get video cover url error", e);
                 video.setCoverUrl(null);
             }
-            return video;
         }).collect(Collectors.toList());
         result.construct(true, "查询成功", list);
     }
@@ -241,6 +241,7 @@ public class VideoService {
                 .likes(likeVideoDao.countLikeVideoByVideoId(videoId))
                 .isFavorite(isFavorite)
                 .isLiked(isLiked)
+                .category(video.getCategory())
                 .build();
         result.construct(true, "查询成功", res);
     }

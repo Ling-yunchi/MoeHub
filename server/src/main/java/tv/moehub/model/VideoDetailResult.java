@@ -20,4 +20,5 @@ public class VideoDetailResult {
     private String coverUrl;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createAt;
+    private String category;
 }

@@ -24,4 +24,6 @@ public class VideoBean {
     @NotNull(message = "视频长度不能为空")
     @Min(value = 1, message = "视频长度不能小于1")
     private Integer length;
+    @NotBlank(message = "视频分类不能为空")
+    private String category;
 }
