@@ -23,4 +23,5 @@ public class VideoListResult {
     private String authorId;
     private String authorName;
     private String avatarUrl;
+    private String category;
 }

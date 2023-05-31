@@ -23,11 +23,10 @@ import tv.moehub.model.*;
 import tv.moehub.utils.FileUtil;
 import tv.moehub.utils.Uuid;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static tv.moehub.utils.Const.category;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -271,5 +270,22 @@ public class VideoService {
             }
         });
         result.construct(true, "查询成功", videoList);
+    }
+
+    public void getAllVideoByCategory(BaseResult<List<VideoListResult>> result) {
+        List<VideoListResult> res = new ArrayList<>();
+        Arrays.stream(category).forEach(category -> {
+            Pageable pageable = PageRequest.of(0, 5);
+            videoDao.findByCategoryPage(category, pageable).map(videoListResult -> {
+                try {
+                    videoListResult.setCoverUrl(fileService.getFileUrl(videoListResult.getCoverUrl()));
+                } catch (Exception e) {
+                    log.error("get video cover url error", e);
+                    videoListResult.setCoverUrl(null);
+                }
+                return videoListResult;
+            }).forEach(res::add);
+        });
+        result.construct(true, "查询成功", res);
     }
 }

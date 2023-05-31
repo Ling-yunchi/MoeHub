@@ -16,21 +16,21 @@ import java.util.List;
  */
 public interface VideoDao extends JpaRepository<Video, String> {
 
-    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
+    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar, v.category) " +
             "from Video v inner join User u on v.authorId = u.id order by v.views desc ")
     Page<VideoListResult> showHot(Pageable pageable);
 
-    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
+    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar, v.category) " +
             "from Video v join User u on v.authorId = u.id " +
             "where v.id = ?1")
     VideoListResult queryVideoById(String videoId);
 
-    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
+    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar, v.category) " +
             "from Video v join User u on v.authorId = u.id " +
             "where v.title like ?1")
     Page<VideoListResult> findByTitleLike(String title, Pageable pageable);
 
-    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
+    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar, v.category) " +
             "from Video v inner join User u on v.authorId = u.id " +
             "where v.authorId = ?1")
     Page<VideoListResult> findByAuthorIdPage(String authorId, Pageable pageable);
@@ -40,7 +40,13 @@ public interface VideoDao extends JpaRepository<Video, String> {
             "where v.authorId = ?1")
     List<VideoDetailResult> findVideoDetailByAuthorId(String userId);
 
-    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar) " +
+    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar ,v.category) " +
             "from Video v inner join User u on v.authorId = u.id")
     Page<VideoListResult> findAllPage(Pageable pageable);
+
+    @Query("select new tv.moehub.model.VideoListResult(v.id, v.title, v.length, v.coverPrefix, v.views, v.createAt, v.authorId, u.nickname, u.avatar, v.category) " +
+            "from Video v inner join User u on v.authorId = u.id " +
+            "where v.category = ?1 " +
+            "order by v.views desc")
+    Page<VideoListResult> findByCategoryPage(String category, Pageable pageable);
 }

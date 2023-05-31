@@ -10,4 +10,6 @@ public class Const {
         public static final String LOGIN = "/login";
         public static final String REGISTER = "/register";
     }
+
+    public static String[] category = {"动画", "音乐", "游戏", "美食", "科技"};
 }

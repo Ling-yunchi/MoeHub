@@ -64,7 +64,7 @@
           </a-menu></template
         >
       </a-trigger>
-      <a-layout-content class="h-full overflow-y-scroll">
+      <a-layout-content class="h-[calc(100vh-6rem)] overflow-y-scroll">
         <router-view></router-view>
       </a-layout-content>
     </a-layout>

@@ -1,5 +1,5 @@
 <template>
-  <div class="video-card-container">
+  <div :class="['video-card-container', props.class]">
     <div class="video-cover">
       <router-link :to="videoUrl" target="_blank">
         <img style="object-fit: cover" :src="coverUrl" alt="cover" />
@@ -33,7 +33,7 @@
 <script lang="ts" setup>
 import { defineProps } from "vue";
 
-defineProps({
+const props = defineProps({
   coverUrl: {
     type: String,
     default: "",
@@ -63,6 +63,10 @@ defineProps({
     default: 0,
   },
   videoUrl: {
+    type: String,
+    default: "",
+  },
+  class: {
     type: String,
     default: "",
   },

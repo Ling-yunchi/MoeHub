@@ -49,7 +49,7 @@
               />
             </a-avatar>
           </router-link>
-          <router-link :to="`user/${user.id}`" class="user-name">
+          <router-link :to="`/user/${user.id}`" class="user-name">
             {{ user.nickname }}
           </router-link>
           <a-button class="login-btn" type="dashed" @click="logout">
@@ -134,7 +134,7 @@ const updateUser = inject(updateUserKey) as (u: User | null) => void;
 
 <style lang="scss">
 .header-container {
-  @apply p-4;
+  @apply p-4 h-24;
 
   .header {
     height: 100%;
