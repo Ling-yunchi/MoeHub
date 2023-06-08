@@ -19,7 +19,10 @@ _axios.interceptors.response.use(
     if (err.message.includes("timeout")) {
       Message.error("请求超时，请稍后重试");
     }
-    console.log("catch", err);
+    if (err.message.includes("500")) {
+      Message.error("服务器错误，请稍后重试");
+    }
+    return Promise.reject(err);
   }
 );
 

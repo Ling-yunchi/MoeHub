@@ -105,7 +105,8 @@
           @before-upload="checkVideoUpload"
           :limit="1"
           @success="handleVideoUploadSuccess"
-          :on-before-remove="handleVideoRemove"
+          @before-remove="handleVideoRemove"
+          @progress="handleVideoProgress"
         />
       </a-form-item>
       <a-form-item
@@ -148,11 +149,21 @@ const videoForm = ref({
   category: "",
 });
 
+const handleVideoProgress = (
+  fileItem: FileItem,
+  ev?: ProgressEvent<EventTarget> | undefined
+) => {
+  if (ev) {
+    fileItem.percent = Math.floor((ev.loaded / ev.total) * 100);
+    Message.info(`视频上传进度：${fileItem.percent}%`);
+  }
+};
+
 const handleCoverUploadSuccess = (file: FileItem) => {
   const res = file.response as BaseResult<string>;
   if (res.success) {
     videoForm.value.coverPrefix = res.data;
-    Message.success("视频上传成功");
+    Message.success("视频封面上传成功");
   } else {
     Message.error(res.message);
   }
