@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import tv.moehub.entity.LastPlayLocation;
 import tv.moehub.entity.Video;
 import tv.moehub.model.VideoDetailResult;
 import tv.moehub.model.VideoListResult;

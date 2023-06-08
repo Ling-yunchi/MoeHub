@@ -98,6 +98,6 @@ export const updateUserKey = Symbol("updateUser") as InjectionKey<() => void>;
 
 // export const actionUrl = "/api/video/uploadTemp";
 // export const avatarUploadUrl = "/api/user/avatar";
-export const baseUrl = "http://10.241.232.207:4000";
+export const baseUrl = "http://localhost:4000";
 export const actionUrl = baseUrl + "/api/video/uploadTemp";
 export const avatarUploadUrl = baseUrl + "/api/user/avatar";

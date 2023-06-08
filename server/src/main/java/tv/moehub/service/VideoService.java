@@ -11,14 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tv.moehub.bean.VideoBean;
-import tv.moehub.dao.FavoriteDao;
-import tv.moehub.dao.LikeVideoDao;
-import tv.moehub.dao.UserDao;
-import tv.moehub.dao.VideoDao;
-import tv.moehub.entity.Favorite;
-import tv.moehub.entity.LikeVideo;
-import tv.moehub.entity.User;
-import tv.moehub.entity.Video;
+import tv.moehub.dao.*;
+import tv.moehub.entity.*;
 import tv.moehub.model.*;
 import tv.moehub.utils.FileUtil;
 import tv.moehub.utils.Uuid;
@@ -37,6 +31,7 @@ public class VideoService {
     private final FileService fileService;
     private final FavoriteDao favoriteDao;
     private final LikeVideoDao likeVideoDao;
+    private final LastPlayLocationDao lastPlayLocationDao;
 
 //    public void queryVideoById(String videoId, BaseResult<VideoListResult> result) {
 //        VideoListResult videoResult = videoDao.queryVideoById(videoId);
@@ -287,5 +282,29 @@ public class VideoService {
             }).forEach(res::add);
         });
         result.construct(true, "查询成功", res);
+    }
+
+
+    public void getLastPosition(String videoId, BaseResult<Integer> result) {
+        String userId = (String) SecurityUtils.getSubject().getPrincipal();
+        LastPlayLocation lastPosition = lastPlayLocationDao.findLastPositionByVideoIdAndUserId(videoId, userId);
+        if (lastPosition != null) {
+            result.construct(true, "上次观看到", lastPosition.getPlayLocation());
+        } else {
+            result.construct(false, "没看过", -1);
+        }
+    }
+
+    public void setPlayPosition(String videoId, Integer playPosition, BaseResult<Void> result) {
+        String userId = (String) SecurityUtils.getSubject().getPrincipal();
+        LastPlayLocation lastPosition = lastPlayLocationDao.findLastPositionByVideoIdAndUserId(videoId, userId);
+        if (lastPosition == null) {
+            lastPosition = new LastPlayLocation();
+            lastPosition.setVideoId(videoId);
+            lastPosition.setUserId(userId);
+        }
+        lastPosition.setPlayLocation(playPosition);
+        lastPlayLocationDao.save(lastPosition);
+        result.construct(true, "记录成功");
     }
 }

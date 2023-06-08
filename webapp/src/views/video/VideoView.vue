@@ -10,10 +10,41 @@
               crossorigin="anonymous"
               :poster="videoInfo.coverUrl"
               @play="onPlay"
+              @pause="onPause"
               id="player"
               ref="mainPlayer"
             ></video>
             <default-ui></default-ui>
+            <div
+              v-if="lastPlayPosition !== -1"
+              class="absolute bottom-20 right-6 rounded bg-white bg-opacity-30 p-2 flex gap-2 lg:text-lg"
+            >
+              上次观看到{{ lastPlayPosition }}秒，是否跳转
+              <button
+                class="text-blue-600 hover:text-blue-500 font-bold"
+                @click="
+                  () => {
+                    if (mainPlayer) {
+                      mainPlayer.currentTime = lastPlayPosition;
+                      mainPlayer.play();
+                      lastPlayPosition = -1;
+                    }
+                  }
+                "
+              >
+                Go
+              </button>
+              <button
+                class="text-blue-600 hover:text-blue-500 font-bold"
+                @click="
+                  () => {
+                    lastPlayPosition = -1;
+                  }
+                "
+              >
+                x
+              </button>
+            </div>
           </player>
           <div class="video-footer">
             <a-button
@@ -200,12 +231,21 @@ import {
   IconStarFill,
   IconSend,
 } from "@arco-design/web-vue/es/icon";
-import { onMounted, ref } from "vue";
+import { inject, onMounted, Ref, ref } from "vue";
 import router from "@/router";
-import { BasePageResult, BaseResult, CommentList, VideoInfo } from "@/types";
+import {
+  BasePageResult,
+  BaseResult,
+  CommentList,
+  User,
+  userKey,
+  VideoInfo,
+} from "@/types";
 import { MediaPlayer } from "@vime/core";
 import axios from "@/plugins/axios";
 import { Message } from "@arco-design/web-vue";
+
+const user = inject(userKey) as Readonly<Ref<User | null>>;
 
 const videoInfo = ref<VideoInfo>({
   id: "1",
@@ -227,6 +267,7 @@ const videoInfo = ref<VideoInfo>({
 });
 
 const mainPlayer = ref<MediaPlayer>();
+const lastPlayPosition = ref(-1);
 onMounted(() => {
   axios
     .get("/api/video/getVideoInfo", {
@@ -239,6 +280,16 @@ onMounted(() => {
         let source = `<source src="${videoInfo.value.videoUrl}" type="video/mp4">`;
         let player = document.getElementById("player") as HTMLVideoElement;
         player.innerHTML = source;
+        axios
+          .get("/api/video/getLastPosition", {
+            params: { videoId: videoInfo.value.id },
+          })
+          .then((res) => {
+            if (res.data.success) {
+              console.log("set lastPlayPosition", res.data.data);
+              lastPlayPosition.value = res.data.data;
+            }
+          });
       } else {
         console.log(result.message);
         router.push("/404");
@@ -247,6 +298,7 @@ onMounted(() => {
 });
 
 const played = ref(false);
+const positionInterval = ref<number>();
 const onPlay = () => {
   if (!played.value) {
     played.value = true;
@@ -257,6 +309,23 @@ const onPlay = () => {
       .catch((err) => {
         console.log(err);
       });
+  }
+  if (user.value != null) {
+    positionInterval.value = setInterval(function () {
+      console.log(mainPlayer.value?.currentTime);
+      axios.get("/api/video/setPlayPosition", {
+        params: {
+          videoId: videoInfo.value.id,
+          playPosition: Math.floor(mainPlayer.value?.currentTime ?? 0),
+        },
+      });
+    }, 2000);
+  }
+};
+const onPause = () => {
+  if (positionInterval.value) {
+    clearInterval(positionInterval.value);
+    positionInterval.value = undefined;
   }
 };
 

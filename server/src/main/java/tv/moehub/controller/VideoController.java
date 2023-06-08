@@ -114,4 +114,18 @@ public class VideoController {
         return result;
     }
 
+    @GetMapping("/getLastPosition")
+    public BaseResult<Integer> getLastPosition(@RequestParam String videoId) {
+        BaseResult<Integer> result = new BaseResult<>();
+        videoService.getLastPosition(videoId, result);
+        return result;
+    }
+
+    @Login
+    @GetMapping("/setPlayPosition")
+    public BaseResult<Void> setPlayPosition(@RequestParam String videoId, @RequestParam Integer playPosition) {
+        BaseResult<Void> result = new BaseResult<>();
+        videoService.setPlayPosition(videoId, playPosition, result);
+        return result;
+    }
 }
